@@ -347,8 +347,8 @@ button { font: inherit; color: inherit; }
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
-.hdr__nav { display: flex; gap: 22px; }
-.hdr__nav a {
+.hdr__nav { display: flex; align-self: stretch; align-items: center; gap: 22px; }
+:is(.hdr__nav, .hdr__mm) > a {
   padding: 6px 0;
   font-size: 14px;
   font-weight: 500;
@@ -356,8 +356,28 @@ button { font: inherit; color: inherit; }
   background: linear-gradient(var(--green), var(--green)) 0 100% / 0 2px no-repeat;
   transition: background-size 0.25s var(--ease-out);
 }
-[dir="rtl"] .hdr__nav a { background-position: 100% 100%; }
-.hdr__nav a:hover, .hdr__nav a[aria-current] { background-size: 100% 2px; }
+[dir="rtl"] :is(.hdr__nav, .hdr__mm) > a { background-position: 100% 100%; }
+:is(.hdr__nav, .hdr__mm) > a:is(:hover, [aria-current]) { background-size: 100% 2px; }
+/* Services item: link + mega-menu toggle, full header height. The toggle is sized here so the header does not shift when
+   site.js loads megamenu.css; it shows only with JS on hover screens, where site.js loads the menu. */
+.hdr__mm { position: relative; z-index: 1; display: flex; align-self: stretch; align-items: center; }
+.hdr__mm-btn {
+  display: none;
+  place-items: center;
+  width: 22px;
+  height: 32px;
+  margin-inline-start: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.hdr__mm-btn:focus-visible { outline-offset: 0; }
+@media (hover: hover) { .js .hdr__mm-btn { display: grid; } }
+.hdr__mm-btn svg { width: 10px; height: 6px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.25s var(--ease-out); }
+.hdr__mm-btn:hover, .hdr__mm-btn[aria-expanded="true"] { color: var(--green-ink); }
+.hdr__mm-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .hdr__clock { color: var(--ink-2); white-space: nowrap; }
 .hdr__clock span { color: var(--green-ink); }
 .hdr__lang, .hdr__social {

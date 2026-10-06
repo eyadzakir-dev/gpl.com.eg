@@ -1,0 +1,359 @@
+/* Services mega menu: a full-width sheet under the fixed header (desktop, hover screens only).
+   site.js injects this file and imports megamenu.js; the markup lives in scripts/partials/header.*.html.
+   The toggle button and the nav-link selectors live in site.css so the header never shifts when this file arrives. */
+
+/* ---------- Sheet ---------- */
+.mm {
+  position: fixed;
+  inset-inline: 0;
+  /* Overlaps the header's bottom hairline so the sheet's ink rule replaces it. */
+  top: calc(var(--hdr-h) - 1px);
+  max-height: calc(100dvh - var(--hdr-h) + 1px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-block: 1px solid var(--ink);
+  background: var(--paper-hi);
+  color: var(--ink);
+}
+.mm__in {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  padding-block: 30px 0;
+}
+.mm-scrim {
+  position: fixed;
+  inset: var(--hdr-h) 0 0;
+  z-index: 49;
+  background: color-mix(in srgb, var(--ink) 24%, transparent);
+}
+.hdr__mm.is-open > a { background-size: 100% 2px; }
+/* Hover bridge: a trapezoid under the item, so a diagonal move from "Services" towards the sheet stays inside the item. */
+.hdr__mm.is-open::after {
+  content: "";
+  position: absolute;
+  inset-block: calc(50% + 12px) 0;
+  inset-inline: -120px;
+  clip-path: polygon(120px 0, calc(100% - 120px) 0, 100% 100%, 0 100%);
+}
+
+/* ---------- Column A: intro and actions ---------- */
+.mm__intro {
+  grid-column: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.mm .mm__glabel.mm__label { align-self: stretch; color: var(--green-ink); }
+.mm__title {
+  margin-top: 20px;
+  font-size: clamp(28px, 2.35vw, 34px);
+  font-weight: 800;
+  font-stretch: 80%;
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.mm__title .dot { color: var(--green); }
+.mm__lead {
+  margin-top: 14px;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.mm__all { margin-top: 12px; }
+.mm__actions {
+  align-self: stretch;
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+.mm__actions .btn { padding: 13px 16px; font-size: 14px; }
+
+/* ---------- Column B: the eight services in four groups ---------- */
+.mm__groups {
+  position: relative;
+  grid-column: 4 / 10;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: auto 1fr;
+  row-gap: 22px;
+}
+/* Hairlines in the gutters either side of the service columns. */
+.mm__groups::before, .mm__groups::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  border-inline-start: 1px solid var(--rule);
+}
+.mm__groups::before { inset-inline-start: calc(var(--gut) / -2); }
+.mm__groups::after { inset-inline-end: calc(var(--gut) / -2); }
+.mm__group { grid-column: span 3; min-width: 0; }
+.mm__group:nth-child(1) { grid-area: 1 / 1 / 2 / 4; }
+.mm__group:nth-child(2) { grid-area: 2 / 1 / 3 / 4; }
+.mm__group:nth-child(3) { grid-area: 1 / 4 / 2 / 7; }
+.mm__group:nth-child(4) { grid-area: 2 / 4 / 3 / 7; }
+.mm .mm__glabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink);
+  font-size: 11px;
+}
+.mm__glabel::before { content: ""; flex: none; width: 6px; height: 6px; background: var(--green); }
+.mm__list > li + li { border-top: 1px solid var(--rule); }
+
+.mm__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "ico name no"
+    "ico text text";
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 3px;
+  padding-block: 10px 11px;
+  text-decoration: none;
+}
+.mm__item::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.35s var(--ease-out);
+}
+[dir="rtl"] .mm__item::after { transform-origin: 100% 50%; }
+.mm__item:focus-visible { outline-offset: 2px; }
+
+.mm__ico {
+  grid-area: ico;
+  align-self: start;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  transition: border-color 0.2s, color 0.2s;
+}
+/* The icons are currentColor line art; as masks they take the item's colour. */
+.mm__ico::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background: currentColor;
+  -webkit-mask: var(--ico) center / contain no-repeat;
+  mask: var(--ico) center / contain no-repeat;
+}
+.mm__ico--sea { --ico: url(../img/icons/sea.svg); }
+.mm__ico--air { --ico: url(../img/icons/air.svg); }
+.mm__ico--roro { --ico: url(../img/icons/roro.svg); }
+.mm__ico--customs { --ico: url(../img/icons/customs.svg); }
+.mm__ico--inland { --ico: url(../img/icons/inland.svg); }
+.mm__ico--trucking { --ico: url(../img/icons/trucking.svg); }
+.mm__ico--last-mile { --ico: url(../img/icons/last-mile.svg); }
+.mm__ico--warehouse { --ico: url(../img/icons/warehouse.svg); }
+
+.mm__name {
+  grid-area: name;
+  font-size: 17px;
+  font-weight: 750;
+  font-stretch: 88%;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  transition: color 0.2s;
+}
+/* The arrow follows the name's last word (joined by a no-break space) wherever the name wraps. */
+.mm__go {
+  margin-inline-start: 0.2em;
+  color: var(--green-ink);
+  font: 500 14px/1 var(--f-mono);
+  opacity: 0.55;
+  transition: translate 0.3s var(--ease-out), opacity 0.2s;
+}
+.mm .mm__no { grid-area: no; color: var(--ink-2); font-size: 11px; transition: color 0.2s; }
+.mm__text {
+  grid-area: text;
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.mm__nb { white-space: nowrap; }
+
+.mm__item:is(:hover, :focus-visible, [aria-current])::after { transform: none; }
+.mm__item:is(:hover, :focus-visible, [aria-current]) :is(.mm__name, .mm__no) { color: var(--green-ink); }
+.mm__item:is(:hover, :focus-visible, [aria-current]) .mm__ico { border-color: var(--green); color: var(--green-ink); }
+.mm__item:is(:hover, :focus-visible) .mm__go { opacity: 1; translate: 5px 0; }
+[dir="rtl"] .mm__item:is(:hover, :focus-visible) .mm__go { translate: -5px 0; }
+/* Current page: a filled marker before the index. */
+.mm__item[aria-current] .mm__no::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-inline-end: 6px;
+  vertical-align: 1px;
+  background: var(--green);
+}
+
+.mm__note {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 2px;
+  padding-block: 9px 0;
+  padding-inline: 50px 0;
+  border-top: 1px dashed var(--rule);
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+  text-decoration: none;
+}
+.mm__note .mono { color: var(--green-ink); font-size: 11px; }
+.mm__note .mono { flex: none; }
+.mm__note .arr { margin-inline-start: 4px; color: var(--green-ink); transition: translate 0.3s var(--ease-out); }
+.mm__note:hover { color: var(--green-ink); }
+.mm__note:hover .arr { translate: 4px 0; }
+[dir="rtl"] .mm__note:hover .arr { translate: -4px 0; }
+
+/* ---------- Column C: drawing-frame preview and head-office contact ---------- */
+.mm__side { grid-column: 10 / 13; display: flex; flex-direction: column; min-width: 0; }
+.mm__art {
+  position: relative;
+  margin-top: 12px;
+  aspect-ratio: 3 / 2;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  overflow: hidden;
+}
+.mm__art > img, .mm__gpl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.mm__art > .is-on { opacity: 1; }
+/* Default sheet: the GPL mark on a dot grid with dash-dot centre lines and crop marks, like a drawing datum. */
+.mm__gpl {
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(var(--ink), var(--ink)) 10px 10px / 12px 1px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) 10px 10px / 1px 12px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) calc(100% - 10px) calc(100% - 10px) / 12px 1px no-repeat,
+    linear-gradient(var(--ink), var(--ink)) calc(100% - 10px) calc(100% - 10px) / 1px 12px no-repeat,
+    radial-gradient(color-mix(in srgb, var(--ink) 14%, transparent) 1px, transparent 1.3px) 0 0 / 14px 14px;
+}
+.mm__gpl::before, .mm__gpl::after {
+  content: "";
+  position: absolute;
+  background: repeating-linear-gradient(90deg, var(--rule) 0 14px, transparent 14px 18px, var(--rule) 18px 20px, transparent 20px 24px);
+}
+.mm__gpl::before { inset-inline: 8%; top: 50%; height: 1px; }
+.mm__gpl::after {
+  inset-block: 8%;
+  left: 50%;
+  width: 1px;
+  background: repeating-linear-gradient(180deg, var(--rule) 0 14px, transparent 14px 18px, var(--rule) 18px 20px, transparent 20px 24px);
+}
+.mm__mark { position: relative; z-index: 1; width: 42%; height: auto; aspect-ratio: 1; }
+
+.mm__tb {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  border: 1px solid var(--ink);
+  border-top: 0;
+  background: var(--paper-hi);
+}
+.mm .mm__tb > * { padding: 8px 10px; font-size: 11px; line-height: 1.35; }
+.mm .mm__tb-fig { border-inline-end: 1px solid var(--rule); color: var(--green-ink); white-space: nowrap; }
+.mm .mm__tb-name { color: var(--ink); }
+.mm .mm__tb-detail { grid-column: 1 / -1; border-top: 1px solid var(--rule); color: var(--ink-2); }
+
+.mm__contact { display: flex; flex-direction: column; align-items: flex-start; margin-top: auto; padding-top: 24px; }
+.mm__contact .mm__glabel { align-self: stretch; margin-bottom: 10px; }
+.mm__tel, .mm__mail { text-decoration: none; transition: color 0.2s; }
+.mm__tel { font-size: 22px; font-weight: 750; font-stretch: 85%; letter-spacing: -0.01em; line-height: 1.25; }
+.mm__mail { margin-top: 2px; color: var(--ink-2); font-size: 14px; line-height: 1.5; }
+.mm__tel:hover, .mm__mail:hover { color: var(--green-ink); }
+
+/* ---------- Bottom strip: industries, ports, network ---------- */
+.mm__strip {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  margin-top: 26px;
+  border-top: 1px solid var(--ink);
+}
+.mm__row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  padding-block: 11px;
+}
+.mm__row + .mm__row { border-top: 1px solid var(--rule); }
+.mm .mm__rk { grid-column: 1 / 4; color: var(--ink-2); font-size: 11px; }
+.mm__inds { grid-column: 4 / -1; display: flex; flex-wrap: wrap; gap: 6px 30px; }
+.mm__inds a, .mm__net { text-decoration: none; transition: color 0.2s; }
+.mm__inds a { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 500; }
+.mm__inds a:hover { color: var(--green-ink); }
+.mm__iico { flex: none; width: 18px; height: 18px; background: currentColor; -webkit-mask: var(--ico) center / contain no-repeat; mask: var(--ico) center / contain no-repeat; }
+.mm__inds a:not(:hover) .mm__iico { color: var(--ink-2); }
+.mm__iico--garments { --ico: url(../img/icons/garments.svg); }
+.mm__iico--food-agri { --ico: url(../img/icons/food-agri.svg); }
+.mm__iico--chemicals { --ico: url(../img/icons/chemicals.svg); }
+.mm__iico--furniture { --ico: url(../img/icons/furniture.svg); }
+.mm__iico--engineering { --ico: url(../img/icons/engineering.svg); }
+.mm .mm__ports { grid-column: 4 / 10; color: var(--ink); font-size: 11px; }
+.mm .mm__net { grid-column: 10 / -1; justify-self: start; color: var(--green-ink); }
+.mm__net .arr { margin-inline-start: 6px; transition: translate 0.3s var(--ease-out); }
+.mm__net:hover .arr { translate: 4px 0; }
+[dir="rtl"] .mm__net:hover .arr { translate: -4px 0; }
+
+/* ---------- Motion (html.motion only): wipe down from the header, stagger the content, crossfade the preview ---------- */
+.motion .mm {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.2s cubic-bezier(0.4, 0, 1, 1);
+}
+.motion .mm.is-open { clip-path: inset(0); transition: clip-path 0.28s var(--ease-out); }
+.motion .mm__in { translate: 0 -10px; transition: translate 0.2s; }
+.motion .mm.is-open .mm__in { translate: none; transition: translate 0.4s var(--ease-out); }
+.motion .mm :is(.mm__intro > *, .mm__group .mm__glabel, .mm__item, .mm__note, .mm__side > *, .mm__row) {
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.12s, translate 0.12s;
+}
+.motion .mm.is-open :is(.mm__intro > *, .mm__group .mm__glabel, .mm__item, .mm__note, .mm__side > *, .mm__row) {
+  opacity: 1;
+  translate: none;
+  transition: opacity 0.35s var(--ease-out), translate 0.45s var(--ease-out);
+  transition-delay: calc(50ms + var(--i, 0) * 26ms);
+}
+.motion .mm-scrim { opacity: 0; transition: opacity 0.2s; }
+.motion .mm-scrim.is-open { opacity: 1; transition-duration: 0.3s; }
+.motion .mm__art > img, .motion .mm__gpl { transition: opacity 0.3s var(--ease-out), scale 0.5s var(--ease-out); scale: 1.03; }
+.motion .mm__art > .is-on { scale: 1; }
+.motion .mm.is-open .mm__gpl.is-on .mm__mark { animation: gpl-sweep 1.2s cubic-bezier(0.3, 0, 0.3, 1) 0.15s both; }
+@keyframes mm-tb-in { from { opacity: 0; translate: 0 3px; } }
+.motion .mm__tb.is-swap > * { animation: mm-tb-in 0.3s var(--ease-out); }
+
+/* ---------- Arabic ---------- */
+:lang(ar) .mm__title { font-size: clamp(26px, 2.2vw, 32px); line-height: 1.25; font-weight: 700; }
+:lang(ar) .mm__lead { line-height: 1.65; }
+:lang(ar) .mm__text, :lang(ar) .mm__note { line-height: 1.55; }
+:lang(ar) .mm__name { font-size: 16px; font-weight: 600; line-height: 1.35; }
+:lang(ar) .mm .mm__tb > *, :lang(ar) .mm .mm__rk, :lang(ar) .mm .mm__glabel, :lang(ar) .mm .mm__ports { font-size: 12.5px; }
+:lang(ar) .mm__inds a { font-size: 14.5px; }

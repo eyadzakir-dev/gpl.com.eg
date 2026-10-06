@@ -85,7 +85,99 @@
       <span class="hdr__word">Green Point<br>Logistics</span>
     </a>
     <nav class="hdr__nav" aria-label="Primary">
-        <a href="../services" data-nav="services" aria-current="true">Services</a>
+        <!-- Services mega menu: site.js loads megamenu.css/.js on wide hover screens; the panel stays hidden until then. Preview images load from data-src on first open. -->
+        <div class="hdr__mm" data-megamenu>
+          <a href="../services" data-nav="services" aria-current="true">Services</a>
+          <button class="hdr__mm-btn" type="button" aria-expanded="false" aria-controls="megamenu" aria-label="Services menu"><svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4"/></svg></button>
+          <div class="mm" id="megamenu" role="region" aria-label="Services menu" hidden>
+            <div class="mm__in wrap">
+              <div class="mm__intro">
+                <p class="mm__glabel mm__label mono">Services · 08</p>
+                <p class="mm__title">One partner for freight and clearance<span class="dot">.</span></p>
+                <p class="mm__lead">Eight services that fit together, from your supplier’s door to your customer’s.</p>
+                <a class="link-arrow mono mm__all" href="../services" data-mm-key="gpl">All services <span aria-hidden="true">→</span></a>
+                <div class="mm__actions">
+                  <a class="btn btn--green" href="../quote">Request a Quote <span aria-hidden="true">→</span></a>
+                  <a class="btn btn--line" href="../track-your-shipment/">Track Shipment <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+              <div class="mm__groups">
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g1">Freight</p>
+                  <ul class="mm__list" aria-labelledby="mm-g1">
+                    <li><a class="mm__item" href="../sea-freight/" data-nav="sea-freight/" data-mm-key="sea" data-mm-fig="S/01" data-mm-detail="FCL · LCL · Consolidation"><span class="mm__ico mm__ico--sea" aria-hidden="true"></span><span class="mm__name">Sea <span class="mm__nb">freight&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/01</span><span class="mm__text">FCL, LCL and consolidation; booking, documents and <span class="mm__nb">cross-border</span> shipping.</span></a></li>
+                    <li><a class="mm__item" href="../air-freight/" data-nav="air-freight/" data-mm-key="air" data-mm-fig="S/02" data-mm-detail="Airport to airport · Door to door"><span class="mm__ico mm__ico--air" aria-hidden="true"></span><span class="mm__name">Air <span class="mm__nb">freight&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/02</span><span class="mm__text"><span class="mm__nb">Airport-to-airport</span> or <span class="mm__nb">door-to-door</span> air cargo, import and export.</span></a></li>
+                    <li><a class="mm__item" href="../roro-services/" data-nav="roro-services/" data-mm-key="roro" data-mm-fig="S/07" data-mm-detail="Vehicles · Machinery · Wheeled cargo"><span class="mm__ico mm__ico--roro" aria-hidden="true"></span><span class="mm__name"><span class="mm__nb">RORO&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/07</span><span class="mm__text">Vehicles, machinery and wheeled cargo by <span class="mm__nb">roll-on/roll-off</span> vessel.</span></a></li>
+                  </ul>
+                </div>
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g2">Clearance</p>
+                  <ul class="mm__list" aria-labelledby="mm-g2">
+                    <li><a class="mm__item" href="../customs-clearance/" data-nav="customs-clearance/" data-mm-key="customs" data-mm-fig="S/03" data-mm-detail="Import · Export · ACI/Nafeza · Free zones"><span class="mm__ico mm__ico--customs" aria-hidden="true"></span><span class="mm__name">Customs <span class="mm__nb">clearance&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/03</span><span class="mm__text">Import and export clearance, ACI/Nafeza <span class="mm__nb">pre-registration</span>, free zones.</span></a></li>
+                  </ul>
+                  <a class="mm__note" href="../customs-clearance/#qiz"><span class="mono">Also</span> <span>QIZ consulting <span class="arr" aria-hidden="true">→</span></span></a>
+                </div>
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g3">Inland</p>
+                  <ul class="mm__list" aria-labelledby="mm-g3">
+                    <li><a class="mm__item" href="../inland-transportation/" data-nav="inland-transportation/" data-mm-key="inland" data-mm-fig="S/04" data-mm-detail="Port to door · Cross-country"><span class="mm__ico mm__ico--inland" aria-hidden="true"></span><span class="mm__name">Inland <span class="mm__nb">transportation&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/04</span><span class="mm__text"><span class="mm__nb">Port-to-door</span> container haulage and <span class="mm__nb">cross-country</span> transport.</span></a></li>
+                    <li><a class="mm__item" href="../domestic-trucking/" data-nav="domestic-trucking/" data-mm-key="trucking" data-mm-fig="S/05" data-mm-detail="FTL · LTL · Inside Egypt"><span class="mm__ico mm__ico--trucking" aria-hidden="true"></span><span class="mm__name">Domestic <span class="mm__nb">trucking&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/05</span><span class="mm__text">FTL and LTL distribution inside Egypt.</span></a></li>
+                    <li><a class="mm__item" href="../last-mile-delivery/" data-nav="last-mile-delivery/" data-mm-key="last-mile" data-mm-fig="S/08" data-mm-detail="Warehouse to customer" aria-current="page"><span class="mm__ico mm__ico--last-mile" aria-hidden="true"></span><span class="mm__name">Last-mile <span class="mm__nb">delivery&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/08</span><span class="mm__text">Final delivery from our warehouse to your customer.</span></a></li>
+                  </ul>
+                </div>
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g4">Storage</p>
+                  <ul class="mm__list" aria-labelledby="mm-g4">
+                    <li><a class="mm__item" href="../warehousing/" data-nav="warehousing/" data-mm-key="warehouse" data-mm-fig="S/06" data-mm-detail="Storage · Stock control · Inventory"><span class="mm__ico mm__ico--warehouse" aria-hidden="true"></span><span class="mm__name"><span class="mm__nb">Warehousing&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true">S/06</span><span class="mm__text">Storage, stock control and inventory management.</span></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mm__side">
+                <div class="mm__preview" aria-hidden="true">
+                  <p class="mm__glabel mono">At a glance</p>
+                  <div class="mm__art">
+                    <div class="mm__gpl is-on" data-mm-art="gpl"><svg class="mm__mark" viewBox="0 0 100 100" focusable="false"><use href="#gpl-mark"/></svg></div>
+                    <img data-mm-art="sea" data-src="../assets/img/illo/vessel-container.svg" width="960" height="640" alt="">
+                    <img data-mm-art="air" data-src="../assets/img/illo/aircraft-cargo.svg" width="960" height="640" alt="">
+                    <img data-mm-art="roro" data-src="../assets/img/illo/roro-vessel.svg" width="960" height="640" alt="">
+                    <img data-mm-art="customs" data-src="../assets/img/illo/customs-docs.svg" width="960" height="640" alt="">
+                    <img data-mm-art="inland" data-src="../assets/img/illo/truck-container.svg" width="960" height="640" alt="">
+                    <img data-mm-art="trucking" data-src="../assets/img/illo/container-stack.svg" width="960" height="640" alt="">
+                    <img data-mm-art="last-mile" data-src="../assets/img/illo/last-mile-van.svg" width="960" height="640" alt="">
+                    <img data-mm-art="warehouse" data-src="../assets/img/illo/warehouse-racking.svg" width="960" height="640" alt="">
+                  </div>
+                  <div class="mm__tb">
+                    <p class="mm__tb-fig mono">Fig. <bdi data-mm-fig>00</bdi></p>
+                    <p class="mm__tb-name mono" data-mm-name>GPL / Alexandria</p>
+                    <p class="mm__tb-detail mono" data-mm-detail>Est. 2021 · Three Stars Group</p>
+                  </div>
+                </div>
+                <div class="mm__contact">
+                  <p class="mm__glabel mono">Head office · Alexandria</p>
+                  <a class="mm__tel" href="tel:+2034800912">+20 3 480 0912</a>
+                  <a class="mm__mail" href="mailto:info@gpl.com.eg">info@gpl.com.eg</a>
+                </div>
+              </div>
+              <div class="mm__strip">
+                <div class="mm__row">
+                  <p class="mm__rk mono" id="mm-ind">By industry</p>
+                  <ul class="mm__inds" aria-labelledby="mm-ind">
+                    <li><a href="../industries#garments"><span class="mm__iico mm__iico--garments" aria-hidden="true"></span>Garments and QIZ</a></li>
+                    <li><a href="../industries#food-agri"><span class="mm__iico mm__iico--food-agri" aria-hidden="true"></span>Food and agri</a></li>
+                    <li><a href="../industries#chemicals"><span class="mm__iico mm__iico--chemicals" aria-hidden="true"></span>Chemicals</a></li>
+                    <li><a href="../industries#furniture"><span class="mm__iico mm__iico--furniture" aria-hidden="true"></span>Furniture</a></li>
+                    <li><a href="../industries#engineering"><span class="mm__iico mm__iico--engineering" aria-hidden="true"></span>Engineering</a></li>
+                  </ul>
+                </div>
+                <div class="mm__row">
+                  <p class="mm__rk mono">Ports</p>
+                  <p class="mm__ports mono">Alexandria · Dekheila · Damietta · Port Said · Sokhna</p>
+                  <a class="mm__net mono" href="../network">Network <span class="arr" aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="../industries" data-nav="industries">Industries</a>
         <a href="../network" data-nav="network">Network</a>
         <a href="../about-greenpoint/" data-nav="about-greenpoint/">About</a>

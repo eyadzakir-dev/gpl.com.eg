@@ -88,7 +88,99 @@
       <span class="hdr__word" lang="en" dir="ltr">Green Point<br>Logistics</span>
     </a>
     <nav class="hdr__nav" aria-label="القائمة الرئيسية">
-        <a href="../../ar/services" data-nav="services" aria-current="true">الخدمات</a>
+        <!-- Services mega menu: site.js loads megamenu.css/.js on wide hover screens; the panel stays hidden until then. Preview images load from data-src on first open. -->
+        <div class="hdr__mm" data-megamenu>
+          <a href="../../ar/services" data-nav="services" aria-current="true">الخدمات</a>
+          <button class="hdr__mm-btn" type="button" aria-expanded="false" aria-controls="megamenu" aria-label="قائمة الخدمات"><svg viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4"/></svg></button>
+          <div class="mm" id="megamenu" role="region" aria-label="قائمة الخدمات" hidden>
+            <div class="mm__in wrap">
+              <div class="mm__intro">
+                <p class="mm__glabel mm__label mono">الخدمات · <bdi>08</bdi></p>
+                <p class="mm__title">شريك واحد للشحن والتخليص<span class="dot">.</span></p>
+                <p class="mm__lead">ثماني خدمات متكاملة، من باب المورد إلى باب عميلك.</p>
+                <a class="link-arrow mono mm__all" href="../../ar/services" data-mm-key="gpl">كل الخدمات <span aria-hidden="true">→</span></a>
+                <div class="mm__actions">
+                  <a class="btn btn--green" href="../../ar/quote">اطلب عرض سعر <span aria-hidden="true">→</span></a>
+                  <a class="btn btn--line" href="../../ar/track-your-shipment/">تتبّع الشحنة <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+              <div class="mm__groups">
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g1">الشحن</p>
+                  <ul class="mm__list" aria-labelledby="mm-g1">
+                    <li><a class="mm__item" href="../../ar/sea-freight/" data-nav="sea-freight/" data-mm-key="sea" data-mm-fig="S/01" data-mm-detail="حاويات كاملة · شحن جزئي · تجميع الشحنات"><span class="mm__ico mm__ico--sea" aria-hidden="true"></span><span class="mm__name">الشحن <span class="mm__nb">البحري&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/01</bdi></span><span class="mm__text">حاويات كاملة (<bdi lang="en">FCL</bdi>) وشحن جزئي (<bdi lang="en">LCL</bdi>) وتجميع الشحنات، مع الحجز والمستندات والشحن عبر الحدود.</span></a></li>
+                    <li><a class="mm__item" href="../../ar/air-freight/" data-nav="air-freight/" data-mm-key="air" data-mm-fig="S/02" data-mm-detail="من مطار إلى مطار · من الباب إلى الباب"><span class="mm__ico mm__ico--air" aria-hidden="true"></span><span class="mm__name">الشحن <span class="mm__nb">الجوي&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/02</bdi></span><span class="mm__text">شحن جوي من مطار إلى مطار أو من الباب إلى الباب، للاستيراد والتصدير.</span></a></li>
+                    <li><a class="mm__item" href="../../ar/roro-services/" data-nav="roro-services/" data-mm-key="roro" data-mm-fig="S/07" data-mm-detail="سيارات · ماكينات · بضائع ذات عجلات"><span class="mm__ico mm__ico--roro" aria-hidden="true"></span><span class="mm__name">خدمات الدحرجة <span class="mm__nb">(<bdi lang="en">RORO</bdi>)&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/07</bdi></span><span class="mm__text">السيارات والماكينات والبضائع ذات العجلات على سفن الدحرجة.</span></a></li>
+                  </ul>
+                </div>
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g2">التخليص</p>
+                  <ul class="mm__list" aria-labelledby="mm-g2">
+                    <li><a class="mm__item" href="../../ar/customs-clearance/" data-nav="customs-clearance/" data-mm-key="customs" data-mm-fig="S/03" data-mm-detail="استيراد · تصدير · نافذة · المناطق الحرة"><span class="mm__ico mm__ico--customs" aria-hidden="true"></span><span class="mm__name">التخليص <span class="mm__nb">الجمركي&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/03</bdi></span><span class="mm__text">تخليص الواردات والصادرات، والتسجيل المسبق في نظام <bdi lang="en">ACI</bdi> على منصة نافذة، والمناطق الحرة.</span></a></li>
+                  </ul>
+                  <a class="mm__note" href="../../ar/customs-clearance/#qiz"><span class="mono">أيضًا</span> <span>استشارات الكويز (<bdi lang="en">QIZ</bdi>) <span class="arr" aria-hidden="true">→</span></span></a>
+                </div>
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g3">النقل البري</p>
+                  <ul class="mm__list" aria-labelledby="mm-g3">
+                    <li><a class="mm__item" href="../../ar/inland-transportation/" data-nav="inland-transportation/" data-mm-key="inland" data-mm-fig="S/04" data-mm-detail="من الميناء إلى الباب · بين المحافظات"><span class="mm__ico mm__ico--inland" aria-hidden="true"></span><span class="mm__name">النقل <span class="mm__nb">الداخلي&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/04</bdi></span><span class="mm__text">نقل الحاويات من الميناء إلى الباب، والنقل بين المحافظات.</span></a></li>
+                    <li><a class="mm__item" href="../../ar/domestic-trucking/" data-nav="domestic-trucking/" data-mm-key="trucking" data-mm-fig="S/05" data-mm-detail="حمولة كاملة · حمولة جزئية · داخل مصر" aria-current="page"><span class="mm__ico mm__ico--trucking" aria-hidden="true"></span><span class="mm__name">النقل بالشاحنات داخل <span class="mm__nb">مصر&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/05</bdi></span><span class="mm__text">توزيع بحمولة شاحنة كاملة (<bdi lang="en">FTL</bdi>) أو حمولة جزئية (<bdi lang="en">LTL</bdi>) داخل مصر.</span></a></li>
+                    <li><a class="mm__item" href="../../ar/last-mile-delivery/" data-nav="last-mile-delivery/" data-mm-key="last-mile" data-mm-fig="S/08" data-mm-detail="من المستودع إلى العميل"><span class="mm__ico mm__ico--last-mile" aria-hidden="true"></span><span class="mm__name">التوصيل للميل <span class="mm__nb">الأخير&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/08</bdi></span><span class="mm__text">التوصيل النهائي من مستودعنا إلى عميلك.</span></a></li>
+                  </ul>
+                </div>
+                <div class="mm__group">
+                  <p class="mm__glabel mono" id="mm-g4">التخزين</p>
+                  <ul class="mm__list" aria-labelledby="mm-g4">
+                    <li><a class="mm__item" href="../../ar/warehousing/" data-nav="warehousing/" data-mm-key="warehouse" data-mm-fig="S/06" data-mm-detail="تخزين · مراقبة المخزون · إدارة المخزون"><span class="mm__ico mm__ico--warehouse" aria-hidden="true"></span><span class="mm__name">التخزين <span class="mm__nb">والمستودعات&nbsp;<span class="mm__go arr" aria-hidden="true">→</span></span></span><span class="mm__no mono" aria-hidden="true"><bdi>S/06</bdi></span><span class="mm__text">التخزين ومراقبة المخزون وإدارته.</span></a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mm__side">
+                <div class="mm__preview" aria-hidden="true">
+                  <p class="mm__glabel mono">نظرة سريعة</p>
+                  <div class="mm__art">
+                    <div class="mm__gpl is-on" data-mm-art="gpl"><svg class="mm__mark" viewBox="0 0 100 100" focusable="false"><use href="#gpl-mark"/></svg></div>
+                    <img data-mm-art="sea" data-src="../../assets/img/illo/vessel-container.svg" width="960" height="640" alt="">
+                    <img data-mm-art="air" data-src="../../assets/img/illo/aircraft-cargo.svg" width="960" height="640" alt="">
+                    <img data-mm-art="roro" data-src="../../assets/img/illo/roro-vessel.svg" width="960" height="640" alt="">
+                    <img data-mm-art="customs" data-src="../../assets/img/illo/customs-docs.svg" width="960" height="640" alt="">
+                    <img data-mm-art="inland" data-src="../../assets/img/illo/truck-container.svg" width="960" height="640" alt="">
+                    <img data-mm-art="trucking" data-src="../../assets/img/illo/container-stack.svg" width="960" height="640" alt="">
+                    <img data-mm-art="last-mile" data-src="../../assets/img/illo/last-mile-van.svg" width="960" height="640" alt="">
+                    <img data-mm-art="warehouse" data-src="../../assets/img/illo/warehouse-racking.svg" width="960" height="640" alt="">
+                  </div>
+                  <div class="mm__tb">
+                    <p class="mm__tb-fig mono">شكل <bdi data-mm-fig>00</bdi></p>
+                    <p class="mm__tb-name mono" data-mm-name><bdi lang="en">GPL</bdi> / الإسكندرية</p>
+                    <p class="mm__tb-detail mono" data-mm-detail>تأسست <bdi>2021</bdi> · مجموعة ثري ستارز</p>
+                  </div>
+                </div>
+                <div class="mm__contact">
+                  <p class="mm__glabel mono">المقر الرئيسي · الإسكندرية</p>
+                  <a class="mm__tel" href="tel:+2034800912" dir="ltr">+20 3 480 0912</a>
+                  <a class="mm__mail" href="mailto:info@gpl.com.eg" dir="ltr">info@gpl.com.eg</a>
+                </div>
+              </div>
+              <div class="mm__strip">
+                <div class="mm__row">
+                  <p class="mm__rk mono" id="mm-ind">حسب القطاع</p>
+                  <ul class="mm__inds" aria-labelledby="mm-ind">
+                    <li><a href="../../ar/industries#garments"><span class="mm__iico mm__iico--garments" aria-hidden="true"></span>الملابس الجاهزة والكويز</a></li>
+                    <li><a href="../../ar/industries#food-agri"><span class="mm__iico mm__iico--food-agri" aria-hidden="true"></span>الأغذية والزراعة</a></li>
+                    <li><a href="../../ar/industries#chemicals"><span class="mm__iico mm__iico--chemicals" aria-hidden="true"></span>الكيماويات</a></li>
+                    <li><a href="../../ar/industries#furniture"><span class="mm__iico mm__iico--furniture" aria-hidden="true"></span>الأثاث</a></li>
+                    <li><a href="../../ar/industries#engineering"><span class="mm__iico mm__iico--engineering" aria-hidden="true"></span>الصناعات الهندسية</a></li>
+                  </ul>
+                </div>
+                <div class="mm__row">
+                  <p class="mm__rk mono">الموانئ</p>
+                  <p class="mm__ports mono">الإسكندرية · الدخيلة · دمياط · بورسعيد · السخنة</p>
+                  <a class="mm__net mono" href="../../ar/network">شبكتنا <span class="arr" aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="../../ar/industries" data-nav="industries">القطاعات</a>
         <a href="../../ar/network" data-nav="network">شبكتنا</a>
         <a href="../../ar/about-greenpoint/" data-nav="about-greenpoint/">من نحن</a>

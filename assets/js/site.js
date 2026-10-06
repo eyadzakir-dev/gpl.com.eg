@@ -1,7 +1,11 @@
-// Shared behaviour for every page: header clock, mobile menu, one-shot reveals, image lightbox, lazy route globe.
+// Shared behaviour for every page: header clock, mobile menu, services mega menu loader, one-shot reveals, image
+// lightbox, lazy route globe.
 
 const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
 const DESKTOP_NAV = matchMedia("(min-width: 1181px)");
+// Same query as the toggle's CSS in site.css: the mega menu only exists on wide screens with a hover pointer.
+const MEGAMENU_MEDIA = matchMedia("(min-width: 1181px) and (hover: hover)");
+const MEGAMENU_IDLE_TIMEOUT_MS = 2000;
 const CLOCK_TICK_MS = 15000;
 const REVEAL_THRESHOLD = 0.3;
 const GLOBE_PRELOAD_MARGIN = "150% 0px";
@@ -41,6 +45,53 @@ function initMenu() {
   });
   menu.querySelectorAll(".menu__panel a").forEach((link) => link.addEventListener("click", close));
   DESKTOP_NAV.addEventListener("change", (event) => { if (event.matches) close(); });
+}
+
+/* ---------- Services mega menu: CSS + module load at idle or on first pointer/focus entry into the nav ---------- */
+
+function loadStylesheet(href) {
+  return new Promise((resolve, reject) => {
+    const link = Object.assign(document.createElement("link"), { rel: "stylesheet", href });
+    link.addEventListener("load", resolve, { once: true });
+    link.addEventListener("error", () => reject(new Error(`Could not load ${href}`)), { once: true });
+    document.head.append(link);
+  });
+}
+
+function whenIdle(callback) {
+  if ("requestIdleCallback" in window) requestIdleCallback(callback, { timeout: MEGAMENU_IDLE_TIMEOUT_MS });
+  else setTimeout(callback, MEGAMENU_IDLE_TIMEOUT_MS / 2);
+}
+
+function initMegamenuLoader() {
+  const root = document.querySelector("[data-megamenu]");
+  if (!root) return;
+  if (!MEGAMENU_MEDIA.matches) {
+    MEGAMENU_MEDIA.addEventListener("change", initMegamenuLoader, { once: true });
+    return;
+  }
+  const nav = root.closest("nav");
+  const toggle = root.querySelector("[aria-controls]");
+  let pending = null;
+  // A click on the toggle before the module is ready opens the menu once it is.
+  const openWhenReady = () => load().then((menu) => menu?.open("pinned"));
+  const load = () => {
+    pending ??= Promise.all([
+      loadStylesheet(new URL("../css/megamenu.css", import.meta.url).href),
+      import("./megamenu.js"),
+    ])
+      .then(([, { initMegamenu }]) => {
+        toggle.removeEventListener("click", openWhenReady);
+        return initMegamenu(root);
+      })
+      .catch((error) => console.warn("Services menu unavailable; the Services link still works.", error));
+    return pending;
+  };
+  toggle.addEventListener("click", openWhenReady);
+  nav.addEventListener("pointerenter", load, { once: true });
+  nav.addEventListener("focusin", load, { once: true });
+  if (document.readyState === "complete") whenIdle(load);
+  else addEventListener("load", () => whenIdle(load), { once: true });
 }
 
 function initReveal(selector) {
@@ -154,6 +205,7 @@ function initLightbox() {
 
 initHeaderClock();
 initMenu();
+initMegamenuLoader();
 initReveal(REVEAL_SELECTOR);
 initLightbox();
 initGlobes();
