@@ -41,6 +41,8 @@ BLOCK_RE = {
     for name in BLOCKS
 }
 NAV_LINK_RE = re.compile(r'<a\b[^>]*\bdata-nav="([^"]*)"[^>]*>')
+# 404.html is served at any missing URL; the preload scanner would fetch this before the page's <base> applies.
+FONT_PRELOAD_RE = re.compile(r'\n<link rel="preload"[^>]*\bas="font"[^>]*>')
 
 
 def page_info(path):
@@ -133,6 +135,8 @@ def sync_page(path, partials, check):
         if text.count("<!-- chrome:%s -->" % name) != 1 or text.count("<!-- /chrome:%s -->" % name) != 1:
             raise SystemExit("sync_chrome: %s needs exactly one <!-- chrome:%s --> ... <!-- /chrome:%s --> pair" % (rel, name, name))
         block = "\n" + render(partials[name, lang], root, home, alt, key) + "\n"
+        if name == "head" and rel == "404.html":
+            block = FONT_PRELOAD_RE.sub("", block)
         new = BLOCK_RE[name].sub(lambda m: m.group(1) + block + m.group(3), new, count=1)
     missing = [name for name in BLOCKS if name not in present]
     if missing:

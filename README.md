@@ -31,6 +31,7 @@ GitHub Pages serves `/x` from `x.html` and `/x/` from `x/index.html`. The old Wo
 | RORO | `roro-services/index.html` | `ar/roro-services/index.html` | `/roro-services/` · `/ar/roro-services/` |
 | Last-mile delivery | `last-mile-delivery/index.html` | `ar/last-mile-delivery/index.html` | `/last-mile-delivery/` · `/ar/last-mile-delivery/` |
 | Industries | `industries.html` | `ar/industries.html` | `/industries` · `/ar/industries` |
+| Network (tile sphere to trade-lane globe) | `network.html` | `ar/network.html` | `/network` · `/ar/network` |
 | About | `about-greenpoint/index.html` | `ar/about-greenpoint/index.html` | `/about-greenpoint/` · `/ar/about-greenpoint/` |
 | Request a Quote | `quote.html` | `ar/quote.html` | `/quote` · `/ar/quote` |
 | Contact | `contact-us/index.html` | `ar/contact-us/index.html` | `/contact-us/` · `/ar/contact-us/` |
@@ -61,6 +62,9 @@ assets/
   js/
     site.js               shared: header, mobile menu, clock, reveals, lightbox, globe loader
     <page>.js             page scripts (the quote form script, ...)
+    home/                 homepage modules (clearance line, strings)
+    sphere/               tile-sphere scene shared by the home hero and the network story
+                          (logo-model.js, sphere.js, story.js); three.js loads only after engagement
     globe/                Three.js routes globe, lazy-imported by site.js for [data-globe]
     vendor/               three.module.min.js + three.LICENSE
   img/
