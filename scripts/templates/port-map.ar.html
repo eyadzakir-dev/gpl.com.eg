@@ -1,0 +1,154 @@
+<!--
+  Interactive Egypt port map (component), Arabic. Paste inside a section's .wrap, after the .sec__head (and optional .sec__lead).
+
+  Load it only on pages that use it:
+    <head>:  <link rel="stylesheet" href="../../assets/css/port-map.css">         (after site.css / service.css / page CSS)
+    <body>:  <script type="module" src="../../assets/js/port-map.js"></script>    (after site.js)
+  Paths here are written for an Arabic folder page (ar/sea-freight/index.html). Arabic file pages (ar/network.html) drop one "../".
+  The module reads <html lang> for the lane labels and document.dir for the arrow keys; the map itself never mirrors.
+
+  Per-page options:
+    data-port-default="<port key>" on .pmap  Port selected on load. Keys: alexandria, dekheila, damietta, port-said, sokhna.
+                                             Missing or unknown: the first port (alexandria).
+    «ما نقدمه هنا» line in each panel        Optional. Keep the .pport__label + .pport__here pair and write one sentence about
+                                             what this page's service does at that port; delete both lines to drop it.
+    Fig. caption                             Use the page's own figure number and title.
+    .pmap__more / .pmap__fine                Optional small print under the panels.
+
+  Facts in the panels mirror port-map.en.html (egypt-logistics-context.md §2); keep them as written; add no new figures.
+  Port names are fixed: الإسكندرية · الدخيلة · دمياط · بورسعيد · السخنة. Latin codes, numbers and brand names stay in <bdi>/lang="en".
+  Without JS the static map image and all five panels show as a list.
+-->
+<div class="pmap" data-pmap data-port-default="alexandria">
+  <figure class="pmap__fig">
+    <div class="pmap__stage" data-pmap-stage>
+      <img class="pmap__img" src="../../assets/img/illo/port-map-egypt-ar.svg" width="960" height="960" loading="lazy" decoding="async" alt="خريطة موانئ مصر الرئيسية: الإسكندرية والدخيلة ودمياط وبورسعيد على البحر المتوسط، والسخنة على البحر الأحمر، مع قناة السويس والقاهرة." data-pmap-img>
+      <svg class="pmap__lanes" data-pmap-lanes aria-hidden="true" focusable="false"></svg>
+      <ul class="pmap__legend mono" aria-hidden="true">
+        <li><i class="pmap__key pmap__key--port"></i>الميناء المختار</li>
+        <li><i class="pmap__key pmap__key--lane"></i>خطوطه الملاحية الرئيسية</li>
+        <li><i class="pmap__key pmap__key--other"></i>خطوط الموانئ الأخرى</li>
+      </ul>
+      <div class="pmap__nodes" role="group" aria-label="اختر ميناءً على الخريطة" data-pmap-nodes>
+        <button class="pnode pnode--nw" type="button" data-port="alexandria" style="--x: 424.2; --y: 187.1" aria-pressed="false" aria-controls="port-alexandria"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">ALX</b><span class="pnode__name">الإسكندرية</span></span></button>
+        <button class="pnode pnode--sw" type="button" data-port="dekheila" style="--x: 419.1; --y: 191.1" aria-pressed="false" aria-controls="port-dekheila"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">DEK</b><span class="pnode__name">الدخيلة</span></span></button>
+        <button class="pnode pnode--n" type="button" data-port="damietta" style="--x: 552.1; --y: 164.9" aria-pressed="false" aria-controls="port-damietta"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">DAM</b><span class="pnode__name">دمياط</span></span></button>
+        <button class="pnode pnode--ne" type="button" data-port="port-said" style="--x: 588.6; --y: 181.6" aria-pressed="false" aria-controls="port-port-said"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">PSD</b><span class="pnode__name">بورسعيد</span></span></button>
+        <button class="pnode pnode--sw" type="button" data-port="sokhna" style="--x: 592; --y: 310.7" aria-pressed="false" aria-controls="port-sokhna"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">SOK</b><span class="pnode__name">السخنة</span></span></button>
+      </div>
+    </div>
+    <figcaption class="mono pmap__cap"><span>شكل <bdi>00</bdi> · موانئ مصر وخطوطها الملاحية الرئيسية</span><span>خطوط التجارة الرئيسية، وليست جدول إبحار</span></figcaption>
+  </figure>
+
+  <div class="pmap__side">
+    <div class="pmap__list" role="group" aria-label="اختر ميناءً" data-pmap-list>
+      <button class="pmap__item" type="button" data-port="alexandria" aria-pressed="false" aria-controls="port-alexandria"><b class="mono" dir="ltr" aria-hidden="true">ALX</b><span>الإسكندرية</span><span class="mono">المتوسط</span></button>
+      <button class="pmap__item" type="button" data-port="dekheila" aria-pressed="false" aria-controls="port-dekheila"><b class="mono" dir="ltr" aria-hidden="true">DEK</b><span>الدخيلة</span><span class="mono">المتوسط</span></button>
+      <button class="pmap__item" type="button" data-port="damietta" aria-pressed="false" aria-controls="port-damietta"><b class="mono" dir="ltr" aria-hidden="true">DAM</b><span>دمياط</span><span class="mono">المتوسط</span></button>
+      <button class="pmap__item" type="button" data-port="port-said" aria-pressed="false" aria-controls="port-port-said"><b class="mono" dir="ltr" aria-hidden="true">PSD</b><span>بورسعيد</span><span class="mono">المتوسط · القناة</span></button>
+      <button class="pmap__item" type="button" data-port="sokhna" aria-pressed="false" aria-controls="port-sokhna"><b class="mono" dir="ltr" aria-hidden="true">SOK</b><span>السخنة</span><span class="mono">البحر الأحمر</span></button>
+    </div>
+
+    <div class="pmap__panels">
+      <!-- source: egypt-logistics-context.md §2 (APA ~60% ref [23]; AICT since 2005 ref [24]; Alexandria QIZ + Borg El Arab refs [30][32]) -->
+      <article class="pport" id="port-alexandria" data-port-panel="alexandria" aria-labelledby="port-alexandria-name">
+        <header class="pport__head">
+          <p class="pport__code" dir="ltr" aria-hidden="true">ALX</p>
+          <div>
+            <h3 class="pport__name" id="port-alexandria-name">الإسكندرية</h3>
+            <p class="pport__sea mono">البحر المتوسط · <bdi>EGALY</bdi></p>
+          </div>
+        </header>
+        <p class="pport__lead">أكثر بوابات مصر حركة: تتعامل هيئة ميناء الإسكندرية، التي تدير الدخيلة أيضًا، مع نحو <bdi>60%</bdi> من التجارة الخارجية لمصر.</p>
+        <dl class="pport__facts">
+          <div><dt class="mono">المحطة</dt><dd><span lang="en" dir="ltr">Hutchison Ports AICT</span>، وتشغّل محطات الحاويات هنا منذ <bdi>2005</bdi></dd></div>
+          <div><dt class="mono">النطاق المخدوم</dt><dd>منطقة الكويز بالإسكندرية وبرج العرب، من أهم مناطق مصانع الملابس في مصر</dd></div>
+          <div><dt class="mono">الخطوط الرئيسية</dt><dd>أوروبا والبحر المتوسط · الساحل الشرقي الأمريكي عبر جبل طارق</dd></div>
+        </dl>
+        <p class="pport__label mono">ما نقدمه هنا</p>
+        <p class="pport__here">TODO(copy): جملة واحدة لهذه الصفحة.</p>
+      </article>
+
+      <!-- source: egypt-logistics-context.md §2 (APA runs Dekheila ref [23]; AICT ref [24]) -->
+      <article class="pport" id="port-dekheila" data-port-panel="dekheila" aria-labelledby="port-dekheila-name">
+        <header class="pport__head">
+          <p class="pport__code" dir="ltr" aria-hidden="true">DEK</p>
+          <div>
+            <h3 class="pport__name" id="port-dekheila-name">الدخيلة</h3>
+            <p class="pport__sea mono">البحر المتوسط · <bdi>EGEDK</bdi></p>
+          </div>
+        </header>
+        <p class="pport__lead">الميناء الثاني للإسكندرية، غرب المدينة، وتديره هيئة الميناء نفسها.</p>
+        <dl class="pport__facts">
+          <div><dt class="mono">المحطة</dt><dd>محطة حاويات <span lang="en" dir="ltr">Hutchison Ports AICT</span></dd></div>
+          <div><dt class="mono">النطاق المخدوم</dt><dd>النطاق نفسه الذي يخدمه ميناء الإسكندرية: منطقة الكويز بالإسكندرية وبرج العرب</dd></div>
+          <div><dt class="mono">الخطوط الرئيسية</dt><dd>أوروبا والبحر المتوسط · الساحل الشرقي الأمريكي عبر جبل طارق</dd></div>
+        </dl>
+        <p class="pport__label mono">ما نقدمه هنا</p>
+        <p class="pport__here">TODO(copy): جملة واحدة لهذه الصفحة.</p>
+      </article>
+
+      <!-- source: egypt-logistics-context.md §2 (DACT 14 Feb 2026, 18 m, 3.3 m TEU ref [28]; Middle Delta QIZ, Dakahleya refs [30][32]) -->
+      <article class="pport" id="port-damietta" data-port-panel="damietta" aria-labelledby="port-damietta-name">
+        <header class="pport__head">
+          <p class="pport__code" dir="ltr" aria-hidden="true">DAM</p>
+          <div>
+            <h3 class="pport__name" id="port-damietta-name">دمياط</h3>
+            <p class="pport__sea mono">البحر المتوسط · <bdi>EGDAM</bdi></p>
+          </div>
+        </header>
+        <p class="pport__lead">ميناء الحاويات لمنطقة دلتا النيل، وبه محطة الحاويات الجديدة <bdi>DACT</bdi> العاملة منذ فبراير <bdi>2026</bdi>.</p>
+        <dl class="pport__facts">
+          <div><dt class="mono">المحطة</dt><dd><bdi>DACT</bdi> (<span lang="en" dir="ltr">Hapag-Lloyd</span> و<span lang="en" dir="ltr">Eurogate</span> و<span lang="en" dir="ltr">Contship</span>): عمق مياه <bdi>18</bdi> مترًا، وطاقة <bdi>3.3</bdi> مليون حاوية مكافئة (<bdi>TEU</bdi>) عند اكتمال الإنشاء</dd></div>
+          <div><dt class="mono">النطاق المخدوم</dt><dd>منطقة الكويز بوسط الدلتا وتجمّع صناعة التريكو في الدقهلية</dd></div>
+          <div><dt class="mono">الخطوط الرئيسية</dt><dd>أوروبا وشرق البحر المتوسط</dd></div>
+        </dl>
+        <p class="pport__label mono">ما نقدمه هنا</p>
+        <p class="pport__here">TODO(copy): جملة واحدة لهذه الصفحة.</p>
+      </article>
+
+      <!-- source: egypt-logistics-context.md §2 (East Port Said, Maersk terminal ref [26]; West Port Said containers, general cargo, RoRo, 900,000 TEU ref [27]; Suez Canal QIZ ref [32]) -->
+      <article class="pport" id="port-port-said" data-port-panel="port-said" aria-labelledby="port-port-said-name">
+        <header class="pport__head">
+          <p class="pport__code" dir="ltr" aria-hidden="true">PSD</p>
+          <div>
+            <h3 class="pport__name" id="port-port-said-name">بورسعيد</h3>
+            <p class="pport__sea mono">البحر المتوسط · قناة السويس · <bdi>EGPSD</bdi></p>
+          </div>
+        </header>
+        <p class="pport__lead">ميناءان عند المدخل الشمالي لقناة السويس.</p>
+        <dl class="pport__facts">
+          <div><dt class="mono">شرق بورسعيد</dt><dd>ميناء محوري للمسافنة، به محطة حاويات تديرها <span lang="en" dir="ltr">AP Moller-Maersk</span></dd></div>
+          <div><dt class="mono">غرب بورسعيد</dt><dd>ميناء متعدد الأغراض: حاويات وبضائع عامة وسفن دحرجة (<bdi>RORO</bdi>)، بطاقة تصل إلى <bdi>900,000</bdi> حاوية مكافئة سنويًا</dd></div>
+          <div><dt class="mono">النطاق المخدوم</dt><dd>منطقة الكويز بقناة السويس ومحافظة بورسعيد</dd></div>
+          <div><dt class="mono">الخطوط الرئيسية</dt><dd>أوروبا · الخليج وآسيا عبر قناة السويس</dd></div>
+        </dl>
+        <p class="pport__label mono">ما نقدمه هنا</p>
+        <p class="pport__here">TODO(copy): جملة واحدة لهذه الصفحة.</p>
+      </article>
+
+      <!-- source: egypt-logistics-context.md §2 (SCZone, DP World CT1/CT2 ref [25]; hinterland per table). "Closest to Greater Cairo": geography. -->
+      <article class="pport" id="port-sokhna" data-port-panel="sokhna" aria-labelledby="port-sokhna-name">
+        <header class="pport__head">
+          <p class="pport__code" dir="ltr" aria-hidden="true">SOK</p>
+          <div>
+            <h3 class="pport__name" id="port-sokhna-name">السخنة</h3>
+            <p class="pport__sea mono">البحر الأحمر · خليج السويس · <bdi>EGSOK</bdi></p>
+          </div>
+        </header>
+        <p class="pport__lead">بوابة مصر الرئيسية إلى الخليج وشرق أفريقيا وآسيا، وأقرب الموانئ الخمسة إلى القاهرة الكبرى.</p>
+        <dl class="pport__facts">
+          <div><dt class="mono">المحطة</dt><dd>تدير <span lang="en" dir="ltr">DP World</span> الحوضين <bdi>1</bdi> و<bdi>2</bdi>، وتستوعب المحطتان <bdi>CT1</bdi> و<bdi>CT2</bdi> نحو <bdi>1.1</bdi> و<bdi>1.8</bdi> مليون حاوية مكافئة</dd></div>
+          <div><dt class="mono">النطاق المخدوم</dt><dd>العاشر من رمضان والعبور وبدر والقاهرة الكبرى</dd></div>
+          <div><dt class="mono">الخطوط الرئيسية</dt><dd>الخليج وشرق أفريقيا وآسيا عبر البحر الأحمر، دون المرور بالقناة</dd></div>
+        </dl>
+        <p class="pport__label mono">ما نقدمه هنا</p>
+        <p class="pport__here">TODO(copy): جملة واحدة لهذه الصفحة.</p>
+      </article>
+    </div>
+
+    <p class="pmap__more">موانئ مصرية أخرى عند الطلب.</p>
+    <!-- source: egypt-logistics-context.md §4 (routings change voyage by voyage) -->
+    <p class="pmap__fine mono">مصادر بيانات الموانئ: هيئات الموانئ ومشغلو المحطات. قد تتغير مسارات البحر الأحمر وقناة السويس من رحلة إلى أخرى، لذلك نؤكد المسار مع كل حجز.</p>
+  </div>
+</div>

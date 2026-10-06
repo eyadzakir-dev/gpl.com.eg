@@ -201,22 +201,9 @@
 }
 
 /* ---------- 02 · Five ports ---------- */
-.nw-ports__list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 var(--gut); border-top: 1px solid var(--ink); }
-.nw-port { display: flex; flex-direction: column; gap: 8px; padding-block: 18px 24px; }
-.nw-port__code { color: var(--green-ink); }
-.nw-port__name { font-size: clamp(26px, 2.3vw, 34px); font-weight: 800; font-stretch: 82%; line-height: 0.95; letter-spacing: -0.03em; }
-.nw-port__sea { color: var(--ink-2); font-size: 11px; }
-.nw-port__text { margin-top: 6px; font-size: 15.5px; line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
 .nw-ports__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--ink); }
 .nw-ports__fine { max-width: 52em; color: var(--ink-2); font-size: 11px; line-height: 1.5; text-transform: none; letter-spacing: 0.02em; }
 .nw-ports__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
-@media (max-width: 1180px) {
-  .nw-ports__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-@media (max-width: 899px) {
-  .nw-ports__list { grid-template-columns: 1fr; }
-  .nw-port { padding-block: 16px 18px; border-bottom: 1px solid var(--rule); }
-}
 
 /* ---------- 03 · CTA ---------- */
 .nw-cta__fine { position: relative; z-index: 1; grid-column: 1 / 9; color: var(--paper-dim); }
@@ -228,6 +215,6 @@
 
 /* Arabic line spacing: the Latin display line-height makes Arabic lines overlap */
 :lang(ar) .nw-hero .ts-hero__word { line-height: 1.16; }
-:lang(ar) :is(.ts-ch__title, .nw-port__name) { line-height: 1.3; }
-:lang(ar) :is(.ts-ch__text, .nw-port__text) { line-height: 1.75; }
+:lang(ar) .ts-ch__title { line-height: 1.3; }
+:lang(ar) .ts-ch__text { line-height: 1.75; }
 .ts-pin__tag span:not([dir="ltr"]):lang(ar) { font-family: var(--f-label); }

@@ -1,0 +1,241 @@
+/* Interactive Egypt port map (component). Markup: scripts/templates/port-map.{en,ar}.html; behaviour: assets/js/port-map.js.
+   States on .pmap: is-live (selector ready), is-inline (map SVG inlined, lanes drawn), is-drawn (lanes animated in),
+   is-fallback (inline failed: image + list). Without JS (no html.js) the whole map and every panel show as a list.
+   The map is a drawing in map space: it never mirrors in RTL; the page layout around it does. */
+
+.pmap {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 28px;
+  align-items: start;
+}
+.pmap__fig { grid-column: 1 / 9; }
+.pmap__side { grid-column: 9 / 13; display: flex; flex-direction: column; gap: 20px; }
+
+/* ---------- Stage: a crop of the 960×960 map (--vx/--vy/--vw/--vh in map units) ---------- */
+.pmap__stage {
+  --vx: 236; --vy: 44; --vw: 660; --vh: 500;
+  position: relative;
+  direction: ltr;
+  aspect-ratio: var(--vw) / var(--vh);
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: var(--paper-hi);
+}
+html:not(.js) .pmap__stage { --vx: 0; --vy: 0; --vw: 960; --vh: 960; }
+.pmap__img, .pmap__lanes {
+  position: absolute;
+  left: calc(var(--vx) / var(--vw) * -100%);
+  top: calc(var(--vy) / var(--vh) * -100%);
+  width: calc(960 / var(--vw) * 100%);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1;
+}
+.pmap__lanes { overflow: visible; pointer-events: none; }
+.pmap__cap { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; color: var(--ink-2); font-size: 11px; }
+
+.pmap__legend {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 1px solid var(--ink);
+  background: var(--paper-hi);
+  color: var(--ink-2);
+  font-size: 10.5px;
+  pointer-events: none;
+}
+.pmap__legend li { display: flex; align-items: center; gap: 8px; }
+.pmap__legend i { flex: none; display: inline-block; }
+.pmap__key--port { width: 11px; height: 11px; border: 2px solid var(--ink); border-radius: 50%; background: var(--lime); }
+.pmap__key--lane { width: 22px; height: 3px; background: var(--green); }
+.pmap__key--other { width: 22px; height: 0; border-top: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent); }
+
+/* ---------- Lanes and ships (SVG drawn by port-map.js) ---------- */
+.lane__base, .lane__flow { fill: none; vector-effect: non-scaling-stroke; stroke-linecap: round; stroke-linejoin: round; }
+.lane__base { stroke: var(--ink); stroke-width: 1.5; stroke-opacity: 0.32; }
+.lane__flow { stroke: var(--ink); stroke-width: 1.5; stroke-opacity: 0; stroke-dasharray: 2 7; }
+.lane__ship { fill: var(--ink-2); opacity: 0; }
+.lane.is-on .lane__base { stroke: var(--green); stroke-width: 3; stroke-opacity: 1; }
+.lane.is-on .lane__flow { stroke: var(--paper-hi); stroke-opacity: 0.9; }
+.lane.is-on .lane__ship { fill: var(--forest); }
+.lane__lbl {
+  font-family: var(--f-label);
+  font-size: 8.4px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--ink-2);
+  paint-order: stroke;
+  stroke: var(--paper-hi);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.lane__lbl.is-on { fill: var(--green-ink); }
+.lane__lbl--sea { font-size: 9px; letter-spacing: 0.2em; fill: var(--ink); fill-opacity: 0.55; stroke-width: 0; }
+.lane__lbl-main { font-weight: 600; }
+:lang(ar) .lane__lbl { font-size: 10.5px; letter-spacing: 0; text-transform: none; }
+:lang(ar) .lane__lbl--sea { font-size: 12px; }
+.motion .pmap.is-inline .lane__base { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.motion .pmap.is-drawn .lane__base { stroke-dashoffset: 0; transition: stroke-dashoffset 1.8s var(--ease-out), stroke 0.3s, stroke-width 0.3s; }
+.motion .pmap.is-drawn .lane.is-on .lane__flow { animation: pmap-flow 1.2s linear infinite; }
+@keyframes pmap-flow { to { stroke-dashoffset: -9; } }
+
+/* ---------- Port chips on the map (positioned in map units) ---------- */
+.pmap__nodes { position: absolute; inset: 0; }
+.pnode {
+  --lead: 30px;
+  position: absolute;
+  left: calc((var(--x) - var(--vx)) / var(--vw) * 100%);
+  top: calc((var(--y) - var(--vy)) / var(--vh) * 100%);
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+.pnode[data-port="alexandria"] { --lead: 46px; }
+.pnode[data-port="dekheila"] { --lead: 40px; }
+.pnode[data-port="damietta"] { --lead: 58px; }
+.pnode[data-port="sokhna"] { --lead: 26px; }
+.pnode:focus-visible { outline: 0; }
+.pnode::after { content: ""; position: absolute; left: 6.5px; width: 1px; height: var(--lead); background: var(--ink); }
+.pnode--n::after, .pnode--nw::after, .pnode--ne::after { bottom: 7px; }
+.pnode--s::after, .pnode--sw::after, .pnode--se::after { top: 7px; }
+.pnode__dot {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper-hi);
+  transition: background-color 0.2s, transform 0.2s;
+}
+.pnode__lbl {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 10px 7px;
+  border: 1px solid var(--ink);
+  background: var(--paper-hi);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 650;
+  font-stretch: 90%;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+}
+.pnode__lbl b { font: 500 11px/1 var(--f-mono); letter-spacing: 0.08em; color: var(--green-ink); }
+[dir="rtl"] :is(.pnode__lbl, .pmap__legend) { direction: rtl; }
+:lang(ar) .pnode__lbl { padding-block: 4px 5px; font-size: 15px; font-weight: 600; line-height: 1.35; }
+.pnode--n .pnode__lbl { left: 7px; bottom: calc(var(--lead) + 7px); transform: translateX(-50%); }
+.pnode--nw .pnode__lbl { right: -7px; bottom: calc(var(--lead) + 7px); }
+.pnode--ne .pnode__lbl { left: -7px; bottom: calc(var(--lead) + 7px); }
+.pnode--sw .pnode__lbl { right: -7px; top: calc(var(--lead) + 7px); }
+.pnode--se .pnode__lbl { left: -7px; top: calc(var(--lead) + 7px); }
+.pnode:hover .pnode__lbl { background: var(--paper); border-color: var(--green-ink); }
+.motion .pnode:hover .pnode__dot { transform: scale(1.2); }
+.pnode:focus-visible .pnode__lbl { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+.pnode[aria-pressed="true"] { z-index: 3; }
+.pnode[aria-pressed="true"] .pnode__lbl { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pnode[aria-pressed="true"] .pnode__lbl b { color: var(--lime); }
+.pnode[aria-pressed="true"] .pnode__dot { background: var(--lime); box-shadow: 0 0 0 5px color-mix(in srgb, var(--lime) 35%, transparent); }
+
+/* ---------- States ---------- */
+.pmap:not(.is-inline) :is(.pmap__nodes, .pmap__legend) { visibility: hidden; }
+.pmap:not(.is-live) :is(.pmap__nodes, .pmap__legend, .pmap__list) { display: none; }
+.pmap__list { display: none; }
+.pmap.is-fallback .pmap__list { display: grid; align-content: start; border-top: 1px solid var(--ink); }
+.js .pmap__panels { display: grid; }
+.js .pport { grid-area: 1 / 1; }
+.js .pport:not(.is-active) { visibility: hidden; }
+html:not(.js) .pport + .pport { margin-top: 40px; }
+.motion .pmap.is-live .pport.is-active { animation: pmap-panel-in 0.45s var(--ease-out); }
+@keyframes pmap-panel-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- Port panels ---------- */
+.pport { padding-top: 18px; border-top: 3px solid var(--ink); }
+.pport__head { display: flex; align-items: center; gap: 16px; }
+.pport__code { flex: none; padding: 8px 10px; background: var(--ink); color: var(--paper); font: 700 30px/1 var(--f-latin); font-stretch: 85%; letter-spacing: 0.14em; }
+.pport__name { font-size: clamp(30px, 2.6vw, 40px); font-weight: 800; font-stretch: 80%; line-height: 0.95; letter-spacing: -0.03em; }
+.pport__sea { margin-top: 6px; color: var(--green-ink); }
+.pport__lead { margin-top: 18px; font-size: 19px; line-height: 1.4; text-wrap: pretty; }
+.pport__facts { margin-top: 18px; border-top: 1px solid var(--ink); }
+.pport__facts > div { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 2fr); gap: 12px; padding-block: 10px 11px; border-bottom: 1px solid var(--rule); }
+.pport__facts dt { padding-top: 2px; color: var(--ink-2); font-size: 11px; }
+.pport__facts dd { font-size: 15px; line-height: 1.4; }
+.pport__label { margin-top: 18px; color: var(--ink-2); font-size: 11px; }
+.pport__here { margin-top: 6px; padding-inline-start: 14px; border-inline-start: 3px solid var(--green); font-size: 15.5px; line-height: 1.45; text-wrap: pretty; }
+:lang(ar) .pport__name { line-height: 1.3; }
+:lang(ar) .pport__lead { line-height: 1.75; }
+:lang(ar) :is(.pport__facts dd, .pport__here) { line-height: 1.7; }
+:lang(ar) .pport [lang="en"] { white-space: nowrap; }
+
+.pmap__more { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.pmap__more a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.pmap__fine { color: var(--ink-2); font-size: 11px; line-height: 1.5; text-transform: none; letter-spacing: 0.02em; }
+:lang(ar) .pmap__more { line-height: 1.75; }
+
+/* ---------- Port list (tappable on narrow screens) ---------- */
+.pmap__item {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 13px 12px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: none;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 650;
+  font-stretch: 90%;
+}
+.pmap__item b { color: var(--green-ink); }
+.pmap__item span.mono { color: var(--ink-2); font-size: 11px; }
+.pmap__item:hover { background: var(--paper-hi); }
+.pmap__item:focus-visible { outline: 3px solid var(--green-ink); outline-offset: -3px; }
+.pmap__item[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.pmap__item[aria-pressed="true"] b { color: var(--lime); }
+.pmap__item[aria-pressed="true"] span.mono { color: var(--paper-dim); }
+:lang(ar) .pmap__item { font-weight: 600; line-height: 1.4; }
+
+@media (max-width: 1180px) {
+  .pmap__fig { grid-column: 1 / -1; }
+  .pmap__side { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); column-gap: var(--gut); row-gap: 20px; }
+  .pmap.is-live .pmap__list { display: grid; align-content: start; border-top: 1px solid var(--ink); }
+  html:not(.js) .pmap__panels { grid-column: 1 / -1; }
+  :is(.pmap__more, .pmap__fine) { grid-column: 1 / -1; }
+}
+@media (max-width: 899px) {
+  .pmap__stage { --vx: 330; --vy: 60; --vw: 380; --vh: 430; margin-inline: calc(var(--pad) * -1); border-inline: 0; }
+  html:not(.js) .pmap__stage { --vx: 0; --vy: 0; --vw: 960; --vh: 960; }
+  .pmap__cap { flex-direction: column; gap: 2px; }
+  .pmap__legend { display: none; }
+  .pmap__side { display: flex; }
+  .pnode__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .pnode__lbl { padding: 5px 7px; }
+  :lang(ar) .pnode__lbl { padding: 5px 7px; line-height: 1; }
+  .pnode[data-port="alexandria"], .pnode[data-port="dekheila"], .pnode[data-port="damietta"] { --lead: 26px; }
+  .pnode--ne::after { display: none; }
+  .pnode--ne .pnode__lbl { left: 19px; bottom: auto; top: -5px; }
+  .lane__lbl { font-size: 11.5px; }
+  :lang(ar) .lane__lbl { font-size: 13px; }
+  .pport__facts > div { grid-template-columns: 1fr; gap: 4px; }
+}

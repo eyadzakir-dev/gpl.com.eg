@@ -49,6 +49,7 @@
 <link rel="stylesheet" href="../assets/css/site.css">
 <link rel="stylesheet" href="../assets/css/service.css">
 <link rel="stylesheet" href="../assets/css/svc-customs-clearance.css">
+<link rel="stylesheet" href="../assets/css/port-map.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -623,21 +624,138 @@
         <h2 class="sec__title" id="ports-title">Ports we serve.</h2>
         <p class="sec__note mono">Egypt · 5 ports</p>
       </header>
-      <div class="svc-ports__grid">
-        <figure class="illo svc-ports__map">
-          <img src="../assets/img/illo/port-map-egypt.svg" width="960" height="960" loading="lazy" alt="Map of Egypt's Mediterranean and Red Sea coasts marking Alexandria, Dekheila, Damietta, Port Said, the Suez Canal and Ain Sokhna.">
-          <figcaption class="mono"><span>Fig. 03 · Egypt's sea gateways</span><span>Not to scale</span></figcaption>
+      <!-- source: port codes from the UNECE UN/LOCODE list for Egypt (service.unece.org/trade/locode/eg.htm), as on the sea-freight page -->
+      <div class="pmap" data-pmap data-port-default="alexandria">
+        <figure class="pmap__fig">
+          <div class="pmap__stage" data-pmap-stage>
+            <img class="pmap__img" src="../assets/img/illo/port-map-egypt.svg" width="960" height="960" loading="lazy" decoding="async" alt="Map of Egypt’s main ports: Alexandria, Dekheila, Damietta and Port Said on the Mediterranean, and Ain Sokhna on the Red Sea, with the Suez Canal and Cairo." data-pmap-img>
+            <svg class="pmap__lanes" data-pmap-lanes aria-hidden="true" focusable="false"></svg>
+            <ul class="pmap__legend mono" aria-hidden="true">
+              <li><i class="pmap__key pmap__key--port"></i>Selected port</li>
+              <li><i class="pmap__key pmap__key--lane"></i>Its main trade lanes</li>
+              <li><i class="pmap__key pmap__key--other"></i>Other ports’ lanes</li>
+            </ul>
+            <div class="pmap__nodes" role="group" aria-label="Choose a port on the map" data-pmap-nodes>
+              <button class="pnode pnode--nw" type="button" data-port="alexandria" style="--x: 424.2; --y: 187.1" aria-pressed="false" aria-controls="port-alexandria"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">ALX</b><span class="pnode__name">Alexandria</span></span></button>
+              <button class="pnode pnode--sw" type="button" data-port="dekheila" style="--x: 419.1; --y: 191.1" aria-pressed="false" aria-controls="port-dekheila"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">DEK</b><span class="pnode__name">Dekheila</span></span></button>
+              <button class="pnode pnode--n" type="button" data-port="damietta" style="--x: 552.1; --y: 164.9" aria-pressed="false" aria-controls="port-damietta"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">DAM</b><span class="pnode__name">Damietta</span></span></button>
+              <button class="pnode pnode--ne" type="button" data-port="port-said" style="--x: 588.6; --y: 181.6" aria-pressed="false" aria-controls="port-port-said"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">PSD</b><span class="pnode__name">Port Said</span></span></button>
+              <button class="pnode pnode--sw" type="button" data-port="sokhna" style="--x: 592; --y: 310.7" aria-pressed="false" aria-controls="port-sokhna"><span class="pnode__dot" aria-hidden="true"></span><span class="pnode__lbl"><b dir="ltr" aria-hidden="true">SOK</b><span class="pnode__name">Sokhna</span></span></button>
+            </div>
+          </div>
+          <figcaption class="mono pmap__cap"><span>Fig. 03 · Egypt’s sea gateways</span><span>Main trade lanes, not a sailing schedule</span></figcaption>
         </figure>
-        <div class="svc-ports__side">
-          <!-- source: port codes from the UNECE UN/LOCODE list for Egypt (service.unece.org/trade/locode/eg.htm), as on the sea-freight page -->
-          <ul class="svc-ports__list">
-            <li class="svc-ports__item"><span class="svc-ports__code mono" dir="ltr">EGALY</span><span class="svc-ports__name">Alexandria</span><span class="svc-ports__note">Mediterranean</span></li>
-            <li class="svc-ports__item"><span class="svc-ports__code mono" dir="ltr">EGEDK</span><span class="svc-ports__name">Dekheila</span><span class="svc-ports__note">Mediterranean · Alexandria port area</span></li>
-            <li class="svc-ports__item"><span class="svc-ports__code mono" dir="ltr">EGDAM</span><span class="svc-ports__name">Damietta</span><span class="svc-ports__note">Mediterranean</span></li>
-            <li class="svc-ports__item"><span class="svc-ports__code mono" dir="ltr">EGPSD</span><span class="svc-ports__name">Port Said</span><span class="svc-ports__note">Mediterranean · Suez Canal</span></li>
-            <li class="svc-ports__item"><span class="svc-ports__code mono" dir="ltr">EGSOK</span><span class="svc-ports__name">Sokhna</span><span class="svc-ports__note">Red Sea</span></li>
-          </ul>
-          <p class="svc-ports__more">Other Egyptian ports and airports on request.</p>
+
+        <div class="pmap__side">
+          <div class="pmap__list" role="group" aria-label="Choose a port" data-pmap-list>
+            <button class="pmap__item" type="button" data-port="alexandria" aria-pressed="false" aria-controls="port-alexandria"><b class="mono" dir="ltr" aria-hidden="true">ALX</b><span>Alexandria</span><span class="mono">Med</span></button>
+            <button class="pmap__item" type="button" data-port="dekheila" aria-pressed="false" aria-controls="port-dekheila"><b class="mono" dir="ltr" aria-hidden="true">DEK</b><span>Dekheila</span><span class="mono">Med</span></button>
+            <button class="pmap__item" type="button" data-port="damietta" aria-pressed="false" aria-controls="port-damietta"><b class="mono" dir="ltr" aria-hidden="true">DAM</b><span>Damietta</span><span class="mono">Med</span></button>
+            <button class="pmap__item" type="button" data-port="port-said" aria-pressed="false" aria-controls="port-port-said"><b class="mono" dir="ltr" aria-hidden="true">PSD</b><span>Port Said</span><span class="mono">Med · Suez</span></button>
+            <button class="pmap__item" type="button" data-port="sokhna" aria-pressed="false" aria-controls="port-sokhna"><b class="mono" dir="ltr" aria-hidden="true">SOK</b><span>Sokhna</span><span class="mono">Red Sea</span></button>
+          </div>
+
+          <div class="pmap__panels">
+            <!-- source: egypt-logistics-context.md §2 (APA ~60% ref [23]; AICT since 2005 ref [24]; Alexandria QIZ + Borg El Arab refs [30][32]) -->
+            <article class="pport" id="port-alexandria" data-port-panel="alexandria" aria-labelledby="port-alexandria-name">
+              <header class="pport__head">
+                <p class="pport__code" dir="ltr" aria-hidden="true">ALX</p>
+                <div>
+                  <h3 class="pport__name" id="port-alexandria-name">Alexandria</h3>
+                  <p class="pport__sea mono">Mediterranean · <span dir="ltr">EGALY</span></p>
+                </div>
+              </header>
+              <p class="pport__lead">Egypt’s busiest gateway. Its port authority, which also runs Dekheila, handles about 60% of the country’s foreign trade.</p>
+              <dl class="pport__facts">
+                <div><dt class="mono">Terminal</dt><dd>Hutchison Ports AICT, running container terminals here since 2005</dd></div>
+                <div><dt class="mono">Serves</dt><dd>Alexandria QIZ and Borg El Arab, one of Egypt’s main garment-factory areas</dd></div>
+                <div><dt class="mono">Main lanes</dt><dd>Europe and the Mediterranean · US East Coast via Gibraltar</dd></div>
+              </dl>
+              <p class="pport__label mono">What we do here</p>
+              <p class="pport__here">Import and export clearance, with ACI, documents and HS codes settled before the vessel arrives.</p>
+            </article>
+
+            <!-- source: egypt-logistics-context.md §2 (APA runs Dekheila ref [23]; AICT ref [24]) -->
+            <article class="pport" id="port-dekheila" data-port-panel="dekheila" aria-labelledby="port-dekheila-name">
+              <header class="pport__head">
+                <p class="pport__code" dir="ltr" aria-hidden="true">DEK</p>
+                <div>
+                  <h3 class="pport__name" id="port-dekheila-name">Dekheila</h3>
+                  <p class="pport__sea mono">Mediterranean · <span dir="ltr">EGEDK</span></p>
+                </div>
+              </header>
+              <p class="pport__lead">Alexandria’s second harbour, west of the city, run by the same port authority.</p>
+              <dl class="pport__facts">
+                <div><dt class="mono">Terminal</dt><dd>Hutchison Ports AICT container terminal</dd></div>
+                <div><dt class="mono">Serves</dt><dd>The same hinterland as Alexandria: Alexandria QIZ and Borg El Arab</dd></div>
+                <div><dt class="mono">Main lanes</dt><dd>Europe and the Mediterranean · US East Coast via Gibraltar</dd></div>
+              </dl>
+              <p class="pport__label mono">What we do here</p>
+              <p class="pport__here">Import and export clearance, with ACI, documents and HS codes settled before the vessel arrives.</p>
+            </article>
+
+            <!-- source: egypt-logistics-context.md §2 (DACT 14 Feb 2026, 18 m, 3.3 m TEU ref [28]; Middle Delta QIZ, Dakahleya refs [30][32]) -->
+            <article class="pport" id="port-damietta" data-port-panel="damietta" aria-labelledby="port-damietta-name">
+              <header class="pport__head">
+                <p class="pport__code" dir="ltr" aria-hidden="true">DAM</p>
+                <div>
+                  <h3 class="pport__name" id="port-damietta-name">Damietta</h3>
+                  <p class="pport__sea mono">Mediterranean · <span dir="ltr">EGDAM</span></p>
+                </div>
+              </header>
+              <p class="pport__lead">Container port for the Nile Delta, with the new DACT terminal open since February 2026.</p>
+              <dl class="pport__facts">
+                <div><dt class="mono">Terminal</dt><dd>DACT (Hapag-Lloyd, Eurogate, Contship): 18 m of water, 3.3 million TEU at full build</dd></div>
+                <div><dt class="mono">Serves</dt><dd>The Middle Delta QIZ and the Dakahleya knitting cluster</dd></div>
+                <div><dt class="mono">Main lanes</dt><dd>Europe and the eastern Mediterranean</dd></div>
+              </dl>
+              <p class="pport__label mono">What we do here</p>
+              <p class="pport__here">Import and export clearance, with ACI, documents and HS codes settled before the vessel arrives.</p>
+            </article>
+
+            <!-- source: egypt-logistics-context.md §2 (East Port Said, Maersk terminal ref [26]; West Port Said containers, general cargo, RoRo, 900,000 TEU ref [27]; Suez Canal QIZ ref [32]) -->
+            <article class="pport" id="port-port-said" data-port-panel="port-said" aria-labelledby="port-port-said-name">
+              <header class="pport__head">
+                <p class="pport__code" dir="ltr" aria-hidden="true">PSD</p>
+                <div>
+                  <h3 class="pport__name" id="port-port-said-name">Port Said</h3>
+                  <p class="pport__sea mono">Mediterranean · Suez Canal · <span dir="ltr">EGPSD</span></p>
+                </div>
+              </header>
+              <p class="pport__lead">Two ports at the northern entrance of the Suez Canal.</p>
+              <dl class="pport__facts">
+                <div><dt class="mono">East Port Said</dt><dd>Transshipment hub, with a container terminal run by AP Moller-Maersk</dd></div>
+                <div><dt class="mono">West Port Said</dt><dd>Multi-purpose: containers, general cargo and RoRo, up to 900,000 TEU a year</dd></div>
+                <div><dt class="mono">Serves</dt><dd>The Suez Canal QIZ zone and Port Said governorate</dd></div>
+                <div><dt class="mono">Main lanes</dt><dd>Europe · the Gulf and Asia through the Suez Canal</dd></div>
+              </dl>
+              <p class="pport__label mono">What we do here</p>
+              <p class="pport__here">Import and export clearance, with ACI, documents and HS codes settled before the vessel arrives.</p>
+            </article>
+
+            <!-- source: egypt-logistics-context.md §2 (SCZone, DP World CT1/CT2 ref [25]; hinterland per table). "Closest to Greater Cairo": geography. -->
+            <article class="pport" id="port-sokhna" data-port-panel="sokhna" aria-labelledby="port-sokhna-name">
+              <header class="pport__head">
+                <p class="pport__code" dir="ltr" aria-hidden="true">SOK</p>
+                <div>
+                  <h3 class="pport__name" id="port-sokhna-name">Sokhna</h3>
+                  <p class="pport__sea mono">Red Sea · Gulf of Suez · <span dir="ltr">EGSOK</span></p>
+                </div>
+              </header>
+              <p class="pport__lead">Egypt’s main gateway to the Gulf, East Africa and Asia, and the closest of the five to Greater Cairo.</p>
+              <dl class="pport__facts">
+                <div><dt class="mono">Terminal</dt><dd>DP World runs basins 1–2; terminals CT1 and CT2 can handle 1.1 and 1.8 million TEU</dd></div>
+                <div><dt class="mono">Serves</dt><dd>10th of Ramadan, Obour, Badr and Greater Cairo</dd></div>
+                <div><dt class="mono">Main lanes</dt><dd>The Gulf, East Africa and Asia via the Red Sea, without a canal transit</dd></div>
+              </dl>
+              <p class="pport__label mono">What we do here</p>
+              <p class="pport__here">Import and export clearance, with ACI, documents and HS codes settled before the vessel arrives.</p>
+            </article>
+          </div>
+
+          <p class="pmap__more">Other Egyptian ports and airports on request.</p>
+          <!-- source: egypt-logistics-context.md §4 (routings change voyage by voyage) -->
+          <p class="pmap__fine mono">Port facts: port authorities and terminal operators. Red Sea and Suez routings can change voyage by voyage; we confirm the routing with every booking.</p>
         </div>
       </div>
     </div>
@@ -763,5 +881,6 @@
 </footer>
 <!-- /chrome:footer -->
 <script type="module" src="../assets/js/site.js"></script>
+<script type="module" src="../assets/js/port-map.js"></script>
 </body>
 </html>
