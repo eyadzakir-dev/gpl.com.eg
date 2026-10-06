@@ -10,9 +10,9 @@
 [dir="rtl"] .home { --dir: -1; }
 
 /* ---------- 02 Key figures ---------- */
-/* The title's globe bullet is where the hero sphere lands (home/orb-flight.js). With motion it waits hidden; home.js
-   drops data-orb-target when there is no flight, and the flight shows its .sec__globe on landing (instantly, under
-   the orb) and hides it again only once the orb is back over it. */
+/* The title's globe bullet is where the hero sphere's tiles reassemble (home/orb-flight.js). With motion it waits
+   hidden; home.js drops data-orb-target when there is no flight, and the flight shows its .sec__globe on landing
+   (instantly, under the tiles) and hides it again only once the tiles are back over it. */
 .motion [data-orb-target]::before { animation: none; opacity: 0; }
 .sec__globe.is-orb-wait { opacity: 0; transition: opacity 0s linear 0.2s; }
 

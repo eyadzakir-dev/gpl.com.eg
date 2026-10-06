@@ -65,7 +65,21 @@ function logoCentre(frame, t) {
   return [0, 1, 2].map((k) => frame.axis[k] * c + s * (frame.e1[k] * cp + frame.e2[k] * sp));
 }
 
-function buildInstances(narrow, heroOnly) {
+// Home flight: each visible logo sub-tile follows the SVG tile (slot) nearest its centre; slots are unit-disc points
+// (x right, y down). Everything else (cut, or behind the limb where the depth occluder hides it) gets -1 and stays.
+function nearestSlot(frame, t, slots) {
+  if (!t.keep || !slots.length) return -1;
+  const c = logoCentre(frame, t);
+  if (c[2] <= 0) return -1;
+  let best = -1, bestD = Infinity;
+  slots.forEach(([x, y], i) => {
+    const d = (x - c[0]) ** 2 + (y + c[1]) ** 2;
+    if (d < bestD) { bestD = d; best = i; }
+  });
+  return best;
+}
+
+function buildInstances(narrow, heroOnly, slots) {
   const { frame, tiles: sources } = logoSubTiles(SUB);
   const set = narrow ? TILE_SETS.coarse : TILE_SETS.fine;
   const land = heroOnly ? [] : landTiles(set);
@@ -89,7 +103,7 @@ function buildInstances(narrow, heroOnly) {
   const rand = mulberry(7);
   const data = {
     logo: new Float32Array(count * 4), geo: new Float32Array(count * 4),
-    time: new Float32Array(count * 4), flag: new Float32Array(count * 3),
+    time: new Float32Array(count * 4), flag: new Float32Array(count * 3), slot: new Float32Array(count).fill(-1),
   };
   pairs.forEach(([src, dst], i) => {
     const s = src.t;
@@ -104,6 +118,7 @@ function buildInstances(narrow, heroOnly) {
     const introDelay = s.front < -0.25 ? -1 : s.sweep * 0.62 + seed * 0.2;
     data.time.set([introDelay, reach * 0.58 + seed * 0.04, seed, (dst ? reach : seed) * 0.5], i * 4);
     data.flag.set([s.cut ? 1 : 0, dst?.t.egypt ? 1 : 0, dst ? 0 : 1], i * 3);
+    data.slot[i] = nearestSlot(frame, s, slots);
   });
   return { frame, data, count, nS, nT, step: set.step };
 }
@@ -120,9 +135,10 @@ function mulberry(seed) {
 
 /* ---------- Shaders ---------- */
 
-const TILE_VERTEX = /* glsl */ `
-  attribute vec4 aLogo; attribute vec4 aGeo; attribute vec4 aTime; attribute vec3 aFlag;
+const tileVertex = (slotCount) => /* glsl */ `
+  attribute vec4 aLogo; attribute vec4 aGeo; attribute vec4 aTime; attribute vec3 aFlag; attribute float aSlot;
   uniform vec3 uAxis; uniform vec3 uE1; uniform vec3 uE2; uniform mat3 uGeo;
+  uniform float uSwarm; uniform vec4 uSwarmA[${slotCount}]; uniform vec4 uSwarmB[${slotCount}];
   uniform float uSpin; uniform float uIntro; uniform float uMorph; uniform float uCut; uniform float uCollapse;
   uniform float uLift; uniform vec3 uDot; uniform vec3 uPoint;
   varying float vX; varying float vEgypt; varying float vShade;
@@ -177,6 +193,21 @@ const TILE_VERTEX = /* glsl */ `
     float kc = ease(clamp((uCollapse - aTime.w) / 0.5, 0.0, 1.0));
     vec3 cc = mix(pc, uPoint, kc);
     vec3 p = cc + (pv - pc) * (1.0 - kc);
+
+    // Home flight: a visible logo tile takes its slot's 2D affine about the slot pivot (A.zw): translate A.xy,
+    // matrix B, in front of the depth occluder. The rest (cut, or behind the limb) collapse: once the front tiles
+    // leave, their slivers at the limb would show.
+    if (uSwarm > 0.5) {
+      if (aSlot > -0.5) {
+        int k = int(aSlot + 0.5);
+        vec4 a = uSwarmA[k];
+        vec4 b = uSwarmB[k];
+        p.xy = a.zw + a.xy + mat2(b.x, b.z, b.y, b.w) * (p.xy - a.zw);
+        p.z = 1.5 + aSlot * 0.004;
+      } else {
+        p = vec3(0.0, 0.0, -5.0);
+      }
+    }
 
     vX = pc.x;
     vEgypt = aFlag.y;
@@ -404,7 +435,7 @@ function readTheme(el) {
   };
 }
 
-function createTiles(theme, built) {
+function createTiles(theme, built, slotCount) {
   const geometry = new THREE.InstancedBufferGeometry();
   geometry.setAttribute('position', new THREE.Float32BufferAttribute([1, 0, 0, 0, 1, 0, -1, 0, 0, 0, -1, 0], 3));
   geometry.setIndex([0, 1, 2, 0, 2, 3]);
@@ -412,10 +443,11 @@ function createTiles(theme, built) {
   geometry.setAttribute('aGeo', new THREE.InstancedBufferAttribute(built.data.geo, 4));
   geometry.setAttribute('aTime', new THREE.InstancedBufferAttribute(built.data.time, 4));
   geometry.setAttribute('aFlag', new THREE.InstancedBufferAttribute(built.data.flag, 3));
+  geometry.setAttribute('aSlot', new THREE.InstancedBufferAttribute(built.data.slot, 1));
   geometry.instanceCount = built.count;
   const { axis, e1, e2 } = built.frame;
   const material = new THREE.ShaderMaterial({
-    vertexShader: TILE_VERTEX,
+    vertexShader: tileVertex(slotCount),
     fragmentShader: TILE_FRAGMENT,
     side: THREE.DoubleSide,
     uniforms: {
@@ -426,6 +458,7 @@ function createTiles(theme, built) {
       uForest: { value: theme.forest }, uGreen: { value: theme.green }, uLime: { value: theme.lime },
       uInk: { value: theme.ink }, uPaper: { value: theme.paperHi },
       uEgypt: { value: 0 }, uMute: { value: 0 }, uGlint: { value: -1 },
+      uSwarm: { value: 0 }, uSwarmA: { value: new Float32Array(slotCount * 4) }, uSwarmB: { value: new Float32Array(slotCount * 4) },
     },
   });
   const mesh = new THREE.Mesh(geometry, material);
@@ -468,20 +501,22 @@ function createBezel(theme) {
 /**
  * Creates the tile sphere on `canvas`. `render(state)` draws one frame; state fields (all optional):
  * cx, cy, r (CSS px in canvas space), spin (rad), intro (0 → 1.3), morph, cut, collapse, egypt, mute, ocean,
- * lanes (alpha), draw (0–1 per REGIONS entry), lon, tilt (geo view, degrees), dot/point (sphere units), clip.
+ * lanes (alpha), draw (0–1 per REGIONS entry), lon, tilt (geo view, degrees), dot/point (sphere units), clip,
+ * swarm ({ a, b }: per-slot affines for the home flight, see the vertex shader; null when resting).
+ * slots: unit-disc pivots (x right, y down) of the home flight's SVG tiles; kept sub-tiles follow the nearest one.
  */
-export function createTileSphere(canvas, { narrow = false, themeEl = canvas, heroOnly = false } = {}) {
+export function createTileSphere(canvas, { narrow = false, themeEl = canvas, heroOnly = false, slots = [] } = {}) {
   // A software-rendered context (major performance caveat) throws here, and the page keeps the SVG mark.
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: true });
   renderer.setClearColor(0x000000, 0);
   renderer.autoClear = false;
   const theme = readTheme(themeEl);
-  const built = buildInstances(narrow, heroOnly);
+  const built = buildInstances(narrow, heroOnly, slots);
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -10000, 10000);
   const group = new THREE.Group();
   const spin = new THREE.Group();
-  const tiles = createTiles(theme, built);
+  const tiles = createTiles(theme, built, Math.max(1, slots.length));
   const ocean = createOcean(theme);
   const lanes = heroOnly ? null : createLanes(theme);
   const bezel = heroOnly ? null : createBezel(theme);
@@ -524,6 +559,11 @@ export function createTileSphere(canvas, { narrow = false, themeEl = canvas, her
     tu.uEgypt.value = s.egypt ?? 0;
     tu.uMute.value = s.mute ?? 0;
     tu.uGlint.value = s.glint ?? -1;
+    tu.uSwarm.value = s.swarm ? 1 : 0;
+    if (s.swarm) {
+      tu.uSwarmA.value.set(s.swarm.a);
+      tu.uSwarmB.value.set(s.swarm.b);
+    }
     if (s.dot) tu.uDot.value.set(...s.dot);
     if (s.point) tu.uPoint.value.set(...s.point);
     if (lanes) {

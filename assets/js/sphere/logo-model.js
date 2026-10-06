@@ -47,6 +47,7 @@ export function logoPoint(frame, phiDeg, thetaDeg) {
 /**
  * Logo tiles split into sub x sub smaller diamonds that tile each logo diamond exactly, so thousands of
  * instances can assemble one crisp logo. Angles in radians. sweep: 0 at the forest limb, 1 at the lime side.
+ * keep: the tile is part of the logo (cut: it is in the C-shaped cut and hidden).
  */
 export function logoSubTiles(sub) {
   const frame = logoFrame();
@@ -59,7 +60,8 @@ export function logoSubTiles(sub) {
       const phi = LOGO.phi0 + i * step;
       const centre = logoPoint(frame, phi, theta);
       const sweep = Math.min(1, Math.max(0, (centre[0] + 1) / 2));
-      const cut = !KEEP.has(ring * LOGO.around + i) && centre[2] > CUT_MIN_Z && centre[0] > CUT_MIN_X;
+      const keep = KEEP.has(ring * LOGO.around + i);
+      const cut = !keep && centre[2] > CUT_MIN_Z && centre[0] > CUT_MIN_X;
       for (let a = 0; a < sub; a++) {
         for (let b = 0; b < sub; b++) {
           const s = -1 + (2 * a + 1) / sub, t = -1 + (2 * b + 1) / sub;
@@ -70,6 +72,7 @@ export function logoSubTiles(sub) {
             halfTheta: (halfTheta / sub) * DEG,
             front: centre[2],
             sweep,
+            keep,
             cut,
           });
         }

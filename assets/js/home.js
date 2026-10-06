@@ -26,14 +26,15 @@ const failed = (name) => (error) => console.error(`Home: the ${name} module fail
 
 /* ---------- Hero: the tile sphere (SVG mark first; WebGL after first paint) ---------- */
 
-// The sphere also flies into the globe bullet of "GPL at a glance." ([data-orb-target]) as the visitor scrolls
-// (home/orb-flight.js). Only with the WebGL sphere: a flat hero keeps its mark and the bullet simply shows.
+// As the visitor scrolls, the sphere comes apart, its tiles re-form the globe above "GPL at a glance." and the globe
+// settles into the title's bullet ([data-orb-target], home/orb-flight.js): with the WebGL tiles once three.js is in,
+// with the SVG mark's tiles before that or without WebGL. Without motion there is no flight and the bullet shows.
 const hero = document.querySelector('[data-sphere="hero"]');
 const orbTarget = document.querySelector("[data-orb-target]");
 const loadFlight = () => (orbTarget ? import("./home/orb-flight.js").catch(failed("orb flight")) : null);
 
-function startHero([{ bootSphere, isSphereSupported }, flightModule]) {
-  const flight = isSphereSupported() ? flightModule?.initOrbFlight(hero, orbTarget) ?? null : null;
+function startHero([{ bootSphere }, flightModule]) {
+  const flight = flightModule?.initOrbFlight(hero, orbTarget) ?? null;
   if (!flight) orbTarget?.removeAttribute("data-orb-target");
   return bootSphere(hero, { mode: "hero", strings: { locale: strings.locale, ...strings.sphere }, flight });
 }

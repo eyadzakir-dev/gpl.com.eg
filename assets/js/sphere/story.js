@@ -6,8 +6,9 @@
 // The SVG mark is on screen first. three.js and the scene load only after first paint and engagement (or idle), and
 // only with motion, WebGL2 without a performance caveat and no Save-Data; otherwise, or if the context is lost, the
 // root gets .ts--flat.
-// Home only: with a `flight` (assets/js/home/orb-flight.js) the hero canvas is fixed and the sphere is drawn at the
-// flight's pose as it flies into the "GPL at a glance." bullet; the flight also says when the sphere can sleep.
+// Home only: with a `flight` (assets/js/home/orb-flight.js) the hero canvas is fixed, the sphere rests at the flight's
+// hero spot and its tiles take the flight's per-tile affines as they come apart and reassemble in the "GPL at a
+// glance." bullet; the flight also says when the sphere can sleep.
 // Strings (count, pause, play, view, east, west) come from the page's strings block; chapter labels are HTML.
 
 const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
@@ -19,10 +20,10 @@ const INTRO_SECONDS = 2.8;
 const INTRO_END = 1.32;
 const GLINT = { period: 7, sweep: 1.8 };
 const IDLE_TURN = { amplitude: 12 * DEG, period: 18 };
-// Negative: the pole (just inside the left limb) turns away, so the sphere keeps reading as the logo in EN and AR.
-const FLIGHT_TURN = -26 * DEG;
-const FLIGHT_TURN_IN = [0.45, 1.2];
-const FLIGHT_SKIPS_INTRO = 0.04;
+// Home flight: the idle turn settles into the logo's orientation over the first stretch of scroll, before any tile
+// lifts off; a sphere that mounts mid-flight skips its fly-in.
+const FLIGHT_SETTLE = 0.03;
+const FLIGHT_SKIPS_INTRO = 0.02;
 const ORB_FILL = 0.98;
 const FIG_FILL = { wide: 0.78, narrow: 0.8 };
 const PIN_MIN_Z = 0.12;
@@ -75,8 +76,8 @@ function hasFastWebGL2() {
   return fastWebGL2;
 }
 
-/** True when the WebGL sphere may run (motion allowed, no Save-Data, WebGL2 without a performance caveat). */
-export function isSphereSupported() {
+// The WebGL sphere runs only with motion, no Save-Data and WebGL2 without a performance caveat.
+function isSphereSupported() {
   return !REDUCED_MOTION.matches && navigator.connection?.saveData !== true && hasFastWebGL2();
 }
 
@@ -229,27 +230,26 @@ function mount(root, api, { mode, strings, places, origins, flight }) {
     return { x, y, w: r.width, h: r.height, cx: x + r.width / 2, cy: y + r.height / 2, r: (Math.min(r.width, r.height) / 2) * scale };
   };
 
-  // Home hero with the orb flight: the sphere is drawn at the flight's pose (viewport px) instead of the orb's box.
+  // Home hero with the flight: the sphere rests at the flight's hero spot (viewport px), which holds on screen.
   const heroBox = () => {
-    const pose = isFlying() ? flight.pose() : null;
-    if (!pose) return box(orb, ORB_FILL);
-    return { cx: pose.x - canvasRect.left, cy: pose.y - canvasRect.top, r: (pose.size / 2) * ORB_FILL };
+    const spot = isFlying() ? flight.frame() : null;
+    if (!spot) return box(orb, ORB_FILL);
+    return { cx: spot.x - canvasRect.left, cy: spot.y - canvasRect.top, r: (spot.size / 2) * ORB_FILL };
   };
 
-  // In flight the sphere turns a little, and settles into the logo's own orientation (no idle turn, no glint) as it
-  // lands, so the hand-off to the flat bullet mark shows no change. The turn eases in after mount: a sphere that
-  // arrives mid-flight first matches the SVG mark it replaces.
+  // In flight the tiles take the flight's affines (swarm). The sphere first settles into the logo's own orientation
+  // (no idle turn, no glint), so its tiles leave from, and land in, the same lattice as the SVG mark's.
   function heroState(hero) {
     const glintT = (state.idle % GLINT.period) / GLINT.sweep;
-    const pose = isFlying() ? flight.pose() : null;
-    const settle = pose?.settle ?? 0;
+    const p = isFlying() ? flight.frame()?.p ?? 0 : 0;
+    const settle = smooth(0, FLIGHT_SETTLE, p);
     const idleYaw = state.introDone ? Math.sin((state.idle / IDLE_TURN.period) * Math.PI * 2) * IDLE_TURN.amplitude : 0;
-    const turn = (pose?.turn ?? 0) * FLIGHT_TURN * smooth(FLIGHT_TURN_IN[0], FLIGHT_TURN_IN[1], state.time);
     return {
       cx: hero.cx, cy: hero.cy, r: hero.r, morph: 0, cut: 1, spin: 0, intro: state.intro,
-      yaw: idleYaw * (1 - settle) + turn,
-      glint: state.introDone && settle === 0 && glintT < 1 ? lerp(-0.3, 1.3, glintT) : -1,
+      yaw: idleYaw * (1 - settle),
+      glint: state.introDone && p === 0 && glintT < 1 ? lerp(-0.3, 1.3, glintT) : -1,
       lanes: 0, ocean: 0, collapse: 0, egypt: 0, mute: 0,
+      swarm: p > 0 ? flight.swarmUniforms(ORB_FILL) : null,
     };
   }
 
@@ -409,7 +409,7 @@ function mount(root, api, { mode, strings, places, origins, flight }) {
   }
 
   // A visitor who lands mid-page (reload, anchor), or whose orb is already flying, skips the fly-in.
-  const isMidFlight = isFlying() && (flight.pose()?.p ?? 0) > FLIGHT_SKIPS_INTRO;
+  const isMidFlight = isFlying() && (flight.frame()?.p ?? 0) > FLIGHT_SKIPS_INTRO;
   if (window.scrollY > window.innerHeight * 0.6 || isMidFlight) { state.intro = INTRO_END; state.introDone = true; }
   root.classList.add("is-gl");
   relayout();
@@ -445,7 +445,8 @@ export async function bootSphere(root, { mode = "hero", strings = {}, flight = n
     const loads = [import("./sphere.js")];
     if (mode === "story") loads.push(import("../globe/globe-data.js"));
     const [{ createTileSphere }, geo] = await Promise.all(loads);
-    const api = createTileSphere(root.querySelector(".ts__canvas"), { narrow: NARROW.matches, themeEl: root, heroOnly: mode === "hero" });
+    const slots = mode === "hero" ? flight?.slots ?? [] : [];
+    const api = createTileSphere(root.querySelector(".ts__canvas"), { narrow: NARROW.matches, themeEl: root, heroOnly: mode === "hero", slots });
     const places = geo?.PIN_PLACES ?? {};
     root.tileSphere = mount(root, api, { mode, strings, places, origins: geo?.ORIGINS ?? api.origins, flight: mode === "hero" ? flight : null });
     return root.tileSphere;

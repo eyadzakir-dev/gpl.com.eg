@@ -95,21 +95,31 @@
 .ts-pause:hover { background: var(--ink); color: var(--paper); }
 
 /* ---------- Hero-to-bullet flight (home: assets/js/home/orb-flight.js) ---------- */
-/* .ts--fly fixes the mark and the canvas to the viewport so the orb can leave the hero (which clips) without the
-   compositor's scroll shaking it; JS sets the mark's box to its spot in the hero and writes only its transform.
-   .is-flying lifts the canvas over the hero copy and the next section (the intro tiles stay behind the wordmark).
-   .is-landed: the title's bullet shows under the orb, which fades out; going back, the orb returns at once. */
+/* The sphere comes apart and its tiles reassemble in the "GPL at a glance." bullet. .ts--fly fixes the canvas to
+   the viewport so the WebGL tiles can leave the hero (which clips); .ts-swarm is the SVG version, 78 clones of the
+   mark's tiles in a fixed overlay, each placed by a transform matrix in viewport px. While a flight is under way
+   (.is-flying) the resting mark hides and the tiles take over at the same spot; the canvas rises over the hero copy
+   and the next section (at rest the intro tiles stay behind the wordmark). .is-landed: the title's bullet shows
+   under the tiles, which fade out; going back, the tiles return at once. With WebGL the overlay crossfades out. */
 .ts--fly .ts__canvas { position: fixed; }
 .ts--fly.is-flying .ts__canvas { z-index: 3; }
 .ts--fly .ts-hero__orb { z-index: 3; }
-.ts--fly .ts-hero__mark {
-  position: fixed;
-  transform-origin: 0 0;
-  pointer-events: none;
-  transition: opacity 0.15s linear;
-}
+.ts--fly .ts-hero__mark { transition: none; }
 .ts--fly.is-gl .ts-hero__mark { transition: opacity 0.45s var(--ease-out); }
-.ts--fly.is-landed .ts-hero__mark { opacity: 0; transition: opacity 0.2s linear 0.08s; }
+.ts--fly:is(.is-flying, .is-landed) .ts-hero__mark { opacity: 0; transition: none; }
+.ts-swarm {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  visibility: hidden;
+  fill: url(#gpl-grad);
+}
+.ts--fly.is-flying .ts-swarm { visibility: visible; }
+.ts--fly.is-gl .ts-swarm { opacity: 0; visibility: hidden; transition: opacity 0.45s var(--ease-out), visibility 0s linear 0.45s; }
+.ts--fly.is-landed .ts-swarm { opacity: 0; visibility: hidden; transition: opacity 0.2s linear 0.08s, visibility 0s linear 0.28s; }
 .ts--fly.is-landed .ts__canvas { opacity: 0; transition: opacity 0.26s linear; }
 
 @keyframes ts-emit {
