@@ -111,3 +111,6 @@
   .ts-hero__lead { grid-column: 1 / -1; grid-row: 4; }
   .ts-hero__actions { grid-column: 1 / -1; grid-row: 5; }
 }
+
+/* Arabic line spacing */
+:lang(ar) .ts-hero__kicker { line-height: 1.35; }

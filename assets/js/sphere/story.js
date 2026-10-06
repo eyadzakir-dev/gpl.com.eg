@@ -67,6 +67,9 @@ function hasFastWebGL2() {
 
 // three.js is ~690 KB, so the scene waits until after first paint and for a sign of engagement (pointer, key, touch,
 // wheel or scroll), or a few idle seconds after load. The SVG mark stands in until then, and the first view stays fast.
+// Touch-first devices skip the idle fallback: parsing three.js on a phone CPU blocks the main thread for seconds.
+const CAN_PRELOAD_ON_IDLE = window.matchMedia("(pointer: fine)").matches;
+
 function whenEngaged() {
   return new Promise((resolve) => {
     const events = ["pointermove", "pointerdown", "keydown", "touchstart", "wheel", "scroll"];
@@ -81,6 +84,7 @@ function whenEngaged() {
     const fallback = () => setTimeout(idle, LOAD_FALLBACK_MS);
     requestAnimationFrame(() => setTimeout(() => {
       events.forEach((type) => window.addEventListener(type, go, { passive: true }));
+      if (!CAN_PRELOAD_ON_IDLE) return;
       if (document.readyState === "complete") fallback();
       else window.addEventListener("load", fallback, { once: true });
     }, 0));

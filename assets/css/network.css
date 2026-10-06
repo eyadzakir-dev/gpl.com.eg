@@ -225,3 +225,9 @@
 @media (max-width: 899px) {
   .nw-cta__fine { grid-column: 1 / -1; }
 }
+
+/* Arabic line spacing: the Latin display line-height makes Arabic lines overlap */
+:lang(ar) .nw-hero .ts-hero__word { line-height: 1.16; }
+:lang(ar) :is(.ts-ch__title, .nw-port__name) { line-height: 1.3; }
+:lang(ar) :is(.ts-ch__text, .nw-port__text) { line-height: 1.75; }
+.ts-pin__tag span:not([dir="ltr"]):lang(ar) { font-family: var(--f-label); }
