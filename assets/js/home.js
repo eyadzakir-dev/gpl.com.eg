@@ -26,11 +26,25 @@ const failed = (name) => (error) => console.error(`Home: the ${name} module fail
 
 /* ---------- Hero: the tile sphere (SVG mark first; WebGL after first paint) ---------- */
 
+// The sphere also flies into the globe bullet of "GPL at a glance." ([data-orb-target]) as the visitor scrolls
+// (home/orb-flight.js). Only with the WebGL sphere: a flat hero keeps its mark and the bullet simply shows.
 const hero = document.querySelector('[data-sphere="hero"]');
+const orbTarget = document.querySelector("[data-orb-target]");
+const loadFlight = () => (orbTarget ? import("./home/orb-flight.js").catch(failed("orb flight")) : null);
+
+function startHero([{ bootSphere, isSphereSupported }, flightModule]) {
+  const flight = isSphereSupported() ? flightModule?.initOrbFlight(hero, orbTarget) ?? null : null;
+  if (!flight) orbTarget?.removeAttribute("data-orb-target");
+  return bootSphere(hero, { mode: "hero", strings: { locale: strings.locale, ...strings.sphere }, flight });
+}
+
 if (hero && hasMotion()) {
-  import("./sphere/story.js")
-    .then(({ bootSphere }) => bootSphere(hero, { mode: "hero", strings: { locale: strings.locale, ...strings.sphere } }))
-    .catch(failed("tile sphere"));
+  Promise.all([import("./sphere/story.js"), loadFlight()])
+    .then(startHero)
+    .catch((error) => {
+      orbTarget?.removeAttribute("data-orb-target");
+      failed("tile sphere")(error);
+    });
 } else {
   hero?.classList.add("ts--flat");
 }

@@ -6,6 +6,8 @@
 // The SVG mark is on screen first. three.js and the scene load only after first paint and engagement (or idle), and
 // only with motion, WebGL2 without a performance caveat and no Save-Data; otherwise, or if the context is lost, the
 // root gets .ts--flat.
+// Home only: with a `flight` (assets/js/home/orb-flight.js) the hero canvas is fixed and the sphere is drawn at the
+// flight's pose as it flies into the "GPL at a glance." bullet; the flight also says when the sphere can sleep.
 // Strings (count, pause, play, view, east, west) come from the page's strings block; chapter labels are HTML.
 
 const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
@@ -17,6 +19,10 @@ const INTRO_SECONDS = 2.8;
 const INTRO_END = 1.32;
 const GLINT = { period: 7, sweep: 1.8 };
 const IDLE_TURN = { amplitude: 12 * DEG, period: 18 };
+// Negative: the pole (just inside the left limb) turns away, so the sphere keeps reading as the logo in EN and AR.
+const FLIGHT_TURN = -26 * DEG;
+const FLIGHT_TURN_IN = [0.45, 1.2];
+const FLIGHT_SKIPS_INTRO = 0.04;
 const ORB_FILL = 0.98;
 const FIG_FILL = { wide: 0.78, narrow: 0.8 };
 const PIN_MIN_Z = 0.12;
@@ -55,14 +61,23 @@ const keyAt = (values, c) => {
   return lerp(values[i], values[j], c - i);
 };
 
+let fastWebGL2 = null;
+
 function hasFastWebGL2() {
+  if (fastWebGL2 !== null) return fastWebGL2;
   try {
     const gl = document.createElement("canvas").getContext("webgl2", { failIfMajorPerformanceCaveat: true });
     gl?.getExtension("WEBGL_lose_context")?.loseContext();
-    return Boolean(gl);
+    fastWebGL2 = Boolean(gl);
   } catch {
-    return false;
+    fastWebGL2 = false;
   }
+  return fastWebGL2;
+}
+
+/** True when the WebGL sphere may run (motion allowed, no Save-Data, WebGL2 without a performance caveat). */
+export function isSphereSupported() {
+  return !REDUCED_MOTION.matches && navigator.connection?.saveData !== true && hasFastWebGL2();
 }
 
 // three.js is ~690 KB, so the scene waits until after first paint and for a sign of engagement (pointer, key, touch,
@@ -176,7 +191,7 @@ function applyPin(pin, p, rect, lead) {
 
 /* ---------- Mount ---------- */
 
-function mount(root, api, { mode, strings, places, origins }) {
+function mount(root, api, { mode, strings, places, origins, flight }) {
   const isStory = mode === "story";
   const canvas = root.querySelector(".ts__canvas");
   const orb = root.querySelector("[data-ts-orb]");
@@ -193,9 +208,10 @@ function mount(root, api, { mode, strings, places, origins }) {
   const draw = api.regions.map(() => 0);
   const format = new Intl.NumberFormat(strings.locale || document.documentElement.lang || "en").format;
   const state = {
-    c: 0, target: 0, time: 0, idle: 0, intro: 0, introDone: false, visible: false, paused: false,
+    c: 0, target: 0, time: 0, idle: 0, intro: 0, introDone: false, visible: false, inView: false, paused: false,
     raf: 0, last: 0, stops: [], active: -1, coordText: "",
   };
+  const isFlying = () => Boolean(flight?.isEnabled());
   let canvasRect = canvas.getBoundingClientRect();
 
   const relayout = () => {
@@ -213,12 +229,26 @@ function mount(root, api, { mode, strings, places, origins }) {
     return { x, y, w: r.width, h: r.height, cx: x + r.width / 2, cy: y + r.height / 2, r: (Math.min(r.width, r.height) / 2) * scale };
   };
 
+  // Home hero with the orb flight: the sphere is drawn at the flight's pose (viewport px) instead of the orb's box.
+  const heroBox = () => {
+    const pose = isFlying() ? flight.pose() : null;
+    if (!pose) return box(orb, ORB_FILL);
+    return { cx: pose.x - canvasRect.left, cy: pose.y - canvasRect.top, r: (pose.size / 2) * ORB_FILL };
+  };
+
+  // In flight the sphere turns a little, and settles into the logo's own orientation (no idle turn, no glint) as it
+  // lands, so the hand-off to the flat bullet mark shows no change. The turn eases in after mount: a sphere that
+  // arrives mid-flight first matches the SVG mark it replaces.
   function heroState(hero) {
     const glintT = (state.idle % GLINT.period) / GLINT.sweep;
+    const pose = isFlying() ? flight.pose() : null;
+    const settle = pose?.settle ?? 0;
+    const idleYaw = state.introDone ? Math.sin((state.idle / IDLE_TURN.period) * Math.PI * 2) * IDLE_TURN.amplitude : 0;
+    const turn = (pose?.turn ?? 0) * FLIGHT_TURN * smooth(FLIGHT_TURN_IN[0], FLIGHT_TURN_IN[1], state.time);
     return {
       cx: hero.cx, cy: hero.cy, r: hero.r, morph: 0, cut: 1, spin: 0, intro: state.intro,
-      yaw: state.introDone ? Math.sin((state.idle / IDLE_TURN.period) * Math.PI * 2) * IDLE_TURN.amplitude : 0,
-      glint: state.introDone && glintT < 1 ? lerp(-0.3, 1.3, glintT) : -1,
+      yaw: idleYaw * (1 - settle) + turn,
+      glint: state.introDone && settle === 0 && glintT < 1 ? lerp(-0.3, 1.3, glintT) : -1,
       lanes: 0, ocean: 0, collapse: 0, egypt: 0, mute: 0,
     };
   }
@@ -257,7 +287,7 @@ function mount(root, api, { mode, strings, places, origins }) {
   }
 
   function frameState(dt) {
-    const hero = box(orb, ORB_FILL);
+    const hero = isStory ? box(orb, ORB_FILL) : heroBox();
     const f = isStory ? storyState(hero) : { s: heroState(hero) };
     const dotRect = dot.getBoundingClientRect();
     f.s.dot = [
@@ -342,10 +372,20 @@ function mount(root, api, { mode, strings, places, origins }) {
     pause.textContent = paused ? strings.play ?? "" : strings.pause ?? "";
     sync();
   };
-  const io = new IntersectionObserver(([entry]) => { state.visible = entry.isIntersecting; sync(); });
+  // With the orb flight the canvas is fixed, and the sphere is wanted until it has landed on the bullet.
+  const isWanted = () => (isFlying() ? flight.wantsSphere() : state.inView);
+  const io = new IntersectionObserver(([entry]) => { state.inView = entry.isIntersecting; state.visible = isWanted(); sync(); });
+  // Called on every flight update. A canvas coming back draws the current pose before it shows; a paused loop
+  // (asleep) gets one frame per update, so the sphere still follows the scroll.
+  const onFlight = () => {
+    const wanted = isWanted();
+    if (wanted && !state.visible && !document.hidden) frame(0);
+    state.visible = wanted;
+    sync();
+  };
   const ro = new ResizeObserver(relayout);
   const onPause = () => setPaused(!state.paused);
-  const onScroll = () => { if (!isStory) canvasRect = canvas.getBoundingClientRect(); };
+  const onScroll = () => { if (!isStory && !isFlying()) canvasRect = canvas.getBoundingClientRect(); };
   const onContextLost = (event) => {
     event.preventDefault();
     destroy();
@@ -358,6 +398,7 @@ function mount(root, api, { mode, strings, places, origins }) {
     state.raf = 0;
     io.disconnect();
     ro.disconnect();
+    flight?.unsubscribe(onFlight);
     window.removeEventListener("scroll", onScroll);
     document.removeEventListener("visibilitychange", sync);
     canvas.removeEventListener("webglcontextlost", onContextLost);
@@ -367,8 +408,9 @@ function mount(root, api, { mode, strings, places, origins }) {
     root.classList.remove("is-story", "is-gl");
   }
 
-  // A visitor who lands mid-page (reload, anchor) skips the fly-in.
-  if (window.scrollY > window.innerHeight * 0.6) { state.intro = INTRO_END; state.introDone = true; }
+  // A visitor who lands mid-page (reload, anchor), or whose orb is already flying, skips the fly-in.
+  const isMidFlight = isFlying() && (flight.pose()?.p ?? 0) > FLIGHT_SKIPS_INTRO;
+  if (window.scrollY > window.innerHeight * 0.6 || isMidFlight) { state.intro = INTRO_END; state.introDone = true; }
   root.classList.add("is-gl");
   relayout();
   state.c = state.target = isStory ? chapterAt(state.stops, window.scrollY) : 0;
@@ -379,7 +421,8 @@ function mount(root, api, { mode, strings, places, origins }) {
   }
   ro.observe(root);
   ro.observe(canvas);
-  io.observe(isStory ? root : canvas);
+  io.observe(isStory || flight ? root : canvas);
+  flight?.subscribe(onFlight);
   window.addEventListener("scroll", onScroll, { passive: true });
   document.addEventListener("visibilitychange", sync);
   canvas.addEventListener("webglcontextlost", onContextLost);
@@ -390,10 +433,9 @@ function mount(root, api, { mode, strings, places, origins }) {
 }
 
 /** Boots the sphere on root ([data-sphere]); mode "hero" or "story". Resolves once mounted or left flat. */
-export async function bootSphere(root, { mode = "hero", strings = {} } = {}) {
+export async function bootSphere(root, { mode = "hero", strings = {}, flight = null } = {}) {
   if (!root) return null;
-  const isSaveData = navigator.connection?.saveData === true;
-  if (REDUCED_MOTION.matches || isSaveData || !hasFastWebGL2()) {
+  if (!isSphereSupported()) {
     root.classList.add("ts--flat");
     return null;
   }
@@ -404,7 +446,8 @@ export async function bootSphere(root, { mode = "hero", strings = {} } = {}) {
     if (mode === "story") loads.push(import("../globe/globe-data.js"));
     const [{ createTileSphere }, geo] = await Promise.all(loads);
     const api = createTileSphere(root.querySelector(".ts__canvas"), { narrow: NARROW.matches, themeEl: root, heroOnly: mode === "hero" });
-    root.tileSphere = mount(root, api, { mode, strings, places: geo?.PIN_PLACES ?? {}, origins: geo?.ORIGINS ?? api.origins });
+    const places = geo?.PIN_PLACES ?? {};
+    root.tileSphere = mount(root, api, { mode, strings, places, origins: geo?.ORIGINS ?? api.origins, flight: mode === "hero" ? flight : null });
     return root.tileSphere;
   } catch (error) {
     root.classList.remove("is-story", "is-gl");

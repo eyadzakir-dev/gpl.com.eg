@@ -94,6 +94,24 @@
 [dir="rtl"] .ts-pause[aria-pressed="true"]::before { transform: scaleX(-1); }
 .ts-pause:hover { background: var(--ink); color: var(--paper); }
 
+/* ---------- Hero-to-bullet flight (home: assets/js/home/orb-flight.js) ---------- */
+/* .ts--fly fixes the mark and the canvas to the viewport so the orb can leave the hero (which clips) without the
+   compositor's scroll shaking it; JS sets the mark's box to its spot in the hero and writes only its transform.
+   .is-flying lifts the canvas over the hero copy and the next section (the intro tiles stay behind the wordmark).
+   .is-landed: the title's bullet shows under the orb, which fades out; going back, the orb returns at once. */
+.ts--fly .ts__canvas { position: fixed; }
+.ts--fly.is-flying .ts__canvas { z-index: 3; }
+.ts--fly .ts-hero__orb { z-index: 3; }
+.ts--fly .ts-hero__mark {
+  position: fixed;
+  transform-origin: 0 0;
+  pointer-events: none;
+  transition: opacity 0.15s linear;
+}
+.ts--fly.is-gl .ts-hero__mark { transition: opacity 0.45s var(--ease-out); }
+.ts--fly.is-landed .ts-hero__mark { opacity: 0; transition: opacity 0.2s linear 0.08s; }
+.ts--fly.is-landed .ts__canvas { opacity: 0; transition: opacity 0.26s linear; }
+
 @keyframes ts-emit {
   0% { transform: none; }
   18% { transform: scale(1.9); color: var(--lime); }
