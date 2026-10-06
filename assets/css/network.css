@@ -1,0 +1,227 @@
+/* Network page: the tile-sphere scroll story (prototypes/tile-sphere) after the shared hero (sphere.css), then the
+   five ports and the CTA. .is-story (motion + WebGL2, set by assets/js/sphere/story.js): sticky globe figure, tall
+   chapters, one fixed canvas. Otherwise the figure shows the shared flat routes diagram beside compact chapters.
+   Pins are placed in figure pixels (physical left/top like globe.js), so they also hold in RTL. */
+
+/* ---------- Hero: the page title replaces the wordmark ---------- */
+.nw-hero .ts-hero__word { font-size: clamp(56px, 8.6vw, 140px); line-height: 0.86; }
+.nw-hero .ts-hero__kicker { max-width: 19em; }
+@media (max-width: 899px) {
+  .nw-hero .ts-hero__word { font-size: clamp(48px, 14.4vw, 76px); }
+}
+
+/* ---------- Routes story ---------- */
+.ts-routes { position: relative; }
+.ts-routes .sec__head, .ts-routes__chapters { position: relative; z-index: 2; }
+.ts-routes__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  align-items: start;
+}
+.ts-routes__chapters { grid-column: 1 / 6; grid-row: 1; }
+.ts-routes__rail { grid-column: 6 / 13; grid-row: 1; align-self: stretch; }
+.ts-routes__fig {
+  position: relative;
+  border: 1px solid var(--ink);
+  background-color: var(--paper-hi);
+  background-image: radial-gradient(var(--rule) 1px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+.ts-routes__rail { position: relative; }
+/* HUD and pins live in a sibling layer: a sticky figure is its own stacking context, so it sits under the canvas. */
+.ts-routes__over { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.ts-routes__over::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  background:
+    linear-gradient(var(--green), var(--green)) 50% 0 / 2px 100% no-repeat,
+    linear-gradient(var(--green), var(--green)) 0 50% / 100% 2px no-repeat;
+}
+.ts-hud { position: absolute; z-index: 2; margin: 0; color: var(--ink-2); font-size: 10.5px; pointer-events: none; }
+.ts-hud--ts { top: 12px; inset-inline-start: 14px; }
+.ts-hud--te { top: 12px; inset-inline-end: 44px; }
+.ts-hud--bs { bottom: 12px; inset-inline-start: 14px; color: var(--green-ink); }
+.ts-hud--be { bottom: 12px; inset-inline-end: 14px; }
+.ts-pins { display: none; }
+
+.ts-ch { padding-block: 28px; border-top: 1px solid var(--rule); }
+.ts-ch:first-child { border-top: 0; padding-top: 0; }
+.ts-ch__k { color: var(--green-ink); }
+.ts-ch__title {
+  margin-top: 14px;
+  font-size: clamp(28px, 2.7vw, 42px);
+  font-weight: 750;
+  font-stretch: 86%;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.ts-ch__dot { color: var(--green); }
+.ts-ch__text { margin-top: 16px; max-width: 30em; font-size: 18px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.ts-ch__ports { margin-top: 24px; }
+.ts-ch__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.ts-ch__tags span { padding: 5px 8px; border: 1px solid var(--ink); }
+.ts-ch__fine { margin-top: 18px; max-width: 34em; color: var(--ink-2); font-size: 11px; line-height: 1.5; }
+.ts-ch__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 24px; }
+
+/* Flat (and no-JS) mode: figure in the page flow with the route diagram, sticky beside the chapters. */
+.ts:not(.is-story) .ts-routes__fig { padding: 56px 24px 48px; }
+.ts:not(.is-story) .ts-routes__chapters { padding-top: 4px; }
+.ts:not(.is-story) .ts-routes__rail { align-self: start; position: sticky; top: calc(var(--hdr-h) + 24px); }
+
+/* Story mode: the figure sticks while the chapters scroll past; the globe is drawn into it on the canvas. */
+.ts.is-story { --fig-top: calc(var(--hdr-h) + 20px); --fig-h: max(420px, calc(100svh - var(--hdr-h) - 40px)); }
+.ts.is-story .ts-routes__fig, .ts.is-story .ts-routes__over { position: sticky; top: var(--fig-top); height: var(--fig-h); }
+.ts.is-story .ts-routes__over { right: auto; bottom: auto; left: auto; width: 100%; margin-top: calc(var(--fig-h) * -1); }
+.ts.is-story .globe__diagram { display: none; }
+.ts.is-story.is-gl .ts-pins { display: block; position: absolute; inset: 0; }
+.ts.is-story .ts-ch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 82svh;
+  padding-block: 8svh;
+  border-top: 0;
+}
+.ts.is-story .ts-ch:first-child { min-height: 70svh; padding-top: 0; }
+.ts.is-story .ts-ch--end { min-height: 92svh; }
+.motion .ts.is-story .ts-ch > * { transition: opacity 0.5s, transform 0.6s var(--ease-out); }
+/* The active chapter leads; the others step back without dropping below AA contrast. */
+.motion .ts.is-story .ts-ch:not(.is-active) > :not(.ts-ch__k) { opacity: 0.82; }
+.motion .ts.is-story .ts-ch:not(.is-active) > .ts-ch__k { color: var(--ink-2); }
+.motion .ts.is-story .ts-ch:not(.is-active) > .ts-ch__title { transform: translateY(6px); }
+.ts:not(.is-story) .ts-hud--te, .ts:not(.is-story) .ts-hud--bs { display: none; }
+
+/* Pins: placed in figure pixels by main.js (physical left/top, like globe.js, so they also hold in RTL). */
+.ts-pin, .ts-point {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0s linear 0.3s;
+}
+.ts-pin.is-on, .ts-point.is-on { opacity: 1; visibility: visible; transition: opacity 0.3s, visibility 0s; }
+.ts-pin i {
+  position: absolute;
+  left: -4.5px;
+  top: -4.5px;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper-hi);
+}
+.ts-pin--origin i { background: var(--lime); }
+.ts-pin--origin[data-pin="alex"] i::after { inset: -1.5px; }
+.ts-pin::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -0.5px;
+  width: var(--lead, 22px);
+  height: 1px;
+  background: var(--ink);
+  transform: rotate(var(--ang, 0deg));
+  transform-origin: 0 50%;
+}
+.ts-pin__tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 4px 8px 5px;
+  white-space: nowrap;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+}
+.ts-pin__tag b { font: 650 12.5px/1.2 var(--f-sans); letter-spacing: 0.005em; }
+.ts-pin__tag span { font: 500 9.5px/1.3 var(--f-mono); letter-spacing: 0.07em; text-transform: uppercase; }
+.ts-pin--origin .ts-pin__tag { background: var(--ink); color: var(--paper); }
+.ts-pin--origin .ts-pin__tag span { color: var(--lime); }
+.ts-pin:not(.ts-pin--origin) .ts-pin__tag { padding: 2px 5px 3px; background: color-mix(in srgb, var(--paper-hi) 85%, transparent); color: var(--ink); }
+.ts-pin:not(.ts-pin--origin) .ts-pin__tag span { color: var(--ink-2); }
+.ts-point i {
+  position: absolute;
+  left: calc(var(--s, 14px) / -2);
+  top: calc(var(--s, 14px) / -2);
+  width: var(--s, 14px);
+  height: var(--s, 14px);
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--lime) 35%, transparent);
+}
+.ts-point::before, .ts-point::after { content: ""; position: absolute; background: var(--rule); }
+.ts-point::before { left: -2000px; top: -0.5px; width: 4000px; height: 1px; }
+.ts-point::after { top: -2000px; left: -0.5px; width: 1px; height: 4000px; }
+.ts-point .ts-pin__tag { transform: translate(18px, 10px); background: var(--ink); color: var(--paper); }
+.ts-point .ts-pin__tag span { color: var(--lime); }
+
+@media (max-width: 899px) {
+  .ts-routes__chapters, .ts-routes__rail { grid-column: 1 / -1; }
+  .ts:not(.is-story) .ts-routes__rail { grid-row: 1; position: relative; top: auto; margin-bottom: 32px; }
+  .ts:not(.is-story) .ts-routes__chapters { grid-row: 2; }
+  .ts:not(.is-story) .ts-routes__fig { padding: 40px 12px 36px; }
+  .ts.is-story .ts-routes__rail { grid-row: 1; }
+  .ts.is-story .ts-routes__chapters { grid-row: 1; padding-top: calc(var(--fig-h) + 24px); }
+  .ts.is-story { --fig-top: calc(var(--hdr-h) + 8px); --fig-h: max(300px, 54svh); }
+  /* Each card is followed by a gap taller than the figure, so the globe is clear between cards. */
+  .ts.is-story .ts-ch, .ts.is-story .ts-ch:first-child, .ts.is-story .ts-ch--end {
+    justify-content: flex-start;
+    min-height: 0;
+    padding: 0 0 calc(var(--fig-h) + 6svh);
+  }
+  .ts.is-story .ts-ch > * { background: var(--paper); }
+  .ts.is-story .ts-ch__k { padding-top: 16px; border-top: 3px solid var(--ink); }
+  .ts.is-story .ts-ch > :last-child { padding-bottom: 24px; }
+  .ts.is-story .ts-ch__title, .ts.is-story .ts-ch__text, .ts.is-story .ts-ch__ports, .ts.is-story .ts-ch__tags,
+  .ts.is-story .ts-ch__fine, .ts.is-story .ts-ch__actions { margin-top: 0; padding-top: 12px; }
+  .ts-ch__title { font-size: 30px; }
+  .ts-ch__text { font-size: 17px; }
+  .ts-hud { font-size: 9.5px; }
+  .ts-hud--te { inset-inline-end: 40px; }
+  .ts-hud--be { display: none; }
+  .ts-pin__tag span { display: none; }
+  .ts-pin__tag b { font-size: 11px; }
+}
+
+/* Story mode on narrow screens: opaque cards slide over the sticky globe, so they are never dimmed. */
+@media (max-width: 899px) {
+  .motion .ts.is-story .ts-ch:not(.is-active) > :not(.ts-ch__k) { opacity: 1; }
+  .motion .ts.is-story .ts-ch:not(.is-active) > .ts-ch__title { transform: none; }
+}
+
+/* ---------- 02 · Five ports ---------- */
+.nw-ports__list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 var(--gut); border-top: 1px solid var(--ink); }
+.nw-port { display: flex; flex-direction: column; gap: 8px; padding-block: 18px 24px; }
+.nw-port__code { color: var(--green-ink); }
+.nw-port__name { font-size: clamp(26px, 2.3vw, 34px); font-weight: 800; font-stretch: 82%; line-height: 0.95; letter-spacing: -0.03em; }
+.nw-port__sea { color: var(--ink-2); font-size: 11px; }
+.nw-port__text { margin-top: 6px; font-size: 15.5px; line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
+.nw-ports__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--ink); }
+.nw-ports__fine { max-width: 52em; color: var(--ink-2); font-size: 11px; line-height: 1.5; text-transform: none; letter-spacing: 0.02em; }
+.nw-ports__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+@media (max-width: 1180px) {
+  .nw-ports__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 899px) {
+  .nw-ports__list { grid-template-columns: 1fr; }
+  .nw-port { padding-block: 16px 18px; border-bottom: 1px solid var(--rule); }
+}
+
+/* ---------- 03 · CTA ---------- */
+.nw-cta__fine { position: relative; z-index: 1; grid-column: 1 / 9; color: var(--paper-dim); }
+.nw-cta__fine a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+.nw-cta__fine a:hover { color: var(--lime); }
+@media (max-width: 899px) {
+  .nw-cta__fine { grid-column: 1 / -1; }
+}

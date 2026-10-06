@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Styleguide | Green Point Logistics</title>
+<meta name="description" content="Internal component sheet for the Green Point Logistics website. Not for publication.">
+<meta name="robots" content="noindex, nofollow">
+<!-- chrome:head -->
+<meta name="theme-color" content="#F3F1EC">
+<link rel="icon" type="image/png" href="../../assets/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon/favicon.svg">
+<link rel="shortcut icon" href="../../assets/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../../assets/favicon/site.webmanifest">
+<link rel="preload" href="../../assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
+  })();
+</script>
+<!-- ===== ANALYTICS HOOK (disabled) =====
+  Enable exactly ONE provider after approval, add its account key, and update the privacy policy.
+  Cloudflare Web Analytics (cookie-free):
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "CF_BEACON_TOKEN"}'></script>
+  Plausible (cookie-free): paste the per-site snippet from your Plausible dashboard (Site settings > Site installation).
+  It has this shape, with your own pa-<ID>:
+    <script async src="https://plausible.io/js/pa-XXXXXXXXXXXX.js"></script>
+    <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+  Google Analytics 4 (sets cookies; needs a consent notice):
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-XXXXXXXXXX');</script>
+===== /ANALYTICS HOOK ===== -->
+<!-- /chrome:head -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/css/service.css">
+<link rel="stylesheet" href="styleguide.css">
+</head>
+<body>
+<!-- chrome:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="hdr">
+  <div class="hdr__in wrap">
+    <a class="hdr__brand" href="../../" data-nav="home" aria-label="Green Point Logistics, home">
+      <svg class="hdr__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#gpl-mark"/></svg>
+      <span class="hdr__word">Green Point<br>Logistics</span>
+    </a>
+    <nav class="hdr__nav" aria-label="Primary">
+        <a href="../../services" data-nav="services">Services</a>
+        <a href="../../industries" data-nav="industries">Industries</a>
+        <a href="../../network" data-nav="network">Network</a>
+        <a href="../../about-greenpoint/" data-nav="about-greenpoint/">About</a>
+        <a href="../../faq" data-nav="faq">FAQ</a>
+        <a href="../../contact-us/" data-nav="contact-us/">Contact</a>
+    </nav>
+    <p class="hdr__clock mono" dir="ltr"><span aria-hidden="true">ALX</span><span class="sr-only">Alexandria local time</span> <time data-cairo-clock>UTC+2</time></p>
+    <a class="hdr__lang" href="../../ar/" hreflang="ar" lang="ar">عربي</a>
+    <a class="hdr__social" href="https://www.linkedin.com/company/green-point-logistics/" target="_blank" rel="noopener noreferrer" aria-label="Green Point Logistics on LinkedIn"><svg viewBox="3 3 18 18" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg></a>
+    <a class="btn btn--line hdr__track" href="../../track-your-shipment/" data-nav="track-your-shipment/">Track Shipment</a>
+    <a class="btn btn--green hdr__cta" href="../../quote" data-nav="quote">Request a Quote</a>
+    <details class="menu">
+      <summary class="menu__btn mono"><span class="menu__open">Menu</span><span class="menu__close">Close</span></summary>
+      <nav class="menu__panel" aria-label="Mobile">
+          <a href="../../services" data-nav="services"><span class="mono">01</span>Services</a>
+          <ul class="menu__sub" aria-label="All services">
+            <li><a href="../../sea-freight/" data-nav="sea-freight/">Sea freight</a></li>
+            <li><a href="../../air-freight/" data-nav="air-freight/">Air freight</a></li>
+            <li><a href="../../customs-clearance/" data-nav="customs-clearance/">Customs clearance</a></li>
+            <li><a href="../../inland-transportation/" data-nav="inland-transportation/">Inland transportation</a></li>
+            <li><a href="../../domestic-trucking/" data-nav="domestic-trucking/">Domestic trucking</a></li>
+            <li><a href="../../warehousing/" data-nav="warehousing/">Warehousing</a></li>
+            <li><a href="../../roro-services/" data-nav="roro-services/">RORO</a></li>
+            <li><a href="../../last-mile-delivery/" data-nav="last-mile-delivery/">Last-mile delivery</a></li>
+          </ul>
+          <a href="../../industries" data-nav="industries"><span class="mono">02</span>Industries</a>
+          <a href="../../network" data-nav="network"><span class="mono">03</span>Network</a>
+          <a href="../../about-greenpoint/" data-nav="about-greenpoint/"><span class="mono">04</span>About</a>
+          <a href="../../faq" data-nav="faq"><span class="mono">05</span>FAQ</a>
+          <a href="../../contact-us/" data-nav="contact-us/"><span class="mono">06</span>Contact</a>
+          <a href="../../track-your-shipment/" data-nav="track-your-shipment/"><span class="mono">07</span>Track Shipment</a>
+          <a class="btn btn--green" href="../../quote" data-nav="quote">Request a Quote <span aria-hidden="true">→</span></a>
+      </nav>
+    </details>
+  </div>
+</header>
+<svg class="gpl-sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gpl-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="0"><stop offset="0" stop-color="#00451F"/><stop offset=".35" stop-color="#0A8A41"/><stop offset=".58" stop-color="#8CC63F"/></linearGradient>
+    <linearGradient id="gpl-grad-dark" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="0"><stop offset="0" stop-color="#0A8A41"/><stop offset=".55" stop-color="#8CC63F"/></linearGradient>
+    <!-- GPL mark: the logo sphere, 20 diamond tiles around a pole on the left limb. Each tile style sets t, its sweep order (0 forest edge, 1 lime edge). -->
+    <symbol id="gpl-mark" viewBox="0 0 100 100">
+      <g style="fill:var(--mark-fill,url(#gpl-grad))">
+        <path class="gpl-t" style="--t:0" d="M0 50l0 .3l1.4-4.1l.8-1.8l-1.5 2l-.5 1.7z"/>
+        <path class="gpl-t" style="--t:0" d="M.1 46.3l.2 .2l.4-.3l.8-1.2l.7-.6l-.5 .1l-.9-.2l-.5 .7z"/>
+        <path class="gpl-t" style="--t:0" d="M.3 53l0 .7l1.1-6.2l.9-3l-1.5 3.7l-.4 2.2z"/>
+        <path class="gpl-t" style="--t:0" d="M.6 42.9l.1 .7l.2 .5l.8 0l.6 .3l-.6-.8l-.5-1.4l-.4-.5z"/>
+        <path class="gpl-t" style="--t:0" d="M.8 53.3l.2 2.9l.6-7.8l.7-3.9l-1.3 5.1z"/>
+        <path class="gpl-t" style="--t:0" d="M1.4 52l.2 3.2l.3 2.4l0-9.2l.4-4l-.8 5.1z"/>
+        <path class="gpl-t" style="--t:0" d="M1.7 40.4l.6 4l-.2-3.2l.5-6.4l-.7 2.8z"/>
+        <path class="gpl-t" style="--t:0" d="M1.9 50.4l.3 3.7l.7 3.7l-.7-9.8l.1-3.6z"/>
+        <path class="gpl-t" style="--t:0" d="M2.2 40.9l.1 3.6l.2-4l1.3-7.9l-.6 1.8l-.6 2.6l-.3 2.1z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.3 6.6l.7 3l.9 2.7l.1-.2l-1.8-9.4z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.6-3.9l2.1-9l-1.1 2.8l-.9 3.6z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.9 5.7l1 2.4l1.2 1.9l.1-.2l-1.8-5.7l-.9-2.2z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.8-3.5l3-9.3l-1.4 2.8l-1.1 3.3z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l1.5 4.2l1.3 1.6l1.4 1l.1-.3l-2-3.4l-.4-.7l-1.3-1.4z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.9-2.5l3.9-8.7l-.1-.2l-1.5 2.3l-1.4 2.8z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l2 2.3l1.5 .6l1.5 .1l.1-.4l-.5-.5l-2.1-1.6l-.7-.2l-1.2 0z"/>
+        <path class="gpl-t" style="--t:.1" d="M2.3 44.4l.9-1.7l1.4-1.9l3.1-5l0-.3l-1.6 1.6l-1.6 2.1z"/>
+        <path class="gpl-t" style="--t:.1" d="M2.3 44.4l.9 0l1.3 .3l.4-.1l2.3-1l.6-.4l.1-.3l-1.6-.3l-1.5 .1z"/>
+        <path class="gpl-t" style="--t:.1" d="M2.3 44.4l.8-.8l1.6-1l.6-.5l2.7-2.9l0-.2l-1.7 .6l-1.6 1.2z"/>
+        <path class="gpl-t" style="--t:.1" d="M3.1 58.4l.8 5.6l.5 2.2l1.6 3.2l2 3l.2-.1l-1.9-6.8l-1.9-3.7l-1.2-3.4z"/>
+        <path class="gpl-t" style="--t:.1" d="M4.4 57.3l1.5 7.1l.5 1l1.9 2.6l2.2 2.2l.2-.2l-2.4-7.2l-.6-1l-1.9-2.3l-1.3-2.3z"/>
+        <path class="gpl-t" style="--t:.1" d="M5.7 55l2.1 6.7l.6 1l2.2 1.7l2.5 1.3l.1-.5l-3-6.8l-.7-.8l-2.3-1.4l-1.4-1.4z"/>
+        <path class="gpl-t" style="--t:.1" d="M6.4 31l.1 .1l2-3l2.6-3.2l3.5-6.2l-.2-.2l-2.6 2.4l-2.3 2.7l-1 2.1z"/>
+        <path class="gpl-t" style="--t:.1" d="M6.8 51.6l2.8 5.8l.6 .7l2.4 .7l2.7 .2l.1-.6l-3.7-5.9l-.7-.4l-2.2-.2l-1.9-.6z"/>
+        <path class="gpl-t" style="--t:.1" d="M7.4 32.5l.1 .2l1.8-1.9l2.4-1.9l.7-.7l4.1-6.4l-.1-.4l-2.7 1.6l-2.5 2l-.7 1z"/>
+        <path class="gpl-t" style="--t:.1" d="M7.7 47.5l3.4 4.3l.7 .4l2.5-.4l2.7-.8l.1-.6l-2.2-2.4l-2.1-2l-.8-.1l-2.2 .8l-2 .5z"/>
+        <path class="gpl-t" style="--t:.1" d="M8.3 73.1l1.8 4.8l.5 1.2l.7 .9l3.5 3.3l2.2 1.7l.3-.1l-3.1-6.1l-.7-.9l-3.1-2.7l-1.9-2.2z"/>
+        <path class="gpl-t" style="--t:.1" d="M8 35.1l0 .2l1.7-.9l2.6-.9l.8-.5l4.6-5.9l0-.5l-2.8 .6l-2.5 1.1l-.7 .8z"/>
+        <path class="gpl-t" style="--t:.1" d="M8.2 43.2l1.9 1l1.9 1.4l.8 .1l2.5-1.4l2.7-1.8l.1-.6l-2.5-1.5l-2.3-1l-.8 .2l-4.3 3.3z"/>
+        <path class="gpl-t" style="--t:.1" d="M8.3 38.7l0 .3l2-.1l2.2 .4l.8-.2l5-4.9l-.1-.5l-2.6-.5l-2.5 .1l-.7 .5z"/>
+        <path class="gpl-t" style="--t:.2" d="M10.9 70.8l2.7 6.9l.8 1l3 1.8l3.3 1.3l.2-.3l-3.5-7.1l-.8-.8l-2.9-1.3l-2.6-1.8z"/>
+        <path class="gpl-t" style="--t:.2" d="M13.5 66.1l3.3 7.3l.8 .8l3.2 .8l3.5 .3l.2-.6l-4-7.4l-.9-.6l-3.1-.3l-2.8-.7z"/>
+        <path class="gpl-t" style="--t:.2" d="M14.9 18l.2 .1l2.4-1.6l3.6-1.9l.9-.7l4.4-5.3l-.2-.1l-2.3 .9l-4.5 2.5l-.8 .8l-.8 1z"/>
+        <path class="gpl-t" style="--t:.2" d="M15.7 59.3l3.9 7l.9 .6l3.3-.3l3.5-.7l.3-.8l-4.7-7.1l-1-.4l-3.1 .8l-2.9 .3z"/>
+        <path class="gpl-t" style="--t:.3" d="M16.9 20.9l.1 .3l3-1l3.1-.6l1-.6l5.1-6.1l-.2-.4l-3.5 .5l-3.4 1l-.9 .7z"/>
+        <path class="gpl-t" style="--t:.3" d="M17.5 85.5l2.4 3.4l1 1.2l.9 .7l4.6 2.3l2.9 1.1l.3-.2l-2-2.1l-2-2.6l-.9-.6l-3.6-1.5l-3.3-1.8z"/>
+        <path class="gpl-t" style="--t:.3" d="M17.5 51.2l4.6 6l.9 .4l3.4-1.3l3.4-1.7l.2-.9l-5.4-6.1l-.9-.1l-3.1 1.7l-3 1.4z"/>
+        <path class="gpl-t" style="--t:.3" d="M18.2 26.3l.1 .5l2.9 0l3 .5l1-.4l5.7-6.3l-.1-.6l-3.4-.6l-3.3 0l-1 .6z"/>
+        <path class="gpl-t" style="--t:.3" d="M18.6 42.5l2.5 2l2.6 2.5l1 .1l6.6-4.6l.1-.9l-3-2.5l-2.9-2.1l-1 .1l-5.9 4.7z"/>
+        <path class="gpl-t" style="--t:.3" d="M18.8 33.5l0 .6l2.8 1.1l2.8 1.5l1-.1l6.3-5.8l-.1-.8l-3.2-1.6l-3.1-1.1l-1.1 .4z"/>
+        <path class="gpl-t" style="--t:.3" d="M21.2 82.3l3.7 6.2l1 .6l2.8 .7l2.9 .4l2 .2l.4-.5l-4.2-6.2l-1.1-.6l-3.7-.4l-3.5-.8z"/>
+        <path class="gpl-t" style="--t:.3" d="M23.4 7.7l3.9-2l3.8-1.5l3.1-1.6l1.7-.6l-3.3 1.1l-3.2 1.3l-3.2 1.6z"/>
+        <path class="gpl-t" style="--t:.3" d="M23.4 7.7l3.9-2l3.8-1.5l3.1-1.6l1.7-.6l-3.3 1.1l-3.2 1.3l-3.2 1.6z"/>
+        <path class="gpl-t" style="--t:.4" d="M24.8 75.7l4.1 7.1l1 .6l4-.2l4-.7l.3-.7l-4.6-7.2l-1.1-.5l-3.8 .7l-3.6 .3z"/>
+        <path class="gpl-t" style="--t:.4" d="M30.1 95.9l5.9 2.1z"/>
+        <path class="gpl-t" style="--t:.4" d="M26.8 8.1l.2 .2l3.7-1l3.8-.5l1.1-.4l2.5-2.1l2.5-1.7l-.3-.2l-3.1 .3l-4.9 1.1l-1.1 .5l-1.1 .8z"/>
+        <path class="gpl-t" style="--t:.4" d="M28 66.2l4.7 7.5l1 .4l4-1.2l4-1.6l.3-1l-5.2-7.5l-1.1-.3l-3.8 1.6l-3.7 1.3z"/>
+        <path class="gpl-t" style="--t:.4" d="M29.6 12.2l.2 .5l3.6 0l3.7 .6l1.1-.3l5.6-5.2l-.2-.5l-2-.4l-2.9-.3l-3 0l-1 .4z"/>
+        <path class="gpl-t" style="--t:.4" d="M29.9 94.5l2.8 2.1l1.4 .8l1.1 .3l4.8 1l3.5 .4l.4-.2l-2.3-1.2l-2.2-1.7l-1-.3l-4.2-.4l-4-.9z"/>
+        <path class="gpl-t" style="--t:.4" d="M30.5 54.7l5.3 7.1l1.1 .3l3.9-2.1l3.9-2.3l.1-1.1l-5.8-7.2l-1.1-.2l-3.7 2.5l-3.6 2.1z"/>
+        <path class="gpl-t" style="--t:.4" d="M31.5 19.7l.1 .7l3.5 1.1l3.5 1.6l1.2-.2l6.2-5.9l-.1-.8l-3.8-1.7l-3.8-1.1l-1.1 .3z"/>
+        <path class="gpl-t" style="--t:.5" d="M32 42.5l3 2.9l2.9 3.3l1.2 .1l7.3-5.6l.1-1.1l-3.2-3.3l-3.2-2.9l-1.2 0l-6.8 5.7z"/>
+        <path class="gpl-t" style="--t:.5" d="M32.3 29.8l0 .8l3.3 2.2l3.3 2.5l1.1 0l6.8-6.2l0-1l-3.5-2.5l-3.5-2.2l-1.2 .2z"/>
+        <path class="gpl-t" style="--t:.5" d="M34.3 90.7l2 2.4l1.9 2l.4 .4l1.1 .3l3.2-.1l3.2-.3l2.1-.4l.4-.5l-2.3-2.2l-2.2-2.6l-1.1-.3l-4.2 .7l-4.2 .1z"/>
+        <path class="gpl-t" style="--t:.5" d="M39.9 1l3.2-.5l5.1-.5l-3.6 .3z"/>
+        <path class="gpl-t" style="--t:.5" d="M38.6 82.8l4.6 6.3l1.1 .3l3.9-1.1l3.9-1.4l.7-.3l.3-.8l-4.8-6.3l-1.1-.2l-4.2 1.6l-4.1 1.2z"/>
+        <path class="gpl-t" style="--t:.6" d="M40.9 2.2l.3 .2l4.1 .1l4.1 .6l1.1-.1l2.6-1.1l2.4-.8l-.3-.2l-3.4-.5l-5-.2l-1.1 .1l-1.6 .4z"/>
+        <path class="gpl-t" style="--t:.6" d="M42.4 71.4l5 7.2l1.1 .3l4.2-2l4.1-2.4l.3-1l-5.2-7.3l-1.1-.2l-4.1 2.4l-4 2z"/>
+        <path class="gpl-t" style="--t:.6" d="M44.3 7.2l.2 .5l4 1.2l3.9 1.7l1.2-.1l2.8-2l2.7-1.7l-.2-.6l-2-.9l-3.1-1.1l-3-.8l-1.2 .1l-.4 .2l-2.4 1.6z"/>
+        <path class="gpl-t" style="--t:.6" d="M44.2 99.2l2.7 .7l3.3 .1l4.7-.2l3.8-.7l-1.8-.1l-2.7-.7l-1.1 0l-3.9 .6l-4.7 .2z"/>
+        <path class="gpl-t" style="--t:.6" d="M45.3 57.8l5.6 7.6l1.1 .2l7.9-5.6l.2-1.1l-5.8-7.6l-1.1-.1l-7.7 5.5z"/>
+        <path class="gpl-t" style="--t:.6" d="M46.5 16.1l.1 .8l3.8 2.2l3.6 2.6l1.2 0l6.1-5.2l-.1-.8l-.6-.5l-3.5-2.3l-3.5-2l-1.2 .1z"/>
+        <path class="gpl-t" style="--t:.6" d="M47.1 43.2l6.2 7.2l1.1 .2l7.4-6.1l.1-1.1l-6.4-7.3l-1.1-.1l-7.2 6.1z"/>
+        <path class="gpl-t" style="--t:.6" d="M47.5 28.1l0 1l3.5 3l3.3 3.3l1.2 0l6.8-5.9l0-1l-3.5-3.3l-3.6-3l-1.1 0z"/>
+        <path class="gpl-t" style="--t:.7" d="M48.9 95.2l1.9 1.4l1.8 1.2l.8 .3l1.1 0l2.9-.7l3.1-1.1l2.5-.9l.3-.5l-2.2-1.2l-2.2-1.7l-1.1 0l-4.2 1.5l-4.3 1.2z"/>
+        <path class="gpl-t" style="--t:.7" d="M53.4 86.7l2.3 2.6l2.3 2.2l1.1 0l3.5-1.6l3.7-2.1l1-.7l.3-.7l-2.2-2.2l-2.2-2.6l-1.1-.1l-4.2 2.4l-4.2 2z"/>
+        <path class="gpl-t" style="--t:.7" d="M56 1l.3 .2l4.5 1.3l3.6 1.6l1.1 .2l2.4-.1l2.2 .3l-3.6-1.7l-4.4-1.3l-3.1-.6z"/>
+        <path class="gpl-t" style="--t:.8" d="M57.5 74.6l4.8 6.3l1.1 .1l4-2.7l3.9-2.9l.2-.9l-4.7-6.4l-1.1-.1l-3.9 2.9l-4 2.7z"/>
+        <path class="gpl-t" style="--t:.8" d="M59.1 99.1l3.1-.6l3.5-1l3.3-1.2l3.2-1.5l-1.6 .7l-3 .7l-4.4 1.7z"/>
+        <path class="gpl-t" style="--t:.8" d="M59.5 6.2l.2 .6l3.9 2.2l3.8 2.5l1.1 .3l2.5-1.2l2.4-.8l-.2-.5l-2.1-1.6l-2.9-1.8l-2.5-1.4l-1.1-.2l-.8 .2l-2.1 .7z"/>
+        <path class="gpl-t" style="--t:.8" d="M61.9 15.7l.1 .9l3.6 3l3.5 3.2l1.1 .2l5.5-3.7l-.2-.8l-.5-.6l-3.2-3l-3.2-2.7l-1.1-.2l-2.7 1.7z"/>
+        <path class="gpl-t" style="--t:.8" d="M63 28.6l0 1.1l3.3 3.5l3.2 3.7l1 .2l6.1-5.1l0-1.1l-3.1-3.7l-3.2-3.5l-1.1-.2z"/>
+        <path class="gpl-t" style="--t:.8" d="M63.6 95.2l1.6 .5l1.4 .3l1.2 0l1.1-.3l4.8-2.7l2.7-1.8l.3-.4l-1.8-.2l-2-.6l-1 .3l-3.9 2.4l-4.1 2z"/>
+        <path class="gpl-t" style="--t:.9" d="M68 87.1l2.1 1.7l1.9 1.1l.1 .1l1-.3l5.8-4.3l1.4-1.3l.3-.6l-1.8-1.2l-1.9-1.7l-1 .2l-3.7 2.9l-3.9 2.6z"/>
+        <path class="gpl-t" style="--t:.9" d="M76.4 92.5l2.4-1.6l2.9-2.2z"/>
+        <path class="gpl-t" style="--t:.9" d="M73.8 9.5l.2 .6l3.5 2.9l3.2 3.3l.9 .5l2.1-.3l1.8 .3l-.2-.5l-2.2-2.4l-4-3.7l-1-.6l-1-.2l-1.6-.1z"/>
+        <path class="gpl-t" style="--t:1" d="M77 90.9l2.1-.6l1.9-1.1l3.5-3.1l3.1-3.3l-1.3 .9l-1.6 .6l-.8 .5l-3.2 3l-3.4 2.7z"/>
+        <path class="gpl-t" style="--t:1" d="M80.8 83.9l1.7 .6l1.6 .1l.8-.6l2.6-2.8l2.8-3.4l.2-.5l-1.3-.1l-1.3-.5l-.7 .3l-2.9 3.2l-3.2 3z"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+<!-- /chrome:header -->
+<main id="main">
+  <section class="phero" aria-labelledby="page-title">
+    <div class="wrap phero__in">
+      <ul class="phero__meta mono">
+        <li><span class="k">PG.</span> 00 · Styleguide</li>
+        <li><span class="k">SYS.</span> The Production Line</li>
+        <li><span class="k">ED.</span> Green Point Logistics</li>
+        <li><span class="k">REV.</span> Foundation 2026-10</li>
+      </ul>
+      <h1 class="phero__title" id="page-title">Every component, one sheet<span class="dot">.</span></h1>
+      <p class="phero__lead">The shared design system for gpl.com.eg: paper and ink from the Three Stars site, with Green Point green sampled from the logo. Markup for each block is in research/FOUNDATION-NOTES.md.</p>
+      <div class="phero__actions">
+        <a class="btn btn--green btn--lg" href="#cta-title">Request a Quote <span aria-hidden="true">→</span></a>
+        <a class="btn btn--line btn--lg" href="#rtl-title">Arabic sample <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="tokens-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">01</p>
+        <h2 class="sec__title" id="tokens-title">Colour tokens.</h2>
+        <p class="sec__note mono">Names only in page CSS</p>
+      </header>
+      <ul class="sg-swatches">
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--forest)"></div><p class="sg-swatch__meta"><b>--forest</b><span class="mono" dir="ltr">#00451F</span><span>CTA band, .btn--green · paper text 9.94:1</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--green)"></div><p class="sg-swatch__meta"><b>--green</b><span class="mono" dir="ltr">#0A8A41</span><span>Rules, underlines, big numerals</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--lime)"></div><p class="sg-swatch__meta"><b>--lime</b><span class="mono" dir="ltr">#8CC63F</span><span>Decorative; text only on ink</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--green-ink)"></div><p class="sg-swatch__meta"><b>--green-ink</b><span class="mono" dir="ltr">#006B34</span><span>Text and focus · 5.90:1 on paper</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--green-grad)"></div><p class="sg-swatch__meta"><b>--green-grad</b><span class="mono">forest → green → lime</span><span>Logo gradient</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--paper)"></div><p class="sg-swatch__meta"><b>--paper</b><span class="mono" dir="ltr">#F3F1EC</span><span>Page background</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--paper-hi)"></div><p class="sg-swatch__meta"><b>--paper-hi</b><span class="mono" dir="ltr">#FAF9F5</span><span>Raised panels</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--ink)"></div><p class="sg-swatch__meta"><b>--ink</b><span class="mono" dir="ltr">#111111</span><span>Text, rules, footer</span></p></li>
+        <li class="sg-swatch"><div class="sg-swatch__chip" style="background:var(--ink-2)"></div><p class="sg-swatch__meta"><b>--ink-2</b><span class="mono" dir="ltr">#4A4A47</span><span>Secondary text · 7.88:1</span></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec sec--flush" aria-labelledby="type-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">02</p>
+        <h2 class="sec__title" id="type-title">Type.</h2>
+        <p class="sec__note mono">Archivo · IBM Plex Mono · IBM Plex Sans Arabic</p>
+      </header>
+      <div class="sg-type">
+        <div class="sg-type__row"><p class="mono">.phero__title</p><p class="phero__title" style="margin:0;font-size:clamp(44px,6vw,96px)">Clearance, on time<span class="dot">.</span></p></div>
+        <div class="sg-type__row"><p class="mono">.sec__title</p><p class="sec__title">No demurrage surprises.</p></div>
+        <div class="sg-type__row"><p class="mono">.sec__lead</p><p class="sec__lead" style="margin:0">One partner for sea, air, trucking, warehousing and customs clearance from Alexandria.</p></div>
+        <div class="sg-type__row"><p class="mono">body 17px</p><p>Send your documents before the vessel arrives and we run the clearance inside the free time. Invoices list every charge, line by line.</p></div>
+        <div class="sg-type__row"><p class="mono">.mono</p><p class="mono">ALX · DEK · SOK · PSD · DAM</p></div>
+        <div class="sg-type__row"><p class="mono">.num</p><p class="num" style="font-size:96px">5<b>+</b></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="buttons-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">03</p>
+        <h2 class="sec__title" id="buttons-title">Buttons and links.</h2>
+      </header>
+      <div class="sg-demo">
+        <a class="btn btn--green" href="#buttons-title">Request a Quote <span aria-hidden="true">→</span></a>
+        <a class="btn btn--line" href="#buttons-title">Track Shipment</a>
+        <a class="btn btn--ink" href="#buttons-title">Ink button</a>
+        <a class="btn btn--green btn--lg" href="#buttons-title">Large <span aria-hidden="true">→</span></a>
+        <a class="btn btn--green btn--xl" href="#buttons-title">Extra large <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="sg-demo">
+        <a class="link-arrow mono" href="#buttons-title">All services <span aria-hidden="true">→</span></a>
+        <a class="link-arrow mono" href="#buttons-title">Download the profile <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="sg-demo sg-forest cta">
+        <a class="btn btn--green" href="#buttons-title">.btn--green on a dark band <span aria-hidden="true">→</span></a>
+        <a class="btn btn--line" href="#buttons-title">.btn--line</a>
+        <a class="btn btn--lime" href="#buttons-title">.btn--lime</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--ink" aria-labelledby="ink-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">04</p>
+        <h2 class="sec__title" id="ink-title">An ink band for statements.</h2>
+        <p class="sec__note mono">.sec--ink</p>
+      </header>
+      <p class="sec__lead">Lime index, paper text, buttons switch to their dark-band versions automatically.</p>
+      <div class="sg-demo">
+        <a class="btn btn--green" href="#ink-title">Request a Quote <span aria-hidden="true">→</span></a>
+        <a class="link-arrow mono" href="#ink-title">Read more <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="nums-title">
+    <div class="wrap sg-stack">
+      <header class="sec__head">
+        <p class="sec__idx mono">05</p>
+        <h2 class="sec__title" id="nums-title">Numbers.</h2>
+        <p class="sec__note mono">Sample values for layout only</p>
+      </header>
+      <dl class="nums">
+        <div class="nums__cell"><dt class="mono">Founded in Alexandria</dt><dd><span class="num">2021</span></dd></div>
+        <div class="nums__cell"><dt class="mono">Second branch</dt><dd><span class="num">2022</span></dd></div>
+        <div class="nums__cell"><dt class="mono">Ports served</dt><dd><span class="num">5</span><span class="nums__unit mono">Med · Red Sea</span></dd></div>
+        <div class="nums__cell"><dt class="mono">Years of experience</dt><dd><span class="num">5<b>+</b></span></dd></div>
+      </dl>
+      <dl class="mini" style="max-width:420px">
+        <div><dt class="mono">Modes · sea, air, land</dt><dd class="num">3</dd></div>
+        <div><dt class="mono">Ports</dt><dd class="num">5</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec sec--flush" aria-labelledby="spec-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">06</p>
+        <h2 class="sec__title" id="spec-title">Spec table.</h2>
+      </header>
+      <table class="spec__table">
+        <caption class="sr-only">Sample service specification</caption>
+        <tbody>
+          <tr><th scope="row" class="mono">Modes</th><td>FCL, LCL and consolidation</td></tr>
+          <tr><th scope="row" class="mono">Ports</th><td>Alexandria, Dekheila, Damietta, Port Said, Sokhna</td></tr>
+          <tr><th scope="row" class="mono">Documents</th><td>Commercial invoice, packing list, bill of lading, certificate of origin</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="steps-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">07</p>
+        <h2 class="sec__title" id="steps-title">Steps.</h2>
+        <p class="sec__note mono">Bars draw in sequence</p>
+      </header>
+      <ol class="steps">
+        <li class="step"><span class="step__n" aria-hidden="true">01</span><h3 class="step__title">Pre-alert</h3><p class="step__copy">Send the booking and documents before the vessel arrives.</p></li>
+        <li class="step"><span class="step__n" aria-hidden="true">02</span><h3 class="step__title">ACI filing</h3><p class="step__copy">Cargo data registered ahead of shipment.</p></li>
+        <li class="step"><span class="step__n" aria-hidden="true">03</span><h3 class="step__title">Inspection</h3><p class="step__copy">We attend the customs inspection at the terminal.</p></li>
+        <li class="step"><span class="step__n" aria-hidden="true">04</span><h3 class="step__title">Release</h3><p class="step__copy">Duties settled, release issued, container gated out.</p></li>
+        <li class="step"><span class="step__n" aria-hidden="true">05</span><h3 class="step__title">Delivery</h3><p class="step__copy">Trucked to your warehouse inside the free time.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec sec--flush" aria-labelledby="cards-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">08</p>
+        <h2 class="sec__title" id="cards-title">Cards.</h2>
+        <p class="sec__note mono">Whole card is the link</p>
+      </header>
+      <ul class="cards">
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 14.5h19l-3 5h-13zM6.5 14.5v-4h11v4M10 10.5V6.5h4v4"/></svg><span class="card__no mono">01</span></div>
+          <h3 class="card__title">Sea freight</h3>
+          <p class="card__text">FCL, LCL and consolidation through every Egyptian port.</p>
+          <a class="link-arrow mono" href="#cards-title">Sea freight <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 12h19M13 12 8.5 4.5h2.2L18 12l-7.3 7.5H8.5L13 12M5.5 12 3.5 8.5M5.5 12l-2 3.5"/></svg><span class="card__no mono">02</span></div>
+          <h3 class="card__title">Air freight</h3>
+          <p class="card__text">Urgent and high-value cargo through Cairo and Borg El Arab.</p>
+          <a class="link-arrow mono" href="#cards-title">Air freight <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 2.5h8l4 4v15H6zM14 2.5v4h4M9 11h6M9 14.5h6M9 18h4"/></svg><span class="card__no mono">03</span></div>
+          <h3 class="card__title">Customs clearance</h3>
+          <p class="card__text">Import, export, ACI and free zones, at every major port.</p>
+          <a class="link-arrow mono" href="#cards-title">Customs clearance <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 6.5h12v10H2zM14 9.5h4l3.5 3.5v3.5H14"/><circle cx="6" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/></svg><span class="card__no mono">04</span></div>
+          <h3 class="card__title">Inland transportation</h3>
+          <p class="card__text">Port-to-door container haulage across Egypt.</p>
+          <a class="link-arrow mono" href="#cards-title">Inland transportation <span aria-hidden="true">→</span></a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="figs-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">09</p>
+        <h2 class="sec__title" id="figs-title">Illustration, figure, callout.</h2>
+      </header>
+      <div class="grid">
+        <figure class="illo" style="grid-column:span 6">
+          <svg viewBox="0 0 480 260" width="480" height="260" role="img" aria-labelledby="illo-t">
+            <title id="illo-t">Sample line drawing of a 40-foot container on a trailer</title>
+            <g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round">
+              <rect x="40" y="70" width="330" height="120" fill="#FAF9F5"/>
+              <path d="M70 70v120M100 70v120M130 70v120M160 70v120M190 70v120M220 70v120M250 70v120M280 70v120M310 70v120M340 70v120"/>
+              <path d="M30 190h420M370 120h50l30 40v30h-80z" fill="#FAF9F5"/>
+              <circle cx="90" cy="208" r="16" fill="#FAF9F5"/><circle cx="130" cy="208" r="16" fill="#FAF9F5"/><circle cx="400" cy="208" r="16" fill="#FAF9F5"/>
+              <path d="M385 128h28l20 28h-48z" stroke="#0A8A41"/>
+            </g>
+            <text x="40" y="58" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".8" fill="#4A4A47">40′ HC · 12.03 M</text>
+          </svg>
+          <figcaption class="mono"><span>Fig. 01 · Container trailer</span><span>Not to scale</span></figcaption>
+        </figure>
+        <figure class="fig" style="grid-column:span 6">
+          <img src="../../assets/img/brand/logo.webp" width="942" height="432" loading="lazy" alt="Green Point Logistics logo" style="object-fit:contain;background:var(--paper-hi)">
+          <figcaption class="mono"><span>Fig. 02 · .fig</span><span>3:2 crop</span></figcaption>
+        </figure>
+        <aside class="callout" role="note" style="grid-column:1 / -1">
+          <p class="callout__label mono">Demurrage</p>
+          <p class="callout__title">Free days start at discharge, not at clearance.</p>
+          <p class="callout__text">Send documents before the vessel arrives so clearance runs inside the free time.</p>
+        </aside>
+        <aside class="callout callout--ink" role="note" style="grid-column:1 / -1">
+          <p class="callout__label mono">.callout--ink</p>
+          <p class="callout__text">Dark variant for emphasis on paper sections.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--flush" aria-labelledby="faq-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">10</p>
+        <h2 class="sec__title" id="faq-title">FAQ.</h2>
+      </header>
+      <div class="faq-wrap faq">
+        <details class="faq__item" name="faq">
+          <summary class="faq__q">Which documents do you need for an import clearance?</summary>
+          <div class="faq__a"><p>Sample answer text. The question numbers itself and the plus turns into a cross when open.</p></div>
+        </details>
+        <details class="faq__item" name="faq">
+          <summary class="faq__q">Do you handle ACI filings?</summary>
+          <div class="faq__a"><p>Sample answer text.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec routes" aria-labelledby="routes-title">
+    <div class="wrap">
+      <header class="sec__head">
+        <p class="sec__idx mono">11</p>
+        <h2 class="sec__title" id="routes-title">Routes diagram.</h2>
+        <p class="sec__note mono">Flat fallback · globe loads via data-globe</p>
+      </header>
+      <div class="routes__grid">
+        <figure class="routes__map globe">
+          <svg class="globe__diagram" viewBox="0 0 720 420" aria-hidden="true" focusable="false">
+            <path class="route" pathLength="1" d="M120 220 H300 Q320 220 320 200 V90 Q320 70 340 70 H600"/>
+            <path class="route route--alt" pathLength="1" d="M120 220 H600"/>
+            <path class="route route--alt2" pathLength="1" d="M120 220 H300 Q320 220 320 240 V350 Q320 370 340 370 H600"/>
+            <circle class="node node--origin" cx="120" cy="220" r="14"/>
+            <circle class="node" cx="600" cy="70" r="10"/>
+            <circle class="node" cx="600" cy="220" r="10"/>
+            <circle class="node" cx="600" cy="370" r="10"/>
+            <text x="120" y="266" text-anchor="middle" class="r-lbl r-lbl--big">ALEXANDRIA</text>
+            <text x="600" y="40" text-anchor="end" class="r-lbl r-lbl--big">EUROPE</text>
+            <text x="600" y="190" text-anchor="end" class="r-lbl r-lbl--big">AMERICAS</text>
+            <text x="600" y="340" text-anchor="end" class="r-lbl r-lbl--big">GULF</text>
+          </svg>
+          <figcaption class="sr-only">Sample route diagram from Alexandria to Europe, the Americas and the Gulf.</figcaption>
+        </figure>
+        <div class="routes__side">
+          <p>Side panel copy with a mini stats grid and a link.</p>
+          <a class="link-arrow mono" href="#routes-title">Services <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--flush" aria-labelledby="mark-title">
+    <div class="wrap sg-stack">
+      <header class="sec__head">
+        <p class="sec__idx mono">12</p>
+        <h2 class="sec__title" id="mark-title">The GPL mark and tile sweep.</h2>
+        <p class="sec__note mono"><button class="btn btn--line" type="button" data-sg-replay>Replay sweep</button></p>
+      </header>
+      <div class="sg-marks">
+        <div><svg class="sweep" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#gpl-mark"/></svg><p class="mono">use #gpl-mark · .sweep</p></div>
+        <div><img src="../../assets/img/brand/gpl-mark.svg" width="160" height="160" alt="Green Point Logistics mark"><p class="mono">gpl-mark.svg</p></div>
+        <div class="sg-forest"><svg class="sweep mark--dark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#gpl-mark"/></svg><p class="mono">.mark--dark</p></div>
+        <div class="sg-dark"><svg class="mark--mono" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#gpl-mark"/></svg><p class="mono">.mark--mono</p></div>
+        <div class="sg-dark"><img src="../../assets/img/brand/logo-white.svg" width="200" height="92" alt="Green Point Logistics logo, white" style="width:200px;height:auto"><p class="mono">logo-white.svg</p></div>
+        <div><img src="../../assets/img/brand/logo.svg" width="200" height="92" alt="Green Point Logistics logo, black" style="width:200px;height:auto"><p class="mono">logo.svg</p></div>
+      </div>
+      <div class="sg-gallery" data-gallery>
+        <a href="../../assets/img/brand/logo.webp" data-caption="Full-colour logo (lightbox demo)"><img src="../../assets/img/brand/logo.webp" width="942" height="432" loading="lazy" alt="Green Point Logistics logo"></a>
+        <a href="../../assets/img/brand/gpl-mark.svg" data-caption="The GPL mark"><img src="../../assets/img/brand/gpl-mark.svg" width="100" height="100" loading="lazy" alt="Green Point Logistics mark"></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--paper-hi" dir="rtl" lang="ar" aria-labelledby="rtl-title">
+    <div class="wrap sg-stack">
+      <header class="sec__head">
+        <p class="sec__idx mono">13</p>
+        <h2 class="sec__title" id="rtl-title">عينة الاتجاه من اليمين لليسار.</h2>
+        <p class="sec__note mono"><bdi lang="en">dir="rtl" lang="ar"</bdi></p>
+      </header>
+      <p class="sec__lead">شريك واحد للشحن البحري والجوي والنقل والتخزين والتخليص الجمركي من الإسكندرية، بفواتير واضحة ودون مفاجآت في رسوم الأرضيات.</p>
+      <div class="sg-demo">
+        <a class="btn btn--green" href="#rtl-title">اطلب عرض سعر <span aria-hidden="true">→</span></a>
+        <a class="btn btn--line" href="#rtl-title">تتبّع الشحنة</a>
+        <a class="link-arrow mono" href="#rtl-title">كل الخدمات <span aria-hidden="true">→</span></a>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="step__n" aria-hidden="true">01</span><h3 class="step__title">الإخطار المسبق</h3><p class="step__copy">أرسل الحجز والمستندات قبل وصول السفينة.</p></li>
+        <li class="step"><span class="step__n" aria-hidden="true">02</span><h3 class="step__title">التسجيل المسبق للشحنات</h3><p class="step__copy">تسجيل بيانات الشحنة على منظومة <bdi lang="en">ACI</bdi> قبل الشحن.</p></li>
+        <li class="step"><span class="step__n" aria-hidden="true">03</span><h3 class="step__title">الإفراج</h3><p class="step__copy">سداد الرسوم وإصدار إذن الإفراج وخروج الحاوية.</p></li>
+      </ol>
+      <ul class="cards cards--3">
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2.5 14.5h19l-3 5h-13zM6.5 14.5v-4h11v4M10 10.5V6.5h4v4"/></svg><span class="card__no mono">01</span></div>
+          <h3 class="card__title">الشحن البحري</h3>
+          <p class="card__text">حاويات كاملة وبضائع مجمعة عبر كل الموانئ المصرية.</p>
+          <a class="link-arrow mono" href="#rtl-title">الشحن البحري <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 2.5h8l4 4v15H6zM14 2.5v4h4M9 11h6M9 14.5h6M9 18h4"/></svg><span class="card__no mono">02</span></div>
+          <h3 class="card__title">التخليص الجمركي</h3>
+          <p class="card__text">استيراد وتصدير ومناطق حرة في الموانئ الرئيسية.</p>
+          <a class="link-arrow mono" href="#rtl-title">التخليص الجمركي <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card">
+          <div class="card__top"><svg class="card__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 6.5h12v10H2zM14 9.5h4l3.5 3.5v3.5H14"/><circle cx="6" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/></svg><span class="card__no mono">03</span></div>
+          <h3 class="card__title">النقل الداخلي</h3>
+          <p class="card__text">نقل الحاويات من الميناء إلى باب المصنع في كل أنحاء مصر.</p>
+          <a class="link-arrow mono" href="#rtl-title">النقل الداخلي <span aria-hidden="true">→</span></a>
+        </li>
+      </ul>
+      <table class="spec__table">
+        <caption class="sr-only">مثال لجدول مواصفات</caption>
+        <tbody>
+          <tr><th scope="row" class="mono">الموانئ</th><td>الإسكندرية، الدخيلة، دمياط، بورسعيد، العين السخنة</td></tr>
+          <tr><th scope="row" class="mono">الهاتف</th><td><a href="tel:+2034800912" dir="ltr">+20 3 480 0912</a></td></tr>
+        </tbody>
+      </table>
+      <aside class="callout" role="note">
+        <p class="callout__label mono">رسوم الأرضيات</p>
+        <p class="callout__title">أيام السماح تبدأ من التفريغ، لا من التخليص.</p>
+        <p class="callout__text">أرسل المستندات قبل وصول السفينة ليتم التخليص خلال فترة السماح.</p>
+      </aside>
+      <div class="faq">
+        <details class="faq__item">
+          <summary class="faq__q">ما المستندات المطلوبة للتخليص الجمركي على الواردات؟</summary>
+          <div class="faq__a"><p>نص إجابة تجريبي. يظهر رقم السؤال تلقائيًا.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="wrap cta__in">
+      <p class="sec__idx mono">14</p>
+      <h2 class="cta__title" id="cta-title">Ship your next container with one partner.</h2>
+      <p class="cta__lead">Tell us the cargo, the route and the ready date. We reply with a clear quote.</p>
+      <div class="cta__actions">
+        <a class="btn btn--green btn--xl" href="#page-title">Request a Quote <span aria-hidden="true">→</span></a>
+        <a class="btn btn--line btn--xl" href="#page-title">Contact us <span aria-hidden="true">→</span></a>
+      </div>
+      <svg class="cta__mark sweep" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#gpl-mark"/></svg>
+    </div>
+  </section>
+</main>
+<!-- chrome:footer -->
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div class="ftr__brand">
+      <a href="../../" data-nav="home" aria-label="Green Point Logistics, home"><img class="ftr__logo" src="../../assets/img/brand/logo-white.svg" width="190" height="87" loading="lazy" alt=""></a>
+      <p class="mono ftr__est">Est. 2021 · Alexandria</p>
+      <p class="ftr__group"><a href="https://threestarsfashion.com" target="_blank" rel="noopener noreferrer">A Three Stars Group company<span class="sr-only"> (opens in a new tab)</span></a></p>
+    </div>
+    <address class="ftr__addr">
+      <p class="mono">Head office · Alexandria</p>
+      <p>EL-Nasr St., Admin unit No. 52<br>Building No. 23, 5th Floor<br>El Manshya, Alexandria, Egypt</p>
+      <p class="mono">Call</p>
+      <p><a href="tel:+2034800912">+20 3 480 0912</a><br>
+          <a href="tel:+201222210198">+20 122 221 0198</a><br>
+          <a href="tel:+201222174535">+20 122 217 4535</a></p>
+    </address>
+    <div class="ftr__contact">
+      <p class="mono">Email</p>
+      <p><a href="mailto:info@gpl.com.eg">info@gpl.com.eg</a><br>
+          <a href="mailto:import@gpl.com.eg">import@gpl.com.eg</a><br>
+          <a href="mailto:export@gpl.com.eg">export@gpl.com.eg</a></p>
+      <p class="mono">Follow</p>
+      <ul class="ftr__social">
+        <li><a href="https://www.linkedin.com/company/green-point-logistics/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true" class="arr">↗</span></a></li>
+        <li><a href="https://www.facebook.com/GreenPointLogistics.EG" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8z"/></svg>Facebook<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true" class="arr">↗</span></a></li>
+        <li><a href="https://www.instagram.com/greenpointlogistics.eg/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.3-3.6a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6z"/></svg>Instagram<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true" class="arr">↗</span></a></li>
+      </ul>
+    </div>
+    <nav class="ftr__nav" aria-label="Services">
+      <p class="mono">Services</p>
+      <a href="../../sea-freight/" data-nav="sea-freight/">Sea freight</a>
+      <a href="../../air-freight/" data-nav="air-freight/">Air freight</a>
+      <a href="../../customs-clearance/" data-nav="customs-clearance/">Customs clearance</a>
+      <a href="../../inland-transportation/" data-nav="inland-transportation/">Inland transportation</a>
+      <a href="../../domestic-trucking/" data-nav="domestic-trucking/">Domestic trucking</a>
+      <a href="../../warehousing/" data-nav="warehousing/">Warehousing</a>
+      <a href="../../roro-services/" data-nav="roro-services/">RORO</a>
+      <a href="../../last-mile-delivery/" data-nav="last-mile-delivery/">Last-mile delivery</a>
+    </nav>
+    <nav class="ftr__nav" aria-label="Site">
+      <p class="mono">Site</p>
+      <a href="../../about-greenpoint/" data-nav="about-greenpoint/">About</a>
+      <a href="../../industries" data-nav="industries">Industries</a>
+      <a href="../../network" data-nav="network">Network</a>
+      <a href="../../faq" data-nav="faq">FAQ</a>
+      <a href="../../contact-us/" data-nav="contact-us/">Contact</a>
+      <a href="../../track-your-shipment/" data-nav="track-your-shipment/">Track Shipment</a>
+      <a href="../../quote" data-nav="quote">Request a Quote</a>
+      <a href="../../privacy-policy" data-nav="privacy-policy">Privacy policy</a>
+    </nav>
+    <p class="ftr__legal mono"><span>© 2026 Green Point Logistics. All rights reserved.</span> <a href="../../privacy-policy" data-nav="privacy-policy">Privacy policy</a></p>
+  </div>
+</footer>
+<!-- /chrome:footer -->
+<script type="module" src="../../assets/js/site.js"></script>
+<script type="module">
+  // Styleguide only: replay the tile sweep on demand.
+  document.querySelector("[data-sg-replay]")?.addEventListener("click", () => {
+    document.querySelectorAll(".sweep.is-in").forEach((mark) => {
+      mark.classList.remove("is-in");
+      void mark.getBoundingClientRect();
+      mark.classList.add("is-in");
+    });
+  });
+</script>
+</body>
+</html>

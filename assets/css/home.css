@@ -1,0 +1,636 @@
+/* Home page: the clearance-line page (prototypes/clearance-line) with the tile-sphere hero (styles in sphere.css).
+   Key figures, services, the scroll-pinned Clearance Line (one container, GPLU 210521 2, through nine stations),
+   industries, why GPL and the CTA. html.motion = JS on and motion allowed; without it the line is a static sheet.
+   --p (0–1) comes from a CSS view(block 0px) timeline on desktop, or from home/line.js (narrow screens, or browsers
+   without scroll timelines). Inline-axis layout is logical; --dir flips the horizontal track transform for RTL. */
+
+@property --p { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.home { --dir: 1; }
+[dir="rtl"] .home { --dir: -1; }
+
+/* ---------- 02 Key figures ---------- */
+.cl-nums__k { margin-inline-end: 8px; color: var(--green-ink); }
+.cl-nums .nums__unit { max-width: 24em; }
+@media (min-width: 900px) {
+  .cl-nums .nums__cell { min-height: 236px; }
+  .cl-nums .nums__cell:nth-child(3n + 1) { border-inline-start: 0; padding-inline-start: 0; }
+  .cl-nums .nums__cell:nth-child(n + 4) { border-top: 1px solid var(--rule); }
+}
+.cl-nums .nums__cell:nth-child(2) { --n: 1; }
+.cl-nums .nums__cell:nth-child(3) { --n: 2; }
+.cl-nums .nums__cell:nth-child(4) { --n: 3; }
+.cl-nums .nums__cell:nth-child(5) { --n: 4; }
+.cl-nums .nums__cell:nth-child(6) { --n: 5; }
+.motion .cl-nums.is-armed .num { opacity: 0; transform: translateY(24px); }
+.motion .cl-nums.is-in .num {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease, transform 0.9s var(--ease-out);
+  transition-delay: calc(var(--n, 0) * 70ms);
+}
+
+/* ---------- 03 Services ---------- */
+.cl-svc-foot {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 20px;
+  align-items: end;
+  margin-top: 32px;
+}
+.cl-svc-foot .callout { grid-column: 1 / 8; }
+.cl-svc-foot > .link-arrow { grid-column: 10 / 13; justify-self: end; }
+.cl-ind-link { margin-top: 28px; }
+.cl-card-ask { background: var(--paper-hi); }
+.cl-card-ask .card__icon { border-color: var(--green); }
+@media (max-width: 899px) {
+  .cl-svc-foot .callout, .cl-svc-foot > .link-arrow { grid-column: 1 / -1; justify-self: start; }
+}
+
+/* ---------- 04 The clearance line ---------- */
+.cl-intro { padding-bottom: 44px; }
+.cl-intro .sec__head { margin-bottom: 28px; }
+.cl-intro__body .sec__lead { margin-block: 0; }
+.cl-intro__src { margin-top: 16px; margin-inline-start: calc((100% + var(--gut)) / 12); color: var(--ink-2); font-size: 11px; }
+
+.cl {
+  --n: 9;
+  --seg: 72svh;
+  --t: calc(var(--p) * 9);
+
+  /* track index: holds on each station, moves to the next over the station's last 20% */
+  --x: calc(
+    clamp(0, (var(--t) - 0.8) * 5, 1) + clamp(0, (var(--t) - 1.8) * 5, 1) +
+    clamp(0, (var(--t) - 2.8) * 5, 1) + clamp(0, (var(--t) - 3.8) * 5, 1) +
+    clamp(0, (var(--t) - 4.8) * 5, 1) + clamp(0, (var(--t) - 5.8) * 5, 1) +
+    clamp(0, (var(--t) - 6.8) * 5, 1) + clamp(0, (var(--t) - 7.8) * 5, 1));
+  --step: calc(
+    clamp(0, (var(--x) - 0.5) * 100, 1) + clamp(0, (var(--x) - 1.5) * 100, 1) +
+    clamp(0, (var(--x) - 2.5) * 100, 1) + clamp(0, (var(--x) - 3.5) * 100, 1) +
+    clamp(0, (var(--x) - 4.5) * 100, 1) + clamp(0, (var(--x) - 5.5) * 100, 1) +
+    clamp(0, (var(--x) - 6.5) * 100, 1) + clamp(0, (var(--x) - 7.5) * 100, 1));
+
+  /* per-station process progress, complete before the track moves on */
+  --a0: clamp(0, (var(--t) - 0.08) / 0.66, 1);
+  --a1: clamp(0, (var(--t) - 1.08) / 0.66, 1);
+  --a2: clamp(0, (var(--t) - 2.08) / 0.66, 1);
+  --a3: clamp(0, (var(--t) - 3.08) / 0.66, 1);
+  --a4: clamp(0, (var(--t) - 4.08) / 0.66, 1);
+  --a5: clamp(0, (var(--t) - 5.08) / 0.66, 1);
+  --a6: clamp(0, (var(--t) - 6.08) / 0.66, 1);
+  --a7: clamp(0, (var(--t) - 7.08) / 0.66, 1);
+  --a8: clamp(0, (var(--t) - 8.08) / 0.66, 1);
+
+  /* 01 quote, booking, container confirmed */
+  --q1: clamp(0, var(--a0) / 0.3, 1);
+  --q2: clamp(0, (var(--a0) - 0.22) / 0.3, 1);
+  --solid: clamp(0, (var(--a0) - 0.4) / 0.35, 1);
+  --ok1: clamp(0, (var(--a0) - 0.78) / 0.16, 1);
+  /* 02 ACID */
+  --cells: clamp(0, (var(--a1) - 0.3) / 0.6, 1);
+  /* 03 seal */
+  --seal: clamp(0, (var(--a2) - 0.45) / 0.2, 1);
+  /* 04 loading: spreader down, lift, vessel in, set down on deck */
+  --sd4: clamp(0, var(--a3) / 0.2, 1);
+  --lf4: clamp(0, (var(--a3) - 0.22) / 0.24, 1);
+  --in4: clamp(0, (var(--a3) - 0.44) / 0.28, 1);
+  --dp4: clamp(0, (var(--a3) - 0.74) / 0.22, 1);
+  /* 05 paperwork chips */
+  --ck: clamp(0, (var(--a4) - 0.15) / 0.75, 1);
+  /* 06 discharge: spreader down, lift, vessel sails, set down on the quay */
+  --sd6: clamp(0, var(--a5) / 0.16, 1);
+  --lf6: clamp(0, (var(--a5) - 0.18) / 0.22, 1);
+  --out6: clamp(0, (var(--a5) - 0.42) / 0.26, 1);
+  --dp6: clamp(0, (var(--a5) - 0.7) / 0.2, 1);
+  /* 07 scan, declaration */
+  --scan: clamp(0, (var(--a6) - 0.06) / 0.56, 1);
+  --arch: calc(clamp(0, var(--a6) / 0.06, 1) * (1 - clamp(0, (var(--a6) - 0.64) / 0.08, 1)));
+  --decl: clamp(0, (var(--a6) - 0.66) / 0.3, 1);
+  /* 08 paid, released, gate */
+  --paid: clamp(0, var(--a7) / 0.3, 1);
+  --rel: clamp(0, (var(--a7) - 0.34) / 0.18, 1);
+  --gate: clamp(0, (var(--a7) - 0.6) / 0.26, 1);
+  /* 09 delivered, then the container resolves into the GPL mark */
+  --dlv: clamp(0, (var(--a8) - 0.2) / 0.3, 1);
+  --fade: clamp(0, (var(--a8) - 0.56) / 0.2, 1);
+  --fin: clamp(0, (var(--a8) - 0.62) / 0.34, 1);
+
+  --cy: calc((var(--lf4) - var(--dp4) + var(--lf6) - var(--dp6)) * -64px);
+  --shx: calc((1 - var(--in4) - var(--out6)) * 680px);
+  --sea: calc(clamp(0, (var(--t) - 2.8) * 5, 1) * (1 - clamp(0, (var(--t) - 5.8) * 5, 1)));
+
+  /* free-days clock: starts at discharge; illustrative five free days */
+  --day: clamp(0, (var(--t) - 5.72) * 1.25, 4);
+  --ci: calc(
+    clamp(0, (var(--t) - 5.72) * 100, 1) + clamp(0, (var(--day) - 1) * 100, 1) +
+    clamp(0, (var(--day) - 2) * 100, 1) + clamp(0, (var(--day) - 3) * 100, 1) +
+    clamp(0, (var(--t) - 8.5) * 100, 1));
+  --safe: clamp(0, (var(--t) - 8.5) * 10, 1);
+
+  position: relative;
+}
+.cl__pin { border-top: 1px solid var(--ink); }
+
+/* rail: station tabs */
+.cl-rail__list { display: grid; grid-template-columns: repeat(var(--n), auto); gap: 6px; }
+.cl-rail li { --on: 0; --done: 1; }
+.cl-rail a {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0 12px;
+  color: color-mix(in srgb, var(--ink) calc(var(--on) * 100%), var(--ink-2));
+  font-size: 11.5px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cl-rail a span {
+  padding: 3px 5px;
+  border: 1px solid currentColor;
+  background: color-mix(in srgb, var(--ink) calc(var(--on) * 100%), transparent);
+  color: color-mix(in srgb, var(--paper) calc(var(--on) * 100%), currentColor);
+}
+.cl-rail a::before, .cl-rail a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--rule);
+}
+.cl-rail a::after { background: var(--green); transform-origin: 0 50%; transform: scaleX(var(--done)); }
+[dir="rtl"] .cl-rail a::after { transform-origin: 100% 50%; }
+.cl-rail a:hover { color: var(--green-ink); }
+.cl-rail a:focus-visible { outline-offset: 1px; }
+@media (min-width: 900px) and (max-width: 1180px) {
+  .cl-rail a { flex-direction: column; align-items: flex-start; gap: 5px; white-space: normal; }
+}
+
+/* stage: the drawing frame */
+.cl-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--paper-hi);
+  background-image: radial-gradient(rgba(17, 17, 17, 0.13) 1px, transparent 1.2px);
+  background-size: 20px 20px;
+  border: 1px solid var(--ink);
+}
+.cl-stage__svg { flex: 1 1 auto; width: 100%; height: 100%; min-height: 0; }
+.cl-stage__svg text { font-family: var(--f-mono); }
+.lbl { font: 500 11px var(--f-mono); letter-spacing: 0.1em; fill: var(--ink-2); }
+.cl-code { fill: var(--green-ink); }
+
+/* station apparatus slides past the container */
+.st { transform: translateX(calc((var(--i) - var(--x)) * 640px)); }
+
+.cl-ruler__rail { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.cl-ruler__ticks { fill: none; stroke: var(--ink); stroke-width: 10; stroke-dasharray: 1 19; stroke-dashoffset: calc(var(--x) * 160px); opacity: 0.45; }
+.cl-ground { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.cl-slab { fill: url(#cl-hatch); }
+.cl-hatch path { stroke: var(--ink); stroke-opacity: 0.28; stroke-width: 1; }
+.cl-quay { fill: url(#cl-hatch); stroke: var(--ink); stroke-width: 1.2; }
+.cl-bollard { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.4; }
+
+.cl-sea { opacity: var(--sea); }
+.cl-sea path { fill: none; stroke: var(--ink); stroke-width: 1.4; }
+.cl-sea__a { stroke-dasharray: 22 10; stroke-dashoffset: calc(var(--t) * -90px); }
+.cl-sea__b { stroke-dasharray: 9 15; stroke-dashoffset: calc(var(--t) * -60px); opacity: 0.55; }
+.cl-sea__c { stroke-dasharray: 4 22; stroke-dashoffset: calc(var(--t) * -40px); opacity: 0.35; }
+
+.cl-road__edge { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.cl-road__dash { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 16 14; stroke-dashoffset: calc(var(--t) * -140px); opacity: 0.6; }
+.cl-truck__chassis { fill: none; stroke: var(--ink); stroke-width: 7; }
+.cl-truck__cab { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+.cl-truck__win { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+.cl-truck__line { fill: none; stroke: var(--ink); stroke-width: 1; stroke-opacity: 0.5; }
+.cl-wheel circle { fill: var(--ink); }
+.cl-wheel path { stroke: var(--paper); stroke-width: 1.4; }
+.cl-wheel { transform-box: fill-box; transform-origin: center; transform: rotate(calc(var(--t) * 540deg)); }
+
+.cl-ship { transform: translateX(var(--shx)) translateY(calc(sin(var(--t) * 14rad) * 1.6px)); }
+.cl-ship__hull { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+.cl-ship__boot { fill: var(--ink); }
+.cl-ship__line { fill: none; stroke: var(--ink); stroke-width: 1; stroke-opacity: 0.55; }
+.cl-ship__house { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.4; }
+.cl-ship__win { stroke: var(--ink); stroke-width: 5; stroke-dasharray: 5 3; }
+.cl-ship__funnel { fill: var(--ink); }
+.cl-ship__name { font-size: 9px; letter-spacing: 0.2em; fill: var(--ink-2); }
+
+/* the container */
+.cbox { transform: translateY(var(--cy)); }
+.cbox__in { transform-origin: 322px 248px; transform: scale(calc(1 - var(--fin) * 0.35)); opacity: calc(1 - var(--fade)); }
+.cbox__ghost { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-dasharray: 6 5; opacity: calc(1 - var(--solid)); }
+.cbox__solid { opacity: var(--solid); }
+.cb-top { fill: color-mix(in srgb, var(--lime) 72%, var(--green)); stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; }
+.cb-top__rib { fill: none; stroke: var(--forest); stroke-opacity: 0.3; }
+.cb-end { fill: var(--forest); stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; }
+.cb-end__door { stroke: var(--ink); stroke-width: 1.4; }
+.cb-end__bar { stroke: var(--lime); stroke-opacity: 0.75; stroke-width: 1.2; }
+.cb-front { fill: var(--green); stroke: var(--ink); stroke-width: 1.4; }
+.cb-corr { fill: url(#cl-corr); }
+.cl-corr path { stroke: var(--forest); stroke-opacity: 0.42; stroke-width: 1.3; }
+.cb-rail { stroke: var(--forest); stroke-width: 6; }
+.cb-rail--low { stroke-width: 8; }
+.cb-post { stroke: var(--forest); stroke-width: 8; }
+.cb-cast { fill: var(--ink); }
+.cb-plate { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 0.8; }
+.cb-code { font-size: 11px; font-weight: 500; letter-spacing: 0.06em; fill: var(--ink); }
+.cb-check { fill: none; stroke: var(--ink); stroke-width: 1; }
+.cb-size { font-size: 9.5px; font-weight: 500; letter-spacing: 0.12em; fill: var(--ink-2); }
+.cb-mark { --mark-fill: var(--paper); }
+.cb-small { font-size: 8px; font-weight: 500; letter-spacing: 0.14em; fill: var(--paper); }
+.cb-seal { opacity: var(--seal); }
+.cb-seal path { stroke: var(--lime); stroke-width: 2; }
+.cb-seal rect { fill: var(--lime); stroke: var(--ink); stroke-width: 1; }
+
+/* cards drawn in the frame */
+.cl-card__bg { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.2; }
+.cl-card__h { font-size: 9.5px; font-weight: 500; letter-spacing: 0.12em; fill: var(--ink); }
+.cl-card__k { font-size: 8.5px; letter-spacing: 0.1em; fill: var(--ink-2); }
+.cl-card__v { font-size: 8.5px; font-weight: 500; letter-spacing: 0.08em; fill: var(--ink); }
+.cl-card__v--ok { fill: var(--green-ink); }
+.cl-card__bar { stroke: var(--ink); stroke-width: 5; stroke-opacity: 0.22; }
+.cl-quote { opacity: var(--q1); transform: translateY(calc((1 - var(--q1)) * -16px)); }
+.cl-booking { opacity: var(--q2); transform: translateY(calc((1 - var(--q2)) * -16px)); }
+
+.cl-stamp rect { fill: var(--paper-hi); stroke: var(--green-ink); stroke-width: 2.5; }
+.cl-stamp .cl-stamp__in { fill: none; stroke-width: 1; }
+.cl-stamp text { font: 800 14px var(--f-latin); font-stretch: 80%; letter-spacing: 0.08em; fill: var(--green-ink); }
+.cl-stamp--ok { opacity: var(--ok1); transform-origin: 228px 133px; transform: rotate(-6deg) scale(calc(1.6 - var(--ok1) * 0.6)); }
+.cl-stamp--rel text { font-size: 26px; }
+.cl-stamp--rel { opacity: var(--rel); transform-origin: 310px 249px; transform: rotate(-5deg) scale(calc(1.8 - var(--rel) * 0.8)); }
+
+/* 02 ACID */
+.cl-doc {
+  --dk: clamp(0, (var(--a1) - var(--k) * 0.12) / 0.2, 1);
+  --sk: clamp(0, (var(--a1) - 0.42 - var(--k) * 0.1) / 0.1, 1);
+  opacity: var(--dk);
+  transform: translateY(calc((1 - var(--dk)) * -24px));
+}
+.cl-doc__bg { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.2; }
+.cl-doc__h { font-size: 8.5px; font-weight: 500; letter-spacing: 0.1em; fill: var(--ink); }
+.cl-doc__lines { stroke: var(--ink); stroke-opacity: 0.3; stroke-width: 2; }
+.cl-acid { opacity: var(--sk); transform-box: fill-box; transform-origin: center; transform: scale(calc(1.5 - var(--sk) * 0.5)); }
+.cl-acid rect { fill: none; stroke: var(--green-ink); stroke-width: 1.6; }
+.cl-acid text { font-size: 9px; font-weight: 500; letter-spacing: 0.08em; fill: var(--green-ink); }
+.cl-cells { opacity: clamp(0, var(--a1) / 0.15, 1); }
+.cl-cell {
+  fill: color-mix(in srgb, var(--green) calc(clamp(0, var(--cells) * 19 - var(--j), 1) * 100%), var(--paper-hi));
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+/* 03 seal callout */
+.cl-callout { opacity: var(--seal); }
+.cl-callout path { fill: none; stroke: var(--ink); stroke-width: 1; }
+
+/* 04 + 06 cranes */
+.cl-crane__leg, .cl-crane__beam { fill: var(--ink); }
+.cl-crane__brace { fill: none; stroke: var(--ink); stroke-width: 3; }
+.cl-trolley { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.5; }
+.cl-rope { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.cl-spreader__bar { fill: var(--ink); }
+.cl-spreader__leg { stroke: var(--ink); stroke-width: 3; }
+.cl-spreader--4 { transform: translateY(calc((1 - var(--sd4)) * -110px + (var(--lf4) - var(--dp4)) * -64px)); }
+.cl-spreader--6 { transform: translateY(calc((1 - var(--sd6)) * -110px + (var(--lf6) - var(--dp6)) * -64px)); }
+.cl-flag { opacity: clamp(0, (var(--a5) - 0.86) * 10, 1); }
+.cl-flag path { stroke: var(--ink); stroke-width: 1.4; }
+.cl-flag rect { fill: var(--green); }
+
+/* 05 voyage + paperwork */
+.cl-voyage__base { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.cl-voyage__done { fill: none; stroke: var(--green); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--a4)); }
+.cl-voyage__ship { fill: var(--green); stroke: var(--ink); stroke-width: 1.4; transform: translateX(calc(var(--a4) * 408px)); }
+.cl-chip { --on: clamp(0, var(--ck) * 4 - var(--k), 1); }
+.cl-chip__box { fill: color-mix(in srgb, var(--green) calc(var(--on) * 100%), var(--paper-hi)); stroke: var(--ink); stroke-width: 1.2; }
+.cl-chip__tick { fill: none; stroke: var(--paper-hi); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: var(--on); }
+
+/* 07 scanner + declaration */
+.cl-scan { opacity: var(--arch); transform: translateX(calc(40px + var(--scan) * 470px)); }
+.cl-scan__beam { fill: var(--green); fill-opacity: 0.16; }
+.cl-scan__line { stroke: var(--green); stroke-width: 2; }
+.cl-scan__frame { fill: var(--ink); }
+.cl-stage__svg .cl-scan__lbl { font-size: 10px; font-weight: 500; letter-spacing: 0.2em; fill: var(--lime); }
+.cl-scan__wheel { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.4; }
+.cl-decl { opacity: clamp(0, (var(--a6) - 0.6) / 0.1, 1); }
+.cl-decl .cl-chip { --on: clamp(0, var(--decl) * 3 - var(--k), 1); }
+
+/* 08 paid + gate */
+.cl-paid { opacity: var(--paid); transform: translateY(calc((1 - var(--paid)) * -16px)); }
+.cl-gate__post { stroke: var(--ink); stroke-width: 5; }
+.cl-gate__arm { transform-origin: 612px 229px; transform: rotate(calc(var(--gate) * 78deg)); }
+.cl-gate__arm rect { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.2; }
+.cl-gate__arm path { stroke: var(--ink); stroke-width: 4; }
+
+/* 09 destination */
+.cl-dest { opacity: calc(1 - var(--fade)); }
+.cl-shed__line { fill: none; stroke: var(--ink-2); stroke-width: 1.2; }
+.cl-shed__door { fill: url(#cl-hatch); stroke: var(--ink); stroke-width: 1.2; transform-origin: 622px 182px; transform: scaleY(calc(1 - var(--dlv) * 0.85)); }
+.cl-pin { opacity: calc(clamp(0, var(--a8) / 0.2, 1) * (1 - var(--fade))); }
+.cl-pin path { fill: var(--green); stroke: var(--ink); stroke-width: 1.2; }
+.cl-pin circle { fill: var(--paper-hi); }
+.cl-dest__lbl { opacity: calc(1 - var(--fade)); }
+
+/* dimension line */
+.cl-dim { opacity: calc(1 - var(--fade)); }
+.cl-dim__line { fill: none; stroke: var(--ink); stroke-width: 1; }
+
+/* end state */
+.cl-end { opacity: clamp(0, (var(--a8) - 0.6) / 0.12, 1); }
+.cl-end__mark { --sw: var(--fin); overflow: visible; }
+.cl-stage__svg .cl-end__word { font: 800 24px var(--f-latin); font-stretch: 80%; letter-spacing: -0.01em; fill: var(--ink); }
+
+/* free-days clock (illustrative: free days vary by line and port) */
+.fdc {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--ink);
+  background: var(--paper-hi);
+}
+.fdc__dial { width: 34px; height: 34px; }
+.fdc__ring { fill: var(--paper); stroke: var(--rule); stroke-width: 3; }
+.fdc__arc { fill: none; stroke: var(--green); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--day) / 5); }
+.fdc__ticks { stroke: var(--ink); stroke-width: 1; }
+.fdc__hand { stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; transform-origin: 20px 20px; transform: rotate(calc(var(--day) / 5 * 360deg)); }
+.fdc__hub { fill: var(--ink); }
+.fdc__label { display: grid; gap: 1px; font-size: 10.5px; line-height: 1.3; }
+.fdc__label b { font-weight: 500; color: var(--ink); }
+.fdc__label span { font-size: 10px; letter-spacing: 0.02em; text-transform: none; color: var(--ink-2); }
+.fdc__days { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; }
+.fdc__days li { position: relative; height: 22px; border: 1px solid var(--ink); background: var(--paper); overflow: hidden; }
+.fdc__days i { position: absolute; inset: 0; background: var(--green); transform-origin: 0 50%; transform: scaleX(clamp(0, var(--day) - var(--d), 1)); }
+[dir="rtl"] .fdc__days i { transform-origin: 100% 50%; }
+.fdc__days li::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, var(--lime) 0 3px, transparent 3px 7px);
+  opacity: calc(var(--safe) * clamp(0, (var(--d) + 1 - var(--day)) * 4, 1));
+}
+.fdc__days span { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; font-size: 9px; color: var(--ink); }
+.fdc__state { min-width: 13em; text-align: end; color: var(--green-ink); font-size: 11px; }
+
+/* title block */
+.cl-tblock { display: grid; grid-template-columns: 1fr 0.8fr 1.4fr 1.2fr; border-top: 1px solid var(--ink); font-size: 11px; }
+.cl-tblock > div { min-width: 0; padding: 7px 10px 8px; border-inline-start: 1px solid var(--ink); }
+.cl-tblock > div:first-child { border-inline-start: 0; }
+.cl-tblock dt { color: var(--ink-2); font-size: 9.5px; }
+.cl-tblock dd { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cl-tblock__st dd { color: var(--green-ink); }
+.cl-roll { display: inline-block; height: 1.4em; overflow: hidden; vertical-align: bottom; }
+.cl-roll > span { display: block; height: 1.4em; transform: translateY(calc(var(--step) * -100%)); transition: transform 0.35s var(--ease-out); }
+.cl-roll--ci > span { transform: translateY(calc(var(--ci) * -100%)); }
+
+/* station panels */
+.cl-station:focus-visible { outline-offset: -3px; }
+.cl-station__no { display: flex; flex-direction: column; gap: 4px; }
+.cl-station__no .mono { color: var(--ink-2); }
+.cl-station__n {
+  font-size: clamp(72px, 7.6vw, 120px);
+  font-weight: 800;
+  font-stretch: 72%;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  color: var(--green);
+}
+.cl-station__name { margin-top: 18px; font-size: clamp(26px, 2.2vw, 34px); font-weight: 750; font-stretch: 88%; line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
+.cl-station__stat { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--ink); }
+.cl-station__stat .num { font-size: clamp(48px, 4.4vw, 68px); }
+.cl-station__stat .num--word { font-size: clamp(36px, 3.2vw, 50px); }
+.cl-station__stat .mono { color: var(--ink-2); }
+.cl-station__copy { margin-top: 16px; max-width: 26em; font-size: 15.5px; line-height: 1.5; }
+.cl-station__side { display: flex; flex-direction: column; }
+.cl-station__fig.illo { padding: 10px; }
+.cl-station__fig img { width: 100%; aspect-ratio: 3 / 2; object-fit: contain; }
+.cl-station__fig figcaption { margin-top: 10px; padding-top: 8px; }
+.cl-station__do-h { margin-top: 20px; padding-bottom: 6px; color: var(--green-ink); border-bottom: 1px solid var(--ink); }
+.cl-station__do li { position: relative; padding: 8px 0 9px; padding-inline-start: 22px; border-bottom: 1px solid var(--rule); font-size: 14.5px; line-height: 1.4; }
+.cl-station__do li::before { content: ""; position: absolute; inset-inline-start: 0; top: 13px; width: 9px; height: 9px; background: var(--green); }
+
+/* Fig. 08: invoice drawn in HTML */
+.cl-inv__sheet {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  aspect-ratio: 3 / 2;
+  padding: 10px 14px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+.cl-inv__h { display: flex; justify-content: space-between; padding-bottom: 6px; border-bottom: 2px solid var(--ink); font-size: 10.5px; }
+.cl-inv__h span:last-child { color: var(--green-ink); }
+.cl-inv__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); align-items: center; gap: 10px; padding-bottom: 7px; border-bottom: 1px dashed var(--rule); font-size: 9.5px; }
+.cl-inv__row i { justify-self: end; width: var(--w); height: 6px; background: var(--ink); opacity: 0.22; }
+.cl-inv__row--total { padding-top: 4px; border-bottom: 0; border-top: 1px solid var(--ink); }
+.cl-inv__row--total i { background: var(--green); opacity: 1; }
+
+/* progress bar under the line */
+.cl-belt { display: none; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px; padding-block: 12px 16px; color: var(--ink-2); font-size: 11px; }
+.cl-belt__meter {
+  position: relative;
+  display: block;
+  height: 10px;
+  background:
+    repeating-linear-gradient(to right, var(--ink) 0 1px, transparent 1px calc(100% / var(--n))) 0 0 / 100% 100%,
+    linear-gradient(var(--rule), var(--rule)) 0 50% / 100% 1px no-repeat;
+  border-inline-end: 1px solid var(--ink);
+}
+.cl-belt__meter i { position: absolute; inset: 3px 0; background: var(--green); transform-origin: 0 50%; transform: scaleX(var(--p)); }
+[dir="rtl"] .cl-belt__meter i { transform-origin: 100% 50%; }
+
+.cl-outro { padding-top: 40px; }
+.cl-outro__in { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px 40px; padding-top: 24px; border-top: 1px solid var(--ink); }
+.cl-outro__fine { max-width: 62em; font-size: 12px; letter-spacing: 0.02em; text-transform: none; color: var(--ink-2); }
+.cl-outro__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+
+/* static sheet: no JS or reduced motion. The drawing holds on station 07; every station reads as a list. */
+:root:not(.motion) .cl { --p: 0.7027; }
+:root:not(.motion) .cl-rail { padding-block: 20px 4px; }
+:root:not(.motion) .cl-roll > span { transition: none; }
+@media (min-width: 900px) {
+  :root:not(.motion) .cl__main { padding-block: 32px 72px; }
+  :root:not(.motion) .cl-stage { max-width: 880px; margin-inline: auto; }
+  :root:not(.motion) .cl-stage__svg { height: auto; aspect-ratio: 640 / 520; }
+  :root:not(.motion) .cl-track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px var(--gut);
+    margin-top: 64px;
+  }
+  :root:not(.motion) .cl-station { display: flex; flex-direction: column; padding-top: 18px; border-top: 3px solid var(--ink); }
+  :root:not(.motion) .cl-station__n { font-size: 64px; }
+  :root:not(.motion) .cl-station__fig { display: none; }
+}
+
+/* motion: rail follows the line */
+.motion .cl-rail li {
+  --on: clamp(0, min((var(--x) - var(--i) + 0.5) * 20, (var(--i) + 0.5 - var(--x)) * 20), 1);
+  --done: clamp(0, var(--t) - var(--i), 1);
+}
+.motion .cl.is-scripted { animation: none; }
+
+/* motion, desktop: pinned horizontal line (the pin pads for the fixed header, so nothing hides under it) */
+@media (min-width: 900px) {
+  .motion .cl { height: calc(100svh + var(--n) * var(--seg)); }
+  .motion .cl__pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding-top: var(--hdr-h);
+    overflow: clip;
+  }
+  .motion .cl-rail { padding-block: 12px 10px; }
+  .motion .cl__main {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gut);
+    overflow: clip;
+  }
+  .motion .cl-stage { grid-column: 4 / 10; z-index: 1; min-height: 0; }
+  .motion .cl-track {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    display: flex;
+    width: calc(var(--n) * 100%);
+    transform: translateX(calc(var(--x) * -100% / var(--n) * var(--dir)));
+  }
+  .motion .cl-station {
+    flex: 0 0 calc(100% / var(--n));
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gut);
+    align-items: center;
+    padding-inline: var(--pad);
+  }
+  .motion .cl-station__text { grid-column: 1 / 4; }
+  .motion .cl-station__side { grid-column: 10 / 13; }
+  .motion .cl-belt { display: grid; }
+
+  @supports (animation-timeline: view()) {
+    .motion .cl {
+      animation: cl-progress linear both;
+      animation-timeline: view(block 0px);
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+@media (min-width: 900px) and (max-height: 820px) {
+  .motion .cl-station__n { font-size: 72px; }
+  .motion .cl-station__name { margin-top: 12px; }
+  .motion .cl-station__stat { margin-top: 16px; }
+  .motion .cl-station__copy { font-size: 14.5px; }
+  .motion .cl-station__fig figcaption { display: none; }
+  .motion .cl-station__do li { padding-block: 6px 7px; font-size: 13.5px; }
+}
+@media (min-width: 900px) and (max-height: 700px) {
+  .motion .cl-station__fig { display: none; }
+}
+
+/* narrow screens: a vertical station stack on a green spine; the drawing stays sticky above it */
+@media (max-width: 899px) {
+  .cl__main { padding-inline: 0; }
+  .cl-stage { border-inline: 0; }
+  .cl-tblock { grid-template-columns: 0.8fr 1.3fr 1.1fr; font-size: 10px; }
+  .cl-tblock > div:first-child { display: none; }
+  .cl-tblock > div:nth-child(2) { border-inline-start: 0; }
+  .fdc { grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; padding: 6px var(--pad); }
+  .fdc__dial { width: 26px; height: 26px; }
+  .fdc__label { display: none; }
+  .fdc__days li { height: 16px; }
+  .fdc__days span { font-size: 8px; }
+  .fdc__state { min-width: 0; font-size: 10px; }
+  .cl-rail__list { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+
+  .cl-track { position: relative; padding-top: 8px; }
+  .cl-station {
+    position: relative;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    column-gap: 14px;
+    padding: 28px var(--pad) 36px;
+  }
+  .cl-station::before, .cl-station::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: calc(var(--pad) + 25px);
+    width: 2px;
+    background: var(--rule);
+  }
+  .cl-station::after { background: var(--green); transform-origin: 50% 0; transform: scaleY(var(--done, 1)); }
+  .motion .cl-station { --done: clamp(0, var(--t) - var(--i) + 0.1, 1); }
+  .cl-station__text { display: contents; }
+  .cl-station__no { position: relative; z-index: 1; grid-column: 1; grid-row: 1 / span 4; align-self: start; padding-block: 2px 8px; background: var(--paper); text-align: center; }
+  .cl-station__no .mono { display: none; }
+  .cl-station__n { font-size: 46px; }
+  .cl-station__name, .cl-station__stat, .cl-station__copy, .cl-station__side { grid-column: 2; }
+  .cl-station__name { margin-top: 2px; font-size: 26px; }
+  .cl-station__stat { margin-top: 16px; padding-top: 12px; }
+  .cl-station__stat .num { font-size: 44px; }
+  .cl-station__stat .num--word { font-size: 34px; }
+  .cl-station__copy { margin-top: 12px; font-size: 16px; }
+  .cl-station__fig { display: none; }
+  .cl-station__do-h { margin-top: 18px; }
+  .cl-station:last-child::before, .cl-station:last-child::after { bottom: auto; height: 40px; }
+  :root:not(.motion) .cl-stage__svg { height: auto; aspect-ratio: 640 / 520; }
+
+  .motion .cl-rail { display: none; }
+  .motion .cl-stage { position: sticky; top: var(--hdr-h); z-index: 2; height: 48svh; }
+  .motion .cl-station { min-height: 72svh; align-content: start; }
+}
+
+@keyframes cl-progress { from { --p: 0; } to { --p: 1; } }
+
+/* ---------- 07 Why GPL ---------- */
+.cl-why { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 48px var(--gut); }
+.cl-why__item { position: relative; display: flex; flex-direction: column; gap: 14px; padding-top: 20px; border-top: 1px solid var(--rule); }
+.cl-why__item::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  inset-inline: 0;
+  height: 3px;
+  background: var(--green);
+  transform-origin: 0 50%;
+}
+[dir="rtl"] .cl-why__item::before { transform-origin: 100% 50%; }
+.motion .cl-why.is-armed .cl-why__item::before { transform: scaleX(0); }
+.motion .cl-why.is-in .cl-why__item::before { transform: none; transition: transform 0.9s var(--ease-out) calc(var(--n, 0) * 120ms); }
+.cl-why__no { color: var(--green-ink); }
+.cl-why__title { font-size: clamp(24px, 2.2vw, 32px); font-weight: 750; font-stretch: 88%; line-height: 1.02; letter-spacing: -0.02em; text-wrap: balance; }
+.cl-why__text { font-size: 16px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.cl-why__tag { display: flex; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--ink); }
+.cl-why__days, .cl-why__lines { display: inline-flex; gap: 2px; }
+.cl-why__days i { width: 9px; height: 12px; border: 1px solid var(--ink); background: var(--green); }
+.cl-why__days i:nth-child(n + 4) { background: repeating-linear-gradient(45deg, var(--lime) 0 2px, transparent 2px 4px); }
+.cl-why__lines { flex-direction: column; gap: 2px; }
+.cl-why__lines i { width: 18px; height: 2px; background: var(--ink); }
+.cl-why__lines i:last-child { background: var(--green); }
+.cl-why__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
+.cl-why__mark { width: 18px; height: 18px; }
+@media (max-width: 1100px) {
+  .cl-why { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 599px) {
+  .cl-why { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* ---------- 08 CTA ---------- */
+.cl-cta__fine { position: relative; z-index: 1; grid-column: 1 / 9; color: var(--paper-dim); }
+.cl-cta__fine a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+.cl-cta__fine a:hover { color: var(--lime); }
+@media (max-width: 899px) {
+  .cl-cta__fine { grid-column: 1 / -1; }
+}

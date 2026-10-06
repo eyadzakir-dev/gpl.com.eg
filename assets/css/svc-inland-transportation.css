@@ -1,0 +1,20 @@
+/* Inland transportation page only (EN + AR): the cross-link to domestic trucking, the export note under the steps,
+   and a small addition to the docs callout. Builds on site.css and service.css. */
+
+.prose .itr-switch {
+  margin-top: 28px;
+  padding-block: 14px;
+  padding-inline: 18px 0;
+  border-inline-start: 3px solid var(--green);
+  font-size: 17px;
+  color: var(--ink-2);
+}
+
+.itr-note { max-width: 46em; margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 17px; line-height: 1.55; color: var(--ink-2); }
+:lang(ar) .itr-note { line-height: 1.8; }
+
+.svc-docs__note .link-arrow { justify-self: start; margin-top: 6px; }
+
+@media (max-width: 899px) {
+  .itr-note { margin-top: 32px; }
+}

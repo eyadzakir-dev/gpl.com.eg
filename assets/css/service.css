@@ -1,0 +1,201 @@
+/* Shared service-page template (.svc-*), used by all eight service pages in EN and AR.
+   Builds on site.css (.phero, .sec, .spec__table, .steps, .faq, .callout, .illo). Inline-axis rules are logical, so RTL needs no overrides.
+   Page-only extras belong in assets/css/svc-<slug>.css, never here. */
+
+/* ---------- Hero: headline on the start side, drawing on the end side ---------- */
+.svc-hero .phero__title { grid-column: 1 / 8; grid-row: 2; font-size: clamp(48px, 6.4vw, 108px); }
+.svc-hero .phero__lead { grid-column: 1 / 7; grid-row: 3; }
+.svc-hero .phero__actions { grid-column: 1 / 8; grid-row: 4; }
+.svc-hero__art { position: relative; grid-column: 8 / 13; grid-row: 2 / 5; align-self: end; margin-top: 40px; }
+.svc-hero__art img, .svc-hero__art svg { width: 100%; height: auto; }
+@media (max-width: 899px) {
+  .svc-hero .phero__title, .svc-hero .phero__lead, .svc-hero .phero__actions, .svc-hero__art { grid-column: 1 / -1; grid-row: auto; }
+  .svc-hero .phero__title { font-size: clamp(44px, 12vw, 64px); }
+  .svc-hero__art { max-width: 520px; margin-top: 36px; }
+}
+
+/* ---------- Intro: prose plus a short facts column ---------- */
+.svc-intro__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 40px;
+  align-items: start;
+}
+.svc-intro__text { grid-column: 2 / 8; }
+.svc-intro__facts { grid-column: 9 / 13; border-top: 1px solid var(--ink); }
+.svc-intro__facts > div { display: grid; gap: 4px; padding: 14px 0 16px; border-bottom: 1px solid var(--rule); }
+.svc-intro__facts dt { color: var(--green-ink); }
+.svc-intro__facts dd { font-size: 19px; line-height: 1.35; }
+.svc-intro__facts a { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.svc-intro__facts a:hover { color: var(--green-ink); }
+@media (max-width: 899px) {
+  .svc-intro__text, .svc-intro__facts { grid-column: 1 / -1; }
+}
+
+/* ---------- Scope: what's included, numbered ---------- */
+.svc-scope__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: var(--gut);
+  border-top: 1px solid var(--ink);
+  counter-reset: scope;
+}
+.svc-scope__item { padding: 18px 0 32px; border-bottom: 1px solid var(--rule); counter-increment: scope; }
+.svc-scope__item::before {
+  content: counter(scope, decimal-leading-zero);
+  display: block;
+  margin-bottom: 32px;
+  font: 500 12px/1.4 var(--f-mono);
+  letter-spacing: 0.06em;
+  color: var(--green-ink);
+}
+.svc-scope__title { font-size: clamp(21px, 1.8vw, 26px); font-weight: 750; font-stretch: 88%; line-height: 1.05; letter-spacing: -0.02em; }
+.svc-scope__text { max-width: 30em; margin-top: 10px; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+@media (max-width: 1100px) {
+  .svc-scope__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 599px) {
+  .svc-scope__list { grid-template-columns: 1fr; }
+  .svc-scope__item { padding: 16px 0 22px; }
+  .svc-scope__item::before { margin-bottom: 12px; }
+}
+
+/* ---------- Spec: the shared spec table, indented one column ---------- */
+.svc-spec .spec__table { width: calc(100% - (100% + var(--gut)) / 12); margin-inline-start: calc((100% + var(--gut)) / 12); }
+@media (max-width: 899px) {
+  .svc-spec .spec__table { width: 100%; margin-inline-start: 0; }
+}
+
+/* ---------- Steps: uses .steps from site.css ---------- */
+.svc-steps .steps { margin-top: 8px; }
+
+/* ---------- Documents checklist ---------- */
+.svc-docs__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 40px;
+  align-items: start;
+}
+.svc-docs__col, .svc-docs__note { grid-column: span 4; }
+.svc-docs__title { padding-bottom: 12px; border-bottom: 1px solid var(--ink); color: var(--green-ink); }
+.svc-docs__list li {
+  position: relative;
+  padding-block: 12px 13px;
+  padding-inline-start: 34px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 17px;
+  line-height: 1.4;
+}
+.svc-docs__list li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 14px;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper-hi);
+}
+.svc-docs__list li::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 6px;
+  top: 16px;
+  width: 6px;
+  height: 10px;
+  border: solid var(--green-ink);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+@media (max-width: 1100px) {
+  .svc-docs__col { grid-column: span 6; }
+  .svc-docs__note { grid-column: 1 / -1; }
+}
+@media (max-width: 899px) {
+  .svc-docs__col, .svc-docs__note { grid-column: 1 / -1; }
+}
+
+/* ---------- Ports: map plus a coded list ---------- */
+/* Five columns for the (square) map and six for the list keep the map from towering over a short list. The list may sit
+   alone or inside .svc-ports__side together with the .svc-ports__more small print. */
+.svc-ports .sec__lead { margin-bottom: 48px; }
+.svc-ports__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 40px;
+  align-items: start;
+}
+.svc-ports__map { grid-column: 1 / 6; }
+.svc-ports__side, .svc-ports__grid > .svc-ports__list { grid-column: 7 / 13; }
+.svc-ports__list { border-top: 1px solid var(--ink); }
+.svc-ports__item {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 2px;
+  padding: 14px 0 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.svc-ports__code { grid-row: span 2; padding-top: 6px; color: var(--green-ink); }
+.svc-ports__name { font-size: 22px; font-weight: 750; font-stretch: 88%; line-height: 1.15; letter-spacing: -0.015em; }
+.svc-ports__note { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.svc-ports__more { margin-top: 16px; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+:is(.svc-ports__note, .svc-ports__more) a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+:is(.svc-ports__note, .svc-ports__more) a:hover { color: var(--green-ink); }
+@media (max-width: 1100px) and (min-width: 900px) {
+  .svc-ports__map { grid-column: 1 / 7; }
+}
+@media (max-width: 899px) {
+  .svc-ports__map, .svc-ports__side, .svc-ports__grid > .svc-ports__list { grid-column: 1 / -1; }
+  .svc-ports__map { max-width: 520px; }
+}
+
+/* ---------- FAQ: uses .faq from site.css, indented one column ---------- */
+.svc-faq .faq { max-width: 1100px; margin-inline-start: calc((100% + var(--gut)) / 12); }
+@media (max-width: 899px) {
+  .svc-faq .faq { margin-inline-start: 0; }
+}
+
+/* ---------- Related services ---------- */
+.svc-related__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--ink);
+  border-inline-start: 1px solid var(--rule);
+}
+.svc-related__list > li { border-inline-end: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.svc-related__link {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 210px;
+  padding: 16px 20px 18px;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+.svc-related__no { color: var(--green-ink); }
+.svc-related__name { margin-top: 24px; font-size: clamp(22px, 1.9vw, 28px); font-weight: 750; font-stretch: 88%; line-height: 1.02; letter-spacing: -0.02em; }
+.svc-related__text { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.svc-related__link .arr { margin-top: auto; align-self: flex-start; font: 500 20px/1 var(--f-mono); color: var(--green-ink); transition: translate 0.25s var(--ease-out); }
+.svc-related__link:hover { background: var(--paper); }
+.svc-related__link:hover .svc-related__name { color: var(--green-ink); }
+.svc-related__link:hover .arr { translate: 6px 0; }
+[dir="rtl"] .svc-related__link:hover .arr { translate: -6px 0; }
+.svc-related__link:focus-visible { outline-offset: -3px; }
+@media (max-width: 1100px) {
+  .svc-related__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 599px) {
+  .svc-related__list { grid-template-columns: 1fr; }
+  .svc-related__link { min-height: 0; }
+  .svc-related__name { margin-top: 8px; }
+}
+
+/* ---------- Arabic line-heights for the template's display text ---------- */
+:lang(ar) :is(.svc-scope__title, .svc-ports__name, .svc-related__name) { line-height: 1.35; }
+:lang(ar) :is(.svc-scope__text, .svc-ports__note, .svc-ports__more, .svc-related__text, .svc-docs__list li) { line-height: 1.75; }
+:lang(ar) .svc-related__no { font-family: var(--f-mono); }

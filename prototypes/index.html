@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>GPL homepage prototypes</title>
+<style>
+  :root { --ink: #111111; --paper: #F3F1EC; --green-ink: #006B34; --muted: #4A4A47; --rule: rgba(17,17,17,.16); }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 system-ui, -apple-system, sans-serif; background: var(--paper); color: var(--ink); }
+  main { max-width: 1100px; margin: 0 auto; padding: 56px 24px 80px; }
+  h1 { font-size: clamp(28px, 4vw, 44px); margin: 0 0 8px; letter-spacing: -0.02em; }
+  p.lede { color: var(--muted); margin: 0 0 40px; }
+  ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  a.card { display: block; height: 100%; padding: 22px; border: 1px solid var(--rule); border-radius: 4px; background: #FAF9F5; color: inherit; text-decoration: none; transition: transform .2s, border-color .2s; }
+  a.card:hover, a.card:focus-visible { transform: translateY(-3px); border-color: var(--green-ink); outline: none; }
+  h2 { font-size: 20px; margin: 0; }
+  .card p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+  footer { margin-top: 40px; font-size: 14px; color: var(--muted); }
+  footer a { color: var(--green-ink); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Green Point Logistics: homepage prototypes</h1>
+  <p class="lede">Five homepage directions built in the shared "Production Line" design system in GPL green. The final homepage combines the strongest parts of each.</p>
+  <ul>
+    <li><a class="card" href="clearance-line/"><h2>The Clearance Line</h2><p>One container, nine stations. A scroll-pinned line follows a container from booking through ACI, customs and release to the customer's door.</p></a></li>
+    <li><a class="card" href="tile-sphere/"><h2>Tile Sphere</h2><p>Three.js hero built from the logo: diamond tiles assemble into the GPL sphere, then become a globe of trade lanes from Egypt's ports.</p></a></li>
+    <li><a class="card" href="port-board/"><h2>Port Board</h2><p>Split-flap port board, an interactive map of Egypt's five ports, and a free-days meter that explains demurrage.</p></a></li>
+    <li><a class="card" href="manifest/"><h2>Manifest</h2><p>The page as a shipment's document set: a bill-of-lading hero and customs stamps that press on as you scroll.</p></a></li>
+    <li><a class="card" href="shipment-brief/"><h2>Shipment Brief</h2><p>Conversion first: build a shipment brief in the hero, see the typical plan, and send it as a prefilled quote request.</p></a></li>
+  </ul>
+  <footer>Supporting pages: <a href="styleguide/">component styleguide</a> · <a href="globe-lab/">globe lab</a> · <a href="../">current build of the site</a></footer>
+</main>
+</body>
+</html>

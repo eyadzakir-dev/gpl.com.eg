@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Globe lab · Green Point Logistics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&amp;display=swap">
+<link rel="stylesheet" href="../../assets/css/site.css">
+<link rel="stylesheet" href="../../assets/js/globe/globe.css">
+<style>
+  /* Lab-only stand-ins for the .routes layout until site.css ships it (mirrors the Three Stars rules). */
+  .routes__grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--gut); row-gap: 40px; }
+  .routes__map { grid-column: 1 / 9; border: 1px solid var(--ink); background-color: var(--paper-hi); padding: 24px; }
+  .routes__side { grid-column: 9 / 13; display: flex; flex-direction: column; gap: 24px; }
+  .routes__side > p { font-size: 18px; line-height: 1.45; }
+  .globe { background-image: radial-gradient(var(--rule) 1px, transparent 1.2px); background-size: 20px 20px; }
+  @media (max-width: 899px) {
+    .routes__map, .routes__side { grid-column: 1 / -1; }
+    .routes__map { padding: 12px; }
+  }
+  .lab { position: sticky; top: 0; z-index: 10; display: flex; gap: 12px; align-items: center; padding: 10px var(--pad); background: var(--paper); border-bottom: 1px solid var(--rule); }
+  .lab button { padding: 6px 12px; border: 1px solid var(--ink); background: transparent; cursor: pointer; }
+  .lab button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .lab__spacer { height: 120vh; }
+</style>
+</head>
+<body>
+<div class="lab mono" role="toolbar" aria-label="Globe lab">
+  <span>Globe lab</span>
+  <button type="button" data-lang="en" aria-pressed="true">EN · LTR</button>
+  <button type="button" data-lang="ar" aria-pressed="false">AR · RTL</button>
+  <span data-status></span>
+</div>
+<main id="main" data-lab-root></main>
+<div class="lab__spacer" aria-hidden="true"></div>
+<script type="module">
+  // Loads a routes snippet, then lazy-imports the globe exactly like site.js does for [data-globe].
+  const root = document.querySelector('[data-lab-root]');
+  const status = document.querySelector('[data-status]');
+  const SNIPPET = (lang) => `../../scripts/templates/routes-snippet.${lang}.html`;
+  let observer = null;
+
+  function initGlobes() {
+    observer?.disconnect();
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        import('../../assets/js/globe/globe.js')
+          .then(({ initGlobe }) => initGlobe(entry.target))
+          .then((globe) => { window.labGlobe = globe; status.textContent = globe ? 'webgl' : 'fallback'; })
+          .catch((error) => console.warn('Route globe unavailable; keeping the flat diagram.', error));
+      });
+    }, { rootMargin: '150% 0px' });
+    document.querySelectorAll('[data-globe]').forEach((figure) => observer.observe(figure));
+  }
+
+  async function load(lang) {
+    window.labGlobe?.destroy();
+    window.labGlobe = null;
+    const html = await (await fetch(SNIPPET(lang))).text();
+    root.innerHTML = html.replace(/href="(\.\.\/)?assets\//g, 'href="../../assets/');
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    initGlobes();
+  }
+
+  document.querySelectorAll('[data-lang]').forEach((button) => button.addEventListener('click', () => load(button.dataset.lang)));
+  load(new URLSearchParams(location.search).get('lang') === 'ar' ? 'ar' : 'en');
+</script>
+</body>
+</html>

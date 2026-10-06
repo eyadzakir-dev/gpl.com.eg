@@ -1,0 +1,246 @@
+/* /services hub (EN + AR): hero drawing, the service sheet (01), the import chain diagram (02) and the "why" cards (03).
+   Shared chrome, .phero, .cards, .callout and .cta come from site.css. Inline-axis rules are logical so /ar/ mirrors. */
+
+/* ---------- Hero: headline on the start side, drawing on the end side ---------- */
+.hub-hero .phero__title { grid-column: 1 / 8; grid-row: 2; font-size: clamp(48px, 6.4vw, 108px); }
+.hub-hero .phero__lead { grid-column: 1 / 7; grid-row: 3; }
+.hub-hero .phero__actions { grid-column: 1 / 8; grid-row: 4; }
+.hub-hero__art { position: relative; grid-column: 8 / 13; grid-row: 2 / 5; align-self: end; margin-top: 40px; }
+.hub-hero__art img { width: 100%; height: auto; }
+
+/* ---------- 01 Service sheet: one row per service, the title link covers the row ---------- */
+.hub-list { border-top: 1px solid var(--ink); }
+.hub-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  align-items: center;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.hub-row__no { grid-column: 1; color: var(--green-ink); }
+.hub-row__box {
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--ink);
+  background: var(--paper-hi);
+  transition: border-color 0.2s, transform 0.35s var(--ease-out);
+}
+.hub-row__box img { width: 26px; height: 26px; }
+.hub-row__title {
+  grid-column: 3 / 7;
+  font-size: clamp(26px, 2.6vw, 40px);
+  font-weight: 750;
+  font-stretch: 86%;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  transition: color 0.2s;
+}
+.hub-row__title a { text-decoration: none; }
+.hub-row__title a::after { content: ""; position: absolute; inset: 0; }
+.hub-row__title a:focus-visible { outline-offset: 6px; }
+.hub-row__text { grid-column: 7 / 12; max-width: 34em; font-size: 17px; line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
+.hub-row__go { grid-column: 12; justify-self: end; font: 500 22px/1 var(--f-mono); color: var(--green-ink); transition: translate 0.25s var(--ease-out); }
+.hub-row:hover .hub-row__title { color: var(--green-ink); }
+.hub-row:hover .hub-row__box { border-color: var(--green); transform: translateY(-3px); }
+.hub-row:hover .hub-row__go { translate: 6px 0; }
+[dir="rtl"] .hub-row:hover .hub-row__go { translate: -6px 0; }
+
+.hub-qiz { margin-top: 40px; margin-inline-start: calc((100% + var(--gut)) / 6); }
+.hub-qiz a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.hub-qiz a:hover { color: var(--green-ink); }
+
+/* ---------- 02 Import chain: six stations on one belt, grouped by where they happen ---------- */
+.chain { --box: 60px; --belt-y: calc(14px + 16px + 10px + var(--box) / 2); }
+.chain__lanes {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: end;
+  margin-bottom: 14px;
+  font-size: 11px;
+}
+.chain__lane {
+  position: relative;
+  margin-inline: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ink);
+  color: var(--ink-2);
+  text-align: center;
+}
+.chain__lane::before, .chain__lane::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  width: 1px;
+  height: 9px;
+  background: var(--ink);
+}
+.chain__lane::before { inset-inline-start: 0; }
+.chain__lane::after { inset-inline-end: 0; }
+.chain__lane--origin { grid-column: 1 / 3; }
+.chain__lane--port { grid-column: 3; color: var(--green-ink); }
+.chain__lane--egypt { grid-column: 4 / 7; }
+
+.chain__list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-block: 1px solid var(--ink);
+  background: var(--paper);
+}
+/* Input dot and output arrow at the two ends of the belt. */
+.chain__list::before, .chain__list::after { content: ""; position: absolute; z-index: 1; }
+.chain__list::before { top: calc(var(--belt-y) - 4px); inset-inline-start: -5px; width: 10px; height: 10px; border-radius: 50%; background: var(--green); }
+.chain__list::after { top: calc(var(--belt-y) - 4px); inset-inline-end: -2px; border: 5px solid transparent; border-inline-start: 8px solid var(--green); border-inline-end-width: 0; }
+
+.chain__st { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: 14px 16px 22px; }
+.chain__st + .chain__st { border-inline-start: 1px solid var(--rule); }
+.chain__st::before {
+  content: "";
+  position: absolute;
+  top: var(--belt-y);
+  inset-inline: 0;
+  height: 2px;
+  background: var(--ink);
+  transform-origin: 0 50%;
+}
+[dir="rtl"] .chain__st::before { transform-origin: 100% 50%; }
+.chain__st:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--belt-y) - 4px);
+  inset-inline-end: -4px;
+  border: 5px solid transparent;
+  border-inline-start: 7px solid var(--ink);
+  border-inline-end-width: 0;
+}
+.chain__no { display: block; height: 16px; color: var(--green-ink); font-size: 11px; }
+.chain__box {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--box);
+  height: var(--box);
+  margin-top: 10px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper-hi);
+}
+.chain__box img { width: 28px; height: 28px; }
+.chain__st:nth-child(3) .chain__box { border: 2px solid var(--green); }
+.chain__name {
+  margin-top: 18px;
+  font-size: clamp(22px, 2vw, 30px);
+  font-weight: 750;
+  font-stretch: 86%;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.chain__copy { margin-top: 10px; font-size: 15px; line-height: 1.45; color: var(--ink-2); text-wrap: pretty; }
+.chain__svc { margin-top: auto; padding-top: 16px; color: var(--ink-2); font-size: 11px; }
+.chain__svc a { display: inline-block; padding-block: 6px; color: var(--green-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.chain__svc a:hover { color: var(--ink); }
+
+.chain__st:nth-child(2) { --i: 1; }
+.chain__st:nth-child(3) { --i: 2; }
+.chain__st:nth-child(4) { --i: 3; }
+.chain__st:nth-child(5) { --i: 4; }
+.chain__st:nth-child(6) { --i: 5; }
+.motion .chain.is-armed .chain__st::before { transform: scaleX(0); }
+.motion .chain.is-armed .chain__box { opacity: 0; transform: scale(0.6); }
+.motion .chain.is-in .chain__st::before { transform: none; transition: transform 0.45s var(--ease-out) calc(0.1s + var(--i, 0) * 0.12s); }
+.motion .chain.is-in .chain__box { opacity: 1; transform: none; transition: opacity 0.3s, transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1); transition-delay: calc(0.2s + var(--i, 0) * 0.12s); }
+
+.chain__note {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  max-width: 46em;
+  margin-top: 32px;
+  margin-inline-start: calc((100% + var(--gut)) / 12);
+  font-size: 17px;
+  line-height: 1.5;
+}
+.chain__note .mono { flex: none; padding: 3px 6px 2px; background: var(--ink); color: var(--paper); font-size: 11px; }
+
+/* ---------- 03 Why one partner ---------- */
+.hub-why .card { min-height: 260px; }
+
+/* ---------- Arabic line-heights for display text ---------- */
+:lang(ar) :is(.hub-row__title, .chain__name) { line-height: 1.3; }
+:lang(ar) :is(.hub-row__text, .chain__copy, .chain__note) { line-height: 1.75; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1180px) {
+  .chain { --box: 52px; }
+  .chain__st { padding-inline: 10px; }
+  .chain__lane { margin-inline: 6px; }
+  .chain__name { font-size: 21px; }
+  .chain__copy { font-size: 14px; }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 899px) {
+  .hub-hero .phero__title, .hub-hero .phero__lead, .hub-hero .phero__actions, .hub-hero__art { grid-column: 1 / -1; grid-row: auto; }
+  .hub-hero .phero__title { font-size: clamp(44px, 12vw, 64px); }
+  .hub-hero__art { max-width: 520px; margin-top: 36px; }
+
+  .hub-row {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-areas: "box no go" "box title go" "box text go";
+    column-gap: 14px;
+    row-gap: 4px;
+    align-items: start;
+    padding: 18px 0 20px;
+  }
+  .hub-row__no { grid-area: no; }
+  .hub-row__box { grid-area: box; width: 48px; height: 48px; }
+  .hub-row__box img { width: 22px; height: 22px; }
+  .hub-row__title { grid-area: title; font-size: 26px; }
+  .hub-row__text { grid-area: text; margin-top: 4px; font-size: 16px; }
+  .hub-row__go { grid-area: go; align-self: center; }
+  .hub-qiz { margin-inline-start: 0; }
+
+  /* The belt turns vertical, running down the inline-start side through the boxes. */
+  .chain { --box: 48px; }
+  .chain__lanes { display: none; }
+  .chain__list { grid-template-columns: 1fr; border-bottom: 0; background: none; }
+  .chain__list::before, .chain__list::after { display: none; }
+  .chain__st {
+    display: grid;
+    grid-template-columns: var(--box) minmax(0, 1fr);
+    grid-template-areas: "box no" "box name" "box copy" "box svc";
+    column-gap: 16px;
+    align-content: start;
+    padding: 16px 0 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .chain__st + .chain__st { border-inline-start: 0; }
+  .chain__st::before { top: 0; bottom: 0; inset-inline: calc(var(--box) / 2 - 1px) auto; width: 2px; height: auto; transform-origin: 50% 0; }
+  [dir="rtl"] .chain__st::before { transform-origin: 50% 0; }
+  .chain__st:first-child::before { top: 16px; }
+  .chain__st:last-child::before { bottom: auto; height: calc(16px + var(--box) / 2); }
+  .chain__st:not(:last-child)::after {
+    top: auto;
+    bottom: -4px;
+    inset-inline: calc(var(--box) / 2 - 5px) auto;
+    border: 5px solid transparent;
+    border-top: 7px solid var(--ink);
+    border-bottom-width: 0;
+  }
+  .chain__no { grid-area: no; height: auto; font-size: 10px; }
+  .chain__box { grid-area: box; margin-top: 0; }
+  .chain__box img { width: 24px; height: 24px; }
+  .chain__name { grid-area: name; margin-top: 4px; font-size: 24px; }
+  .chain__copy { grid-area: copy; margin-top: 6px; font-size: 15px; }
+  .chain__svc { grid-area: svc; padding-top: 10px; }
+  .motion .chain.is-armed .chain__st::before { transform: scaleY(0); }
+
+  .chain__note { flex-direction: column; gap: 8px; margin-inline-start: 0; font-size: 16px; }
+  .hub-why .card { min-height: 0; }
+}

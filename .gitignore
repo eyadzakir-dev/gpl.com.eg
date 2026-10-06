@@ -1,0 +1,21 @@
+# Local preview tooling
+server.pid
+
+# AI assistant files
+.claude/
+.gemini/
+.grok/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# Playwright MCP output
+.playwright-mcp/

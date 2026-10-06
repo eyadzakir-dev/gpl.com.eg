@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<script>
+  // Served at any missing URL, so relative links resolve against the site root: "/" on gpl.com.eg,
+  // "/<repo>/" on a github.io project preview (GitHub only serves a project's 404.html under its own /<repo>/ path).
+  (function () {
+    var first = location.pathname.split("/")[1];
+    var isProjectPreview = /\.github\.io$/.test(location.hostname) && first;
+    var base = document.createElement("base");
+    base.href = isProjectPreview ? "/" + first + "/" : "/";
+    document.head.appendChild(base);
+  })();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page Not Found | Green Point Logistics · الصفحة غير موجودة</title>
+<meta name="robots" content="noindex">
+<!-- chrome:head -->
+<meta name="theme-color" content="#F3F1EC">
+<link rel="icon" type="image/png" href="assets/favicon/favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="assets/favicon/favicon.svg">
+<link rel="shortcut icon" href="assets/favicon/favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+<link rel="manifest" href="assets/favicon/site.webmanifest">
+<link rel="preload" href="assets/fonts/archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
+  })();
+</script>
+<!-- ===== ANALYTICS HOOK (disabled) =====
+  Enable exactly ONE provider after approval, add its account key, and update the privacy policy.
+  Cloudflare Web Analytics (cookie-free):
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "CF_BEACON_TOKEN"}'></script>
+  Plausible (cookie-free): paste the per-site snippet from your Plausible dashboard (Site settings > Site installation).
+  It has this shape, with your own pa-<ID>:
+    <script async src="https://plausible.io/js/pa-XXXXXXXXXXXX.js"></script>
+    <script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init()</script>
+  Google Analytics 4 (sets cookies; needs a consent notice):
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-XXXXXXXXXX');</script>
+===== /ANALYTICS HOOK ===== -->
+<!-- /chrome:head -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap">
+<script>
+  // Written after <base>: a static <link> would be fetched first by the preload scanner, relative to the missing URL.
+  document.write('<link rel="stylesheet" href="assets/css/site.css">');
+</script>
+<noscript><link rel="stylesheet" href="assets/css/site.css"></noscript>
+<style>
+  /* 404 only: a container yard with one empty slot, then the same message in English and Arabic. */
+  .nf { padding-top: var(--hdr-h); border-bottom: 1px solid var(--ink); }
+  .nf__in { padding-bottom: 72px; }
+  .nf__meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px var(--gut);
+    padding-block: 14px;
+    border-bottom: 1px solid var(--ink);
+    color: var(--ink-2);
+  }
+  .nf__meta .k { margin-inline-end: 6px; color: var(--green-ink); }
+  .nf__fig { margin-top: clamp(28px, 5vh, 56px); padding: clamp(12px, 2vw, 24px); border: 1px solid var(--ink); background: var(--paper-hi); }
+  .nf__svg { width: auto; max-width: 100%; height: auto; max-height: min(42vh, 440px); margin-inline: auto; }
+  .nf__cap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--rule); color: var(--ink-2); font-size: 11px; }
+  .nf__cap b { color: var(--green-ink); font-weight: 500; }
+  .nf__langs { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--gut); row-gap: 56px; margin-top: 56px; }
+  .nf__block { grid-column: span 6; }
+  .nf__block + .nf__block { padding-inline-start: var(--gut); border-inline-start: 1px solid var(--ink); }
+  .nf__block[dir="rtl"] { padding-inline-start: 0; padding-inline-end: var(--gut); border-inline-start: 0; border-inline-end: 1px solid var(--ink); }
+  .nf__kicker { color: var(--green-ink); }
+  .nf__title { margin-top: 14px; font-size: clamp(40px, 4.6vw, 76px); font-weight: 800; font-stretch: 80%; line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; }
+  .nf__title .dot { color: var(--green); }
+  .nf__lead { max-width: 30em; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--ink); font-size: 19px; line-height: 1.45; text-wrap: pretty; }
+  .nf__actions { margin-top: 28px; }
+  .nf__list { margin-top: 24px; border-top: 1px solid var(--ink); }
+  .nf__list a {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: baseline;
+    padding: 13px 0 14px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 19px;
+    font-weight: 650;
+    font-stretch: 90%;
+    text-decoration: none;
+  }
+  .nf__list .mono { color: var(--green-ink); font-size: 11px; }
+  .nf__list a:hover { color: var(--green-ink); }
+  .nf__list a:hover .arr { transform: translateX(4px); }
+  [dir="rtl"] .nf__list a:hover .arr { transform: scaleX(-1) translateX(4px); }
+  .nf__block:lang(ar) .nf__title { line-height: 1.25; }
+  .nf__block:lang(ar) .nf__lead { line-height: 1.8; }
+  .nf__block:lang(ar) .nf__list a { line-height: 1.45; }
+  .nf__block:lang(ar) .mono { font-size: 13px; }
+  .nf__block:lang(ar) .nf__list .mono { font-size: 11px; }
+
+  /* Drawing: ink line art on paper, one green container, the empty slot dashed in green. */
+  .nf-box rect { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; }
+  .nf-rib { fill: none; stroke: var(--rule); stroke-width: 1; }
+  .nf-rail { fill: none; stroke: var(--ink); stroke-width: 0.75; opacity: 0.5; }
+  .nf-cast { fill: var(--ink); }
+  .nf-box--green rect { fill: var(--green); }
+  .nf-box--green .nf-rib { stroke: rgba(0, 0, 0, 0.18); }
+  .nf-code { font: 500 12px var(--f-mono); letter-spacing: 0.06em; fill: var(--ink-2); }
+  .nf-box--green .nf-code { fill: var(--paper); }
+  .nf-slot { fill: rgba(10, 138, 65, 0.06); stroke: var(--green-ink); stroke-width: 2; stroke-dasharray: 9 6; }
+  .nf-404 { font: 800 44px var(--f-latin); font-stretch: 80%; letter-spacing: -0.02em; fill: var(--green-ink); }
+  .nf-cable { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+  .nf-bar { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.5; }
+  .nf-lock { fill: none; stroke: var(--ink); stroke-width: 3; }
+  .nf-leader { fill: none; stroke: var(--ink); stroke-width: 1; }
+  .nf-dot { fill: var(--ink); }
+  .nf-lbl { font: 500 15px var(--f-mono); letter-spacing: 0.08em; fill: var(--ink); }
+  .nf-lbl--green { fill: var(--green-ink); }
+  .nf-lbl--sm { font-size: 12px; fill: var(--ink-2); }
+  .nf-ground { fill: none; stroke: var(--ink); stroke-width: 2; }
+  .nf-hatch { fill: none; stroke: var(--rule); stroke-width: 1; }
+  .nf-mark { fill: none; stroke: var(--ink-2); stroke-width: 1; }
+  .motion .nf-spreader { animation: nf-search 4.8s var(--ease-out) infinite; }
+  .motion .nf-slot { animation: nf-march 1.4s linear infinite; }
+  @keyframes nf-search { 0%, 100% { transform: translateY(0); } 45%, 55% { transform: translateY(26px); } }
+  @keyframes nf-march { to { stroke-dashoffset: -30; } }
+
+  @media (max-width: 899px) {
+    .nf__in { padding-bottom: 48px; }
+    .nf__meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nf__langs { margin-top: 40px; row-gap: 40px; }
+    .nf__block, .nf__block + .nf__block { grid-column: 1 / -1; padding: 0; border: 0; }
+    .nf__block[dir="rtl"] { padding: 32px 0 0; border: 0; border-top: 3px solid var(--ink); }
+    .nf__title { font-size: clamp(40px, 11vw, 56px); }
+    .nf__lead { font-size: 17px; }
+    .nf__actions .btn { width: 100%; }
+    .nf__list a { grid-template-columns: 32px minmax(0, 1fr) auto; font-size: 17px; }
+    .nf-lbl, .nf-code { display: none; }
+  }
+</style>
+</head>
+<body>
+<!-- chrome:header -->
+<a class="skip" href="#main">Skip to content</a>
+<header class="hdr">
+  <div class="hdr__in wrap">
+    <a class="hdr__brand" href="./" data-nav="home" aria-label="Green Point Logistics, home">
+      <svg class="hdr__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#gpl-mark"/></svg>
+      <span class="hdr__word">Green Point<br>Logistics</span>
+    </a>
+    <nav class="hdr__nav" aria-label="Primary">
+        <a href="services" data-nav="services">Services</a>
+        <a href="industries" data-nav="industries">Industries</a>
+        <a href="network" data-nav="network">Network</a>
+        <a href="about-greenpoint/" data-nav="about-greenpoint/">About</a>
+        <a href="faq" data-nav="faq">FAQ</a>
+        <a href="contact-us/" data-nav="contact-us/">Contact</a>
+    </nav>
+    <p class="hdr__clock mono" dir="ltr"><span aria-hidden="true">ALX</span><span class="sr-only">Alexandria local time</span> <time data-cairo-clock>UTC+2</time></p>
+    <a class="hdr__lang" href="ar/" hreflang="ar" lang="ar">عربي</a>
+    <a class="hdr__social" href="https://www.linkedin.com/company/green-point-logistics/" target="_blank" rel="noopener noreferrer" aria-label="Green Point Logistics on LinkedIn"><svg viewBox="3 3 18 18" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg></a>
+    <a class="btn btn--line hdr__track" href="track-your-shipment/" data-nav="track-your-shipment/">Track Shipment</a>
+    <a class="btn btn--green hdr__cta" href="quote" data-nav="quote">Request a Quote</a>
+    <details class="menu">
+      <summary class="menu__btn mono"><span class="menu__open">Menu</span><span class="menu__close">Close</span></summary>
+      <nav class="menu__panel" aria-label="Mobile">
+          <a href="services" data-nav="services"><span class="mono">01</span>Services</a>
+          <ul class="menu__sub" aria-label="All services">
+            <li><a href="sea-freight/" data-nav="sea-freight/">Sea freight</a></li>
+            <li><a href="air-freight/" data-nav="air-freight/">Air freight</a></li>
+            <li><a href="customs-clearance/" data-nav="customs-clearance/">Customs clearance</a></li>
+            <li><a href="inland-transportation/" data-nav="inland-transportation/">Inland transportation</a></li>
+            <li><a href="domestic-trucking/" data-nav="domestic-trucking/">Domestic trucking</a></li>
+            <li><a href="warehousing/" data-nav="warehousing/">Warehousing</a></li>
+            <li><a href="roro-services/" data-nav="roro-services/">RORO</a></li>
+            <li><a href="last-mile-delivery/" data-nav="last-mile-delivery/">Last-mile delivery</a></li>
+          </ul>
+          <a href="industries" data-nav="industries"><span class="mono">02</span>Industries</a>
+          <a href="network" data-nav="network"><span class="mono">03</span>Network</a>
+          <a href="about-greenpoint/" data-nav="about-greenpoint/"><span class="mono">04</span>About</a>
+          <a href="faq" data-nav="faq"><span class="mono">05</span>FAQ</a>
+          <a href="contact-us/" data-nav="contact-us/"><span class="mono">06</span>Contact</a>
+          <a href="track-your-shipment/" data-nav="track-your-shipment/"><span class="mono">07</span>Track Shipment</a>
+          <a class="btn btn--green" href="quote" data-nav="quote">Request a Quote <span aria-hidden="true">→</span></a>
+      </nav>
+    </details>
+  </div>
+</header>
+<svg class="gpl-sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gpl-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="0"><stop offset="0" stop-color="#00451F"/><stop offset=".35" stop-color="#0A8A41"/><stop offset=".58" stop-color="#8CC63F"/></linearGradient>
+    <linearGradient id="gpl-grad-dark" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="0"><stop offset="0" stop-color="#0A8A41"/><stop offset=".55" stop-color="#8CC63F"/></linearGradient>
+    <!-- GPL mark: the logo sphere, 20 diamond tiles around a pole on the left limb. Each tile style sets t, its sweep order (0 forest edge, 1 lime edge). -->
+    <symbol id="gpl-mark" viewBox="0 0 100 100">
+      <g style="fill:var(--mark-fill,url(#gpl-grad))">
+        <path class="gpl-t" style="--t:0" d="M0 50l0 .3l1.4-4.1l.8-1.8l-1.5 2l-.5 1.7z"/>
+        <path class="gpl-t" style="--t:0" d="M.1 46.3l.2 .2l.4-.3l.8-1.2l.7-.6l-.5 .1l-.9-.2l-.5 .7z"/>
+        <path class="gpl-t" style="--t:0" d="M.3 53l0 .7l1.1-6.2l.9-3l-1.5 3.7l-.4 2.2z"/>
+        <path class="gpl-t" style="--t:0" d="M.6 42.9l.1 .7l.2 .5l.8 0l.6 .3l-.6-.8l-.5-1.4l-.4-.5z"/>
+        <path class="gpl-t" style="--t:0" d="M.8 53.3l.2 2.9l.6-7.8l.7-3.9l-1.3 5.1z"/>
+        <path class="gpl-t" style="--t:0" d="M1.4 52l.2 3.2l.3 2.4l0-9.2l.4-4l-.8 5.1z"/>
+        <path class="gpl-t" style="--t:0" d="M1.7 40.4l.6 4l-.2-3.2l.5-6.4l-.7 2.8z"/>
+        <path class="gpl-t" style="--t:0" d="M1.9 50.4l.3 3.7l.7 3.7l-.7-9.8l.1-3.6z"/>
+        <path class="gpl-t" style="--t:0" d="M2.2 40.9l.1 3.6l.2-4l1.3-7.9l-.6 1.8l-.6 2.6l-.3 2.1z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.3 6.6l.7 3l.9 2.7l.1-.2l-1.8-9.4z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.6-3.9l2.1-9l-1.1 2.8l-.9 3.6z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.9 5.7l1 2.4l1.2 1.9l.1-.2l-1.8-5.7l-.9-2.2z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.8-3.5l3-9.3l-1.4 2.8l-1.1 3.3z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l1.5 4.2l1.3 1.6l1.4 1l.1-.3l-2-3.4l-.4-.7l-1.3-1.4z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l.9-2.5l3.9-8.7l-.1-.2l-1.5 2.3l-1.4 2.8z"/>
+        <path class="gpl-t" style="--t:0" d="M2.3 44.4l2 2.3l1.5 .6l1.5 .1l.1-.4l-.5-.5l-2.1-1.6l-.7-.2l-1.2 0z"/>
+        <path class="gpl-t" style="--t:.1" d="M2.3 44.4l.9-1.7l1.4-1.9l3.1-5l0-.3l-1.6 1.6l-1.6 2.1z"/>
+        <path class="gpl-t" style="--t:.1" d="M2.3 44.4l.9 0l1.3 .3l.4-.1l2.3-1l.6-.4l.1-.3l-1.6-.3l-1.5 .1z"/>
+        <path class="gpl-t" style="--t:.1" d="M2.3 44.4l.8-.8l1.6-1l.6-.5l2.7-2.9l0-.2l-1.7 .6l-1.6 1.2z"/>
+        <path class="gpl-t" style="--t:.1" d="M3.1 58.4l.8 5.6l.5 2.2l1.6 3.2l2 3l.2-.1l-1.9-6.8l-1.9-3.7l-1.2-3.4z"/>
+        <path class="gpl-t" style="--t:.1" d="M4.4 57.3l1.5 7.1l.5 1l1.9 2.6l2.2 2.2l.2-.2l-2.4-7.2l-.6-1l-1.9-2.3l-1.3-2.3z"/>
+        <path class="gpl-t" style="--t:.1" d="M5.7 55l2.1 6.7l.6 1l2.2 1.7l2.5 1.3l.1-.5l-3-6.8l-.7-.8l-2.3-1.4l-1.4-1.4z"/>
+        <path class="gpl-t" style="--t:.1" d="M6.4 31l.1 .1l2-3l2.6-3.2l3.5-6.2l-.2-.2l-2.6 2.4l-2.3 2.7l-1 2.1z"/>
+        <path class="gpl-t" style="--t:.1" d="M6.8 51.6l2.8 5.8l.6 .7l2.4 .7l2.7 .2l.1-.6l-3.7-5.9l-.7-.4l-2.2-.2l-1.9-.6z"/>
+        <path class="gpl-t" style="--t:.1" d="M7.4 32.5l.1 .2l1.8-1.9l2.4-1.9l.7-.7l4.1-6.4l-.1-.4l-2.7 1.6l-2.5 2l-.7 1z"/>
+        <path class="gpl-t" style="--t:.1" d="M7.7 47.5l3.4 4.3l.7 .4l2.5-.4l2.7-.8l.1-.6l-2.2-2.4l-2.1-2l-.8-.1l-2.2 .8l-2 .5z"/>
+        <path class="gpl-t" style="--t:.1" d="M8.3 73.1l1.8 4.8l.5 1.2l.7 .9l3.5 3.3l2.2 1.7l.3-.1l-3.1-6.1l-.7-.9l-3.1-2.7l-1.9-2.2z"/>
+        <path class="gpl-t" style="--t:.1" d="M8 35.1l0 .2l1.7-.9l2.6-.9l.8-.5l4.6-5.9l0-.5l-2.8 .6l-2.5 1.1l-.7 .8z"/>
+        <path class="gpl-t" style="--t:.1" d="M8.2 43.2l1.9 1l1.9 1.4l.8 .1l2.5-1.4l2.7-1.8l.1-.6l-2.5-1.5l-2.3-1l-.8 .2l-4.3 3.3z"/>
+        <path class="gpl-t" style="--t:.1" d="M8.3 38.7l0 .3l2-.1l2.2 .4l.8-.2l5-4.9l-.1-.5l-2.6-.5l-2.5 .1l-.7 .5z"/>
+        <path class="gpl-t" style="--t:.2" d="M10.9 70.8l2.7 6.9l.8 1l3 1.8l3.3 1.3l.2-.3l-3.5-7.1l-.8-.8l-2.9-1.3l-2.6-1.8z"/>
+        <path class="gpl-t" style="--t:.2" d="M13.5 66.1l3.3 7.3l.8 .8l3.2 .8l3.5 .3l.2-.6l-4-7.4l-.9-.6l-3.1-.3l-2.8-.7z"/>
+        <path class="gpl-t" style="--t:.2" d="M14.9 18l.2 .1l2.4-1.6l3.6-1.9l.9-.7l4.4-5.3l-.2-.1l-2.3 .9l-4.5 2.5l-.8 .8l-.8 1z"/>
+        <path class="gpl-t" style="--t:.2" d="M15.7 59.3l3.9 7l.9 .6l3.3-.3l3.5-.7l.3-.8l-4.7-7.1l-1-.4l-3.1 .8l-2.9 .3z"/>
+        <path class="gpl-t" style="--t:.3" d="M16.9 20.9l.1 .3l3-1l3.1-.6l1-.6l5.1-6.1l-.2-.4l-3.5 .5l-3.4 1l-.9 .7z"/>
+        <path class="gpl-t" style="--t:.3" d="M17.5 85.5l2.4 3.4l1 1.2l.9 .7l4.6 2.3l2.9 1.1l.3-.2l-2-2.1l-2-2.6l-.9-.6l-3.6-1.5l-3.3-1.8z"/>
+        <path class="gpl-t" style="--t:.3" d="M17.5 51.2l4.6 6l.9 .4l3.4-1.3l3.4-1.7l.2-.9l-5.4-6.1l-.9-.1l-3.1 1.7l-3 1.4z"/>
+        <path class="gpl-t" style="--t:.3" d="M18.2 26.3l.1 .5l2.9 0l3 .5l1-.4l5.7-6.3l-.1-.6l-3.4-.6l-3.3 0l-1 .6z"/>
+        <path class="gpl-t" style="--t:.3" d="M18.6 42.5l2.5 2l2.6 2.5l1 .1l6.6-4.6l.1-.9l-3-2.5l-2.9-2.1l-1 .1l-5.9 4.7z"/>
+        <path class="gpl-t" style="--t:.3" d="M18.8 33.5l0 .6l2.8 1.1l2.8 1.5l1-.1l6.3-5.8l-.1-.8l-3.2-1.6l-3.1-1.1l-1.1 .4z"/>
+        <path class="gpl-t" style="--t:.3" d="M21.2 82.3l3.7 6.2l1 .6l2.8 .7l2.9 .4l2 .2l.4-.5l-4.2-6.2l-1.1-.6l-3.7-.4l-3.5-.8z"/>
+        <path class="gpl-t" style="--t:.3" d="M23.4 7.7l3.9-2l3.8-1.5l3.1-1.6l1.7-.6l-3.3 1.1l-3.2 1.3l-3.2 1.6z"/>
+        <path class="gpl-t" style="--t:.3" d="M23.4 7.7l3.9-2l3.8-1.5l3.1-1.6l1.7-.6l-3.3 1.1l-3.2 1.3l-3.2 1.6z"/>
+        <path class="gpl-t" style="--t:.4" d="M24.8 75.7l4.1 7.1l1 .6l4-.2l4-.7l.3-.7l-4.6-7.2l-1.1-.5l-3.8 .7l-3.6 .3z"/>
+        <path class="gpl-t" style="--t:.4" d="M30.1 95.9l5.9 2.1z"/>
+        <path class="gpl-t" style="--t:.4" d="M26.8 8.1l.2 .2l3.7-1l3.8-.5l1.1-.4l2.5-2.1l2.5-1.7l-.3-.2l-3.1 .3l-4.9 1.1l-1.1 .5l-1.1 .8z"/>
+        <path class="gpl-t" style="--t:.4" d="M28 66.2l4.7 7.5l1 .4l4-1.2l4-1.6l.3-1l-5.2-7.5l-1.1-.3l-3.8 1.6l-3.7 1.3z"/>
+        <path class="gpl-t" style="--t:.4" d="M29.6 12.2l.2 .5l3.6 0l3.7 .6l1.1-.3l5.6-5.2l-.2-.5l-2-.4l-2.9-.3l-3 0l-1 .4z"/>
+        <path class="gpl-t" style="--t:.4" d="M29.9 94.5l2.8 2.1l1.4 .8l1.1 .3l4.8 1l3.5 .4l.4-.2l-2.3-1.2l-2.2-1.7l-1-.3l-4.2-.4l-4-.9z"/>
+        <path class="gpl-t" style="--t:.4" d="M30.5 54.7l5.3 7.1l1.1 .3l3.9-2.1l3.9-2.3l.1-1.1l-5.8-7.2l-1.1-.2l-3.7 2.5l-3.6 2.1z"/>
+        <path class="gpl-t" style="--t:.4" d="M31.5 19.7l.1 .7l3.5 1.1l3.5 1.6l1.2-.2l6.2-5.9l-.1-.8l-3.8-1.7l-3.8-1.1l-1.1 .3z"/>
+        <path class="gpl-t" style="--t:.5" d="M32 42.5l3 2.9l2.9 3.3l1.2 .1l7.3-5.6l.1-1.1l-3.2-3.3l-3.2-2.9l-1.2 0l-6.8 5.7z"/>
+        <path class="gpl-t" style="--t:.5" d="M32.3 29.8l0 .8l3.3 2.2l3.3 2.5l1.1 0l6.8-6.2l0-1l-3.5-2.5l-3.5-2.2l-1.2 .2z"/>
+        <path class="gpl-t" style="--t:.5" d="M34.3 90.7l2 2.4l1.9 2l.4 .4l1.1 .3l3.2-.1l3.2-.3l2.1-.4l.4-.5l-2.3-2.2l-2.2-2.6l-1.1-.3l-4.2 .7l-4.2 .1z"/>
+        <path class="gpl-t" style="--t:.5" d="M39.9 1l3.2-.5l5.1-.5l-3.6 .3z"/>
+        <path class="gpl-t" style="--t:.5" d="M38.6 82.8l4.6 6.3l1.1 .3l3.9-1.1l3.9-1.4l.7-.3l.3-.8l-4.8-6.3l-1.1-.2l-4.2 1.6l-4.1 1.2z"/>
+        <path class="gpl-t" style="--t:.6" d="M40.9 2.2l.3 .2l4.1 .1l4.1 .6l1.1-.1l2.6-1.1l2.4-.8l-.3-.2l-3.4-.5l-5-.2l-1.1 .1l-1.6 .4z"/>
+        <path class="gpl-t" style="--t:.6" d="M42.4 71.4l5 7.2l1.1 .3l4.2-2l4.1-2.4l.3-1l-5.2-7.3l-1.1-.2l-4.1 2.4l-4 2z"/>
+        <path class="gpl-t" style="--t:.6" d="M44.3 7.2l.2 .5l4 1.2l3.9 1.7l1.2-.1l2.8-2l2.7-1.7l-.2-.6l-2-.9l-3.1-1.1l-3-.8l-1.2 .1l-.4 .2l-2.4 1.6z"/>
+        <path class="gpl-t" style="--t:.6" d="M44.2 99.2l2.7 .7l3.3 .1l4.7-.2l3.8-.7l-1.8-.1l-2.7-.7l-1.1 0l-3.9 .6l-4.7 .2z"/>
+        <path class="gpl-t" style="--t:.6" d="M45.3 57.8l5.6 7.6l1.1 .2l7.9-5.6l.2-1.1l-5.8-7.6l-1.1-.1l-7.7 5.5z"/>
+        <path class="gpl-t" style="--t:.6" d="M46.5 16.1l.1 .8l3.8 2.2l3.6 2.6l1.2 0l6.1-5.2l-.1-.8l-.6-.5l-3.5-2.3l-3.5-2l-1.2 .1z"/>
+        <path class="gpl-t" style="--t:.6" d="M47.1 43.2l6.2 7.2l1.1 .2l7.4-6.1l.1-1.1l-6.4-7.3l-1.1-.1l-7.2 6.1z"/>
+        <path class="gpl-t" style="--t:.6" d="M47.5 28.1l0 1l3.5 3l3.3 3.3l1.2 0l6.8-5.9l0-1l-3.5-3.3l-3.6-3l-1.1 0z"/>
+        <path class="gpl-t" style="--t:.7" d="M48.9 95.2l1.9 1.4l1.8 1.2l.8 .3l1.1 0l2.9-.7l3.1-1.1l2.5-.9l.3-.5l-2.2-1.2l-2.2-1.7l-1.1 0l-4.2 1.5l-4.3 1.2z"/>
+        <path class="gpl-t" style="--t:.7" d="M53.4 86.7l2.3 2.6l2.3 2.2l1.1 0l3.5-1.6l3.7-2.1l1-.7l.3-.7l-2.2-2.2l-2.2-2.6l-1.1-.1l-4.2 2.4l-4.2 2z"/>
+        <path class="gpl-t" style="--t:.7" d="M56 1l.3 .2l4.5 1.3l3.6 1.6l1.1 .2l2.4-.1l2.2 .3l-3.6-1.7l-4.4-1.3l-3.1-.6z"/>
+        <path class="gpl-t" style="--t:.8" d="M57.5 74.6l4.8 6.3l1.1 .1l4-2.7l3.9-2.9l.2-.9l-4.7-6.4l-1.1-.1l-3.9 2.9l-4 2.7z"/>
+        <path class="gpl-t" style="--t:.8" d="M59.1 99.1l3.1-.6l3.5-1l3.3-1.2l3.2-1.5l-1.6 .7l-3 .7l-4.4 1.7z"/>
+        <path class="gpl-t" style="--t:.8" d="M59.5 6.2l.2 .6l3.9 2.2l3.8 2.5l1.1 .3l2.5-1.2l2.4-.8l-.2-.5l-2.1-1.6l-2.9-1.8l-2.5-1.4l-1.1-.2l-.8 .2l-2.1 .7z"/>
+        <path class="gpl-t" style="--t:.8" d="M61.9 15.7l.1 .9l3.6 3l3.5 3.2l1.1 .2l5.5-3.7l-.2-.8l-.5-.6l-3.2-3l-3.2-2.7l-1.1-.2l-2.7 1.7z"/>
+        <path class="gpl-t" style="--t:.8" d="M63 28.6l0 1.1l3.3 3.5l3.2 3.7l1 .2l6.1-5.1l0-1.1l-3.1-3.7l-3.2-3.5l-1.1-.2z"/>
+        <path class="gpl-t" style="--t:.8" d="M63.6 95.2l1.6 .5l1.4 .3l1.2 0l1.1-.3l4.8-2.7l2.7-1.8l.3-.4l-1.8-.2l-2-.6l-1 .3l-3.9 2.4l-4.1 2z"/>
+        <path class="gpl-t" style="--t:.9" d="M68 87.1l2.1 1.7l1.9 1.1l.1 .1l1-.3l5.8-4.3l1.4-1.3l.3-.6l-1.8-1.2l-1.9-1.7l-1 .2l-3.7 2.9l-3.9 2.6z"/>
+        <path class="gpl-t" style="--t:.9" d="M76.4 92.5l2.4-1.6l2.9-2.2z"/>
+        <path class="gpl-t" style="--t:.9" d="M73.8 9.5l.2 .6l3.5 2.9l3.2 3.3l.9 .5l2.1-.3l1.8 .3l-.2-.5l-2.2-2.4l-4-3.7l-1-.6l-1-.2l-1.6-.1z"/>
+        <path class="gpl-t" style="--t:1" d="M77 90.9l2.1-.6l1.9-1.1l3.5-3.1l3.1-3.3l-1.3 .9l-1.6 .6l-.8 .5l-3.2 3l-3.4 2.7z"/>
+        <path class="gpl-t" style="--t:1" d="M80.8 83.9l1.7 .6l1.6 .1l.8-.6l2.6-2.8l2.8-3.4l.2-.5l-1.3-.1l-1.3-.5l-.7 .3l-2.9 3.2l-3.2 3z"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+<!-- /chrome:header -->
+<main id="main" class="nf">
+  <div class="wrap nf__in">
+    <ul class="nf__meta mono">
+      <li><span class="k">ERR.</span> 404</li>
+      <li><span class="k">STATUS.</span> Not found</li>
+      <li lang="ar" dir="rtl"><span class="k">خطأ</span> <bdi>404</bdi></li>
+      <li lang="ar" dir="rtl"><span class="k">الحالة</span> الصفحة غير موجودة</li>
+    </ul>
+
+    <figure class="nf__fig">
+      <svg class="nf__svg" viewBox="0 0 1200 436" width="1200" height="436" aria-hidden="true" focusable="false">
+<g class="nf-box">
+<rect x="76" y="320" width="168" height="72"/>
+<path class="nf-rib" d="M88 327V385M98 327V385M108 327V385M118 327V385M128 327V385M138 327V385M148 327V385M158 327V385M168 327V385M178 327V385M188 327V385M198 327V385M208 327V385M218 327V385M228 327V385"/>
+<path class="nf-rail" d="M76 327H244M76 385H244"/>
+<path class="nf-cast" d="M76 320h7v7h-7zM237 320h7v7h-7zM76 385h7v7h-7zM237 385h7v7h-7z"/>
+<text class="nf-code" x="230" y="346" text-anchor="end">GPLU 202107 1</text>
+</g>
+<g class="nf-box">
+<rect x="76" y="244" width="168" height="72"/>
+<path class="nf-rib" d="M88 251V309M98 251V309M108 251V309M118 251V309M128 251V309M138 251V309M148 251V309M158 251V309M168 251V309M178 251V309M188 251V309M198 251V309M208 251V309M218 251V309M228 251V309"/>
+<path class="nf-rail" d="M76 251H244M76 309H244"/>
+<path class="nf-cast" d="M76 244h7v7h-7zM237 244h7v7h-7zM76 309h7v7h-7zM237 309h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="252" y="320" width="168" height="72"/>
+<path class="nf-rib" d="M264 327V385M274 327V385M284 327V385M294 327V385M304 327V385M314 327V385M324 327V385M334 327V385M344 327V385M354 327V385M364 327V385M374 327V385M384 327V385M394 327V385M404 327V385"/>
+<path class="nf-rail" d="M252 327H420M252 385H420"/>
+<path class="nf-cast" d="M252 320h7v7h-7zM413 320h7v7h-7zM252 385h7v7h-7zM413 385h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="252" y="244" width="168" height="72"/>
+<path class="nf-rib" d="M264 251V309M274 251V309M284 251V309M294 251V309M304 251V309M314 251V309M324 251V309M334 251V309M344 251V309M354 251V309M364 251V309M374 251V309M384 251V309M394 251V309M404 251V309"/>
+<path class="nf-rail" d="M252 251H420M252 309H420"/>
+<path class="nf-cast" d="M252 244h7v7h-7zM413 244h7v7h-7zM252 309h7v7h-7zM413 309h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="252" y="168" width="168" height="72"/>
+<path class="nf-rib" d="M264 175V233M274 175V233M284 175V233M294 175V233M304 175V233M314 175V233M324 175V233M334 175V233M344 175V233M354 175V233M364 175V233M374 175V233M384 175V233M394 175V233M404 175V233"/>
+<path class="nf-rail" d="M252 175H420M252 233H420"/>
+<path class="nf-cast" d="M252 168h7v7h-7zM413 168h7v7h-7zM252 233h7v7h-7zM413 233h7v7h-7z"/>
+<text class="nf-code" x="406" y="194" text-anchor="end">GPLU 202110 6</text>
+</g>
+<g class="nf-box">
+<rect x="428" y="320" width="168" height="72"/>
+<path class="nf-rib" d="M440 327V385M450 327V385M460 327V385M470 327V385M480 327V385M490 327V385M500 327V385M510 327V385M520 327V385M530 327V385M540 327V385M550 327V385M560 327V385M570 327V385M580 327V385"/>
+<path class="nf-rail" d="M428 327H596M428 385H596"/>
+<path class="nf-cast" d="M428 320h7v7h-7zM589 320h7v7h-7zM428 385h7v7h-7zM589 385h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="428" y="244" width="168" height="72"/>
+<path class="nf-rib" d="M440 251V309M450 251V309M460 251V309M470 251V309M480 251V309M490 251V309M500 251V309M510 251V309M520 251V309M530 251V309M540 251V309M550 251V309M560 251V309M570 251V309M580 251V309"/>
+<path class="nf-rail" d="M428 251H596M428 309H596"/>
+<path class="nf-cast" d="M428 244h7v7h-7zM589 244h7v7h-7zM428 309h7v7h-7zM589 309h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="604" y="320" width="168" height="72"/>
+<path class="nf-rib" d="M616 327V385M626 327V385M636 327V385M646 327V385M656 327V385M666 327V385M676 327V385M686 327V385M696 327V385M706 327V385M716 327V385M726 327V385M736 327V385M746 327V385M756 327V385"/>
+<path class="nf-rail" d="M604 327H772M604 385H772"/>
+<path class="nf-cast" d="M604 320h7v7h-7zM765 320h7v7h-7zM604 385h7v7h-7zM765 385h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="604" y="244" width="168" height="72"/>
+<path class="nf-rib" d="M616 251V309M626 251V309M636 251V309M646 251V309M656 251V309M666 251V309M676 251V309M686 251V309M696 251V309M706 251V309M716 251V309M726 251V309M736 251V309M746 251V309M756 251V309"/>
+<path class="nf-rail" d="M604 251H772M604 309H772"/>
+<path class="nf-cast" d="M604 244h7v7h-7zM765 244h7v7h-7zM604 309h7v7h-7zM765 309h7v7h-7z"/>
+</g>
+<g class="nf-box">
+<rect x="604" y="168" width="168" height="72"/>
+<path class="nf-rib" d="M616 175V233M626 175V233M636 175V233M646 175V233M656 175V233M666 175V233M676 175V233M686 175V233M696 175V233M706 175V233M716 175V233M726 175V233M736 175V233M746 175V233M756 175V233"/>
+<path class="nf-rail" d="M604 175H772M604 233H772"/>
+<path class="nf-cast" d="M604 168h7v7h-7zM765 168h7v7h-7zM604 233h7v7h-7zM765 233h7v7h-7z"/>
+<text class="nf-code" x="758" y="194" text-anchor="end">GPLU 202203 6</text>
+</g>
+<g class="nf-box">
+<rect x="780" y="320" width="168" height="72"/>
+<path class="nf-rib" d="M792 327V385M802 327V385M812 327V385M822 327V385M832 327V385M842 327V385M852 327V385M862 327V385M872 327V385M882 327V385M892 327V385M902 327V385M912 327V385M922 327V385M932 327V385"/>
+<path class="nf-rail" d="M780 327H948M780 385H948"/>
+<path class="nf-cast" d="M780 320h7v7h-7zM941 320h7v7h-7zM780 385h7v7h-7zM941 385h7v7h-7z"/>
+</g>
+<g class="nf-box nf-box--green">
+<rect x="780" y="244" width="168" height="72"/>
+<path class="nf-rib" d="M792 251V309M802 251V309M812 251V309M822 251V309M832 251V309M842 251V309M852 251V309M862 251V309M872 251V309M882 251V309M892 251V309M902 251V309M912 251V309M922 251V309M932 251V309"/>
+<path class="nf-rail" d="M780 251H948M780 309H948"/>
+<path class="nf-cast" d="M780 244h7v7h-7zM941 244h7v7h-7zM780 309h7v7h-7zM941 309h7v7h-7z"/>
+<text class="nf-code" x="934" y="270" text-anchor="end">GPLU 210521 2</text>
+</g>
+<g class="nf-box">
+<rect x="956" y="320" width="168" height="72"/>
+<path class="nf-rib" d="M968 327V385M978 327V385M988 327V385M998 327V385M1008 327V385M1018 327V385M1028 327V385M1038 327V385M1048 327V385M1058 327V385M1068 327V385M1078 327V385M1088 327V385M1098 327V385M1108 327V385"/>
+<path class="nf-rail" d="M956 327H1124M956 385H1124"/>
+<path class="nf-cast" d="M956 320h7v7h-7zM1117 320h7v7h-7zM956 385h7v7h-7zM1117 385h7v7h-7z"/>
+</g>
+<rect class="nf-slot" x="430" y="170" width="164" height="68"/>
+<text class="nf-404" x="512.0" y="219.0" text-anchor="middle">404</text>
+<g class="nf-spreader"><path class="nf-cable" d="M466.0 0V110M558.0 0V110"/><rect class="nf-bar" x="422" y="110" width="180" height="14"/><path class="nf-lock" d="M432 124v12M592 124v12"/></g>
+<path class="nf-leader" d="M586 178L696 78H916"/><circle class="nf-dot" cx="586" cy="178" r="3.5"/>
+<text class="nf-lbl" x="702" y="68">B·03·03 · GPLU 404404 0</text>
+<text class="nf-lbl nf-lbl--green" x="702" y="100">STATUS: NOT FOUND</text>
+<path class="nf-ground" d="M24 392H1176"/>
+<path class="nf-hatch" d="M40 392l-10 12M56 392l-10 12M72 392l-10 12M88 392l-10 12M104 392l-10 12M120 392l-10 12M136 392l-10 12M152 392l-10 12M168 392l-10 12M184 392l-10 12M200 392l-10 12M216 392l-10 12M232 392l-10 12M248 392l-10 12M264 392l-10 12M280 392l-10 12M296 392l-10 12M312 392l-10 12M328 392l-10 12M344 392l-10 12M360 392l-10 12M376 392l-10 12M392 392l-10 12M408 392l-10 12M424 392l-10 12M440 392l-10 12M456 392l-10 12M472 392l-10 12M488 392l-10 12M504 392l-10 12M520 392l-10 12M536 392l-10 12M552 392l-10 12M568 392l-10 12M584 392l-10 12M600 392l-10 12M616 392l-10 12M632 392l-10 12M648 392l-10 12M664 392l-10 12M680 392l-10 12M696 392l-10 12M712 392l-10 12M728 392l-10 12M744 392l-10 12M760 392l-10 12M776 392l-10 12M792 392l-10 12M808 392l-10 12M824 392l-10 12M840 392l-10 12M856 392l-10 12M872 392l-10 12M888 392l-10 12M904 392l-10 12M920 392l-10 12M936 392l-10 12M952 392l-10 12M968 392l-10 12M984 392l-10 12M1000 392l-10 12M1016 392l-10 12M1032 392l-10 12M1048 392l-10 12M1064 392l-10 12M1080 392l-10 12M1096 392l-10 12M1112 392l-10 12M1128 392l-10 12M1144 392l-10 12M1160 392l-10 12M1176 392l-10 12"/>
+<text class="nf-lbl nf-lbl--sm" x="160.0" y="426" text-anchor="middle">BAY 01</text>
+<text class="nf-lbl nf-lbl--sm" x="336.0" y="426" text-anchor="middle">BAY 02</text>
+<text class="nf-lbl nf-lbl--sm" x="512.0" y="426" text-anchor="middle">BAY 03</text>
+<text class="nf-lbl nf-lbl--sm" x="688.0" y="426" text-anchor="middle">BAY 04</text>
+<text class="nf-lbl nf-lbl--sm" x="864.0" y="426" text-anchor="middle">BAY 05</text>
+<text class="nf-lbl nf-lbl--sm" x="1040.0" y="426" text-anchor="middle">BAY 06</text>
+<text class="nf-lbl nf-lbl--sm" x="58" y="361.0" text-anchor="end">T1</text>
+<text class="nf-lbl nf-lbl--sm" x="58" y="285.0" text-anchor="end">T2</text>
+<text class="nf-lbl nf-lbl--sm" x="58" y="209.0" text-anchor="end">T3</text>
+<path class="nf-mark" d="M4 18V4H18M1182 4H1196V18M4 418V432H18M1182 432H1196V418"/>
+<text class="nf-lbl nf-lbl--sm" x="24" y="34">GPL · IL-404</text><text class="nf-lbl nf-lbl--sm" x="24" y="54">20′ GP · 22G1 · ELEVATION</text>
+</svg>
+      <figcaption class="nf__cap mono">
+        <span><b>GPLU 404404 0</b> · Bay 03 · Tier 3 · Container not found</span>
+        <span lang="ar" dir="rtl">الحاوية غير موجودة · الصف <bdi>03</bdi> · الطبقة <bdi>3</bdi></span>
+        <span class="sr-only">Line drawing of a container yard: a crane spreader hangs over one empty, dashed slot marked 404.</span>
+        <span class="sr-only" lang="ar">رسم خطي لساحة حاويات: رافعة تتدلى فوق مكان فارغ يحمل الرقم 404.</span>
+      </figcaption>
+    </figure>
+
+    <div class="nf__langs">
+      <section class="nf__block" lang="en" aria-labelledby="nf-title">
+        <p class="nf__kicker mono">Container not found</p>
+        <h1 class="nf__title" id="nf-title">This page did not clear<span class="dot">.</span></h1>
+        <p class="nf__lead">The page you asked for does not exist or has moved. Our old pages were reorganised in 2026.</p>
+        <div class="nf__actions"><a class="btn btn--green btn--lg" href="./">Back to home <span aria-hidden="true">→</span></a></div>
+        <ul class="nf__list">
+          <li><a href="services"><span class="mono">01</span>All services<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="quote"><span class="mono">02</span>Request a Quote<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="track-your-shipment/"><span class="mono">03</span>Track a shipment<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="contact-us/"><span class="mono">04</span>Contact us<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="ar/" hreflang="ar"><span class="mono">05</span><span>Arabic site · <span lang="ar">الموقع العربي</span></span><span class="arr" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+
+      <!-- TODO(ar-review): the customs pun «لم تُفرج عنها الجمارك» reads naturally to the copy agent; if a reviewer finds it odd, use «هذه الصفحة غير موجودة.» -->
+      <section class="nf__block" lang="ar" dir="rtl" aria-labelledby="nf-title-ar">
+        <p class="nf__kicker mono">الحاوية غير موجودة</p>
+        <h2 class="nf__title" id="nf-title-ar">هذه الصفحة لم تُفرج عنها الجمارك<span class="dot">.</span></h2>
+        <p class="nf__lead">الصفحة التي تبحث عنها غير موجودة أو تم نقلها، فقد أعدنا تنظيم صفحات الموقع في <bdi>2026</bdi>.</p>
+        <div class="nf__actions"><a class="btn btn--green btn--lg" href="ar/">العودة إلى الرئيسية <span aria-hidden="true">→</span></a></div>
+        <ul class="nf__list">
+          <li><a href="ar/services"><span class="mono">01</span>كل الخدمات<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="ar/quote"><span class="mono">02</span>اطلب عرض سعر<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="ar/track-your-shipment/"><span class="mono">03</span>تتبّع شحنة<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="ar/contact-us/"><span class="mono">04</span>تواصل معنا<span class="arr" aria-hidden="true">→</span></a></li>
+          <li><a href="./" hreflang="en" lang="en"><span class="mono">05</span>English site<span class="arr" aria-hidden="true">→</span></a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+<!-- chrome:footer -->
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div class="ftr__brand">
+      <a href="./" data-nav="home" aria-label="Green Point Logistics, home"><img class="ftr__logo" src="assets/img/brand/logo-white.svg" width="190" height="87" loading="lazy" alt=""></a>
+      <p class="mono ftr__est">Est. 2021 · Alexandria</p>
+      <p class="ftr__group"><a href="https://threestarsfashion.com" target="_blank" rel="noopener noreferrer">A Three Stars Group company<span class="sr-only"> (opens in a new tab)</span></a></p>
+    </div>
+    <address class="ftr__addr">
+      <p class="mono">Head office · Alexandria</p>
+      <p>EL-Nasr St., Admin unit No. 52<br>Building No. 23, 5th Floor<br>El Manshya, Alexandria, Egypt</p>
+      <p class="mono">Call</p>
+      <p><a href="tel:+2034800912">+20 3 480 0912</a><br>
+          <a href="tel:+201222210198">+20 122 221 0198</a><br>
+          <a href="tel:+201222174535">+20 122 217 4535</a></p>
+    </address>
+    <div class="ftr__contact">
+      <p class="mono">Email</p>
+      <p><a href="mailto:info@gpl.com.eg">info@gpl.com.eg</a><br>
+          <a href="mailto:import@gpl.com.eg">import@gpl.com.eg</a><br>
+          <a href="mailto:export@gpl.com.eg">export@gpl.com.eg</a></p>
+      <p class="mono">Follow</p>
+      <ul class="ftr__social">
+        <li><a href="https://www.linkedin.com/company/green-point-logistics/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true" class="arr">↗</span></a></li>
+        <li><a href="https://www.facebook.com/GreenPointLogistics.EG" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8z"/></svg>Facebook<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true" class="arr">↗</span></a></li>
+        <li><a href="https://www.instagram.com/greenpointlogistics.eg/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill-rule="evenodd" d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.3-3.6a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6z"/></svg>Instagram<span class="sr-only"> (opens in a new tab)</span> <span aria-hidden="true" class="arr">↗</span></a></li>
+      </ul>
+    </div>
+    <nav class="ftr__nav" aria-label="Services">
+      <p class="mono">Services</p>
+      <a href="sea-freight/" data-nav="sea-freight/">Sea freight</a>
+      <a href="air-freight/" data-nav="air-freight/">Air freight</a>
+      <a href="customs-clearance/" data-nav="customs-clearance/">Customs clearance</a>
+      <a href="inland-transportation/" data-nav="inland-transportation/">Inland transportation</a>
+      <a href="domestic-trucking/" data-nav="domestic-trucking/">Domestic trucking</a>
+      <a href="warehousing/" data-nav="warehousing/">Warehousing</a>
+      <a href="roro-services/" data-nav="roro-services/">RORO</a>
+      <a href="last-mile-delivery/" data-nav="last-mile-delivery/">Last-mile delivery</a>
+    </nav>
+    <nav class="ftr__nav" aria-label="Site">
+      <p class="mono">Site</p>
+      <a href="about-greenpoint/" data-nav="about-greenpoint/">About</a>
+      <a href="industries" data-nav="industries">Industries</a>
+      <a href="network" data-nav="network">Network</a>
+      <a href="faq" data-nav="faq">FAQ</a>
+      <a href="contact-us/" data-nav="contact-us/">Contact</a>
+      <a href="track-your-shipment/" data-nav="track-your-shipment/">Track Shipment</a>
+      <a href="quote" data-nav="quote">Request a Quote</a>
+      <a href="privacy-policy" data-nav="privacy-policy">Privacy policy</a>
+    </nav>
+    <p class="ftr__legal mono"><span>© 2026 Green Point Logistics. All rights reserved.</span> <a href="privacy-policy" data-nav="privacy-policy">Privacy policy</a></p>
+  </div>
+</footer>
+<!-- /chrome:footer -->
+<script>
+  // With <base> pointing at the site root, "#x" would resolve to the home page: keep in-page links and the
+  // SVG <use href="#gpl-mark"> references on this document.
+  (function () {
+    var here = location.href.split("#")[0];
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) { link.href = here + link.getAttribute("href"); });
+    document.querySelectorAll('use[href^="#"]').forEach(function (use) { use.setAttribute("href", here + use.getAttribute("href")); });
+    // Added here rather than as static markup for the same preload-scanner reason as the stylesheet.
+    var site = document.createElement("script");
+    site.type = "module";
+    site.src = "assets/js/site.js";
+    document.body.appendChild(site);
+  })();
+</script>
+</body>
+</html>

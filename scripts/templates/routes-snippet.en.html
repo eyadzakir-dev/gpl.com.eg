@@ -1,0 +1,145 @@
+<!--
+  Routes globe section (EN). Paste inside <main>. Paths below are written for a page at the site root
+  (index.html). On deeper pages prefix every relative URL with that page's {{root}} value: "../" one folder
+  down (e.g. ../assets/js/globe/globe.css, ../quote, ../sea-freight/).
+  Needs: site.js (lazy-loads assets/js/globe/globe.js for [data-globe]) and globe.css (linked below; you may
+  move the <link> into <head> after site.css instead). Renumber .sec__idx to the section's place on the page.
+  Lanes are the main sea trade lanes from Egypt's ports, not GPL sailings. No transit times are shown:
+  docs/research/egypt-logistics-context.md lists clearance and release times, not sea transit times.
+-->
+<link rel="stylesheet" href="assets/js/globe/globe.css">
+<section class="sec routes" aria-labelledby="routes-title">
+  <div class="wrap">
+    <header class="sec__head">
+      <p class="sec__idx mono">05</p>
+      <h2 class="sec__title" id="routes-title">Main trade lanes from Egypt’s ports.</h2>
+      <p class="sec__note mono">Mediterranean · Suez Canal · Red Sea</p>
+    </header>
+    <div class="routes__grid">
+      <figure class="routes__map globe" data-globe>
+        <svg class="globe__diagram globe__diagram--wide" viewBox="0 0 720 450" width="720" height="450" direction="ltr" aria-hidden="true" focusable="false">
+          <line class="globe__rule" x1="16" y1="262" x2="704" y2="262"/>
+          <text x="16" y="30" text-anchor="start" class="globe__lbl globe__lbl--sea">MEDITERRANEAN</text>
+          <text x="16" y="292" text-anchor="start" class="globe__lbl globe__lbl--sea">RED SEA</text>
+          <path class="globe__lane" pathLength="1" d="M262 150 H316 C356 150 352 46 392 46 H500"/>
+          <path class="globe__lane" pathLength="1" d="M262 150 H316 C356 150 352 104 392 104 H500"/>
+          <path class="globe__lane" pathLength="1" d="M262 150 H316 C356 150 352 162 392 162 H500"/>
+          <path class="globe__lane" pathLength="1" d="M262 150 H316 C356 150 352 220 392 220 H500"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M262 360 H316 C356 360 352 306 392 306 H500"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M262 360 H316 C356 360 352 362 392 362 H500"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M262 360 H316 C356 360 352 418 392 418 H500"/>
+          <path class="globe__bus" d="M262 92 V208"/>
+          <path class="globe__canal" d="M262 208 V360"/>
+          <path class="globe__bus" d="M212 92 H262"/>
+          <path class="globe__bus" d="M212 150 H262"/>
+          <path class="globe__bus" d="M212 208 H262"/>
+          <path class="globe__bus" d="M212 360 H262"/>
+          <text x="250" y="300" text-anchor="middle" class="globe__lbl" transform="rotate(-90 250 300)">SUEZ CANAL</text>
+          <circle class="globe__node globe__node--origin" cx="212" cy="92" r="9"/>
+          <circle class="globe__node globe__node--origin" cx="212" cy="150" r="9"/>
+          <circle class="globe__node globe__node--origin" cx="212" cy="208" r="9"/>
+          <circle class="globe__node globe__node--origin" cx="212" cy="360" r="9"/>
+          <circle class="globe__node" cx="500" cy="46" r="8"/>
+          <circle class="globe__node" cx="500" cy="104" r="8"/>
+          <circle class="globe__node" cx="500" cy="162" r="8"/>
+          <circle class="globe__node" cx="500" cy="220" r="8"/>
+          <circle class="globe__node" cx="500" cy="306" r="8"/>
+          <circle class="globe__node" cx="500" cy="362" r="8"/>
+          <circle class="globe__node" cx="500" cy="418" r="8"/>
+          <text x="194" y="94" text-anchor="end" class="globe__lbl globe__lbl--big">ALEXANDRIA</text>
+          <text x="194" y="110" text-anchor="end" class="globe__lbl">+ DEKHEILA · EGALY · EGEDK</text>
+          <text x="194" y="152" text-anchor="end" class="globe__lbl globe__lbl--big">DAMIETTA</text>
+          <text x="194" y="168" text-anchor="end" class="globe__lbl">EGDAM</text>
+          <text x="194" y="210" text-anchor="end" class="globe__lbl globe__lbl--big">PORT SAID</text>
+          <text x="194" y="226" text-anchor="end" class="globe__lbl">EGPSD</text>
+          <text x="194" y="362" text-anchor="end" class="globe__lbl globe__lbl--big">AIN SOKHNA</text>
+          <text x="194" y="378" text-anchor="end" class="globe__lbl">EGSOK</text>
+          <text x="520" y="48" text-anchor="start" class="globe__lbl globe__lbl--big">NORTH EUROPE</text>
+          <text x="520" y="64" text-anchor="start" class="globe__lbl">ROTTERDAM · HAMBURG</text>
+          <text x="520" y="106" text-anchor="start" class="globe__lbl globe__lbl--big">WEST MED</text>
+          <text x="520" y="122" text-anchor="start" class="globe__lbl">VALENCIA · GENOA</text>
+          <text x="520" y="164" text-anchor="start" class="globe__lbl globe__lbl--big">EAST MED</text>
+          <text x="520" y="180" text-anchor="start" class="globe__lbl">PIRAEUS · MERSIN</text>
+          <text x="520" y="222" text-anchor="start" class="globe__lbl globe__lbl--big">US EAST COAST</text>
+          <text x="520" y="238" text-anchor="start" class="globe__lbl">NEW YORK · SAVANNAH</text>
+          <text x="520" y="308" text-anchor="start" class="globe__lbl globe__lbl--big">GULF &amp; RED SEA</text>
+          <text x="520" y="324" text-anchor="start" class="globe__lbl">JEBEL ALI · JEDDAH</text>
+          <text x="520" y="364" text-anchor="start" class="globe__lbl globe__lbl--big">INDIA</text>
+          <text x="520" y="380" text-anchor="start" class="globe__lbl">NHAVA SHEVA</text>
+          <text x="520" y="420" text-anchor="start" class="globe__lbl globe__lbl--big">CHINA</text>
+          <text x="520" y="436" text-anchor="start" class="globe__lbl">SHANGHAI · NINGBO</text>
+        </svg>
+        <svg class="globe__diagram globe__diagram--tall" viewBox="0 0 360 360" width="360" height="360" direction="ltr" aria-hidden="true" focusable="false">
+          <line class="globe__rule" x1="16" y1="204" x2="344" y2="204"/>
+          <text x="16" y="22" text-anchor="start" class="globe__lbl globe__lbl--sea">MEDITERRANEAN</text>
+          <text x="16" y="228" text-anchor="start" class="globe__lbl globe__lbl--sea">RED SEA</text>
+          <path class="globe__lane" pathLength="1" d="M150 106 H166 C190 106 186 40 204 40 H214"/>
+          <path class="globe__lane" pathLength="1" d="M150 106 H166 C190 106 186 84 204 84 H214"/>
+          <path class="globe__lane" pathLength="1" d="M150 106 H166 C190 106 186 128 204 128 H214"/>
+          <path class="globe__lane" pathLength="1" d="M150 106 H166 C190 106 186 172 204 172 H214"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M150 294 H166 C190 294 186 246 204 246 H214"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M150 294 H166 C190 294 186 294 204 294 H214"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M150 294 H166 C190 294 186 342 204 342 H214"/>
+          <path class="globe__bus" d="M150 60 V148"/>
+          <path class="globe__canal" d="M150 148 V294"/>
+          <path class="globe__bus" d="M118 60 H150"/>
+          <path class="globe__bus" d="M118 104 H150"/>
+          <path class="globe__bus" d="M118 148 H150"/>
+          <path class="globe__bus" d="M118 294 H150"/>
+          <text x="140" y="250" text-anchor="middle" class="globe__lbl" transform="rotate(-90 140 250)">SUEZ CANAL</text>
+          <circle class="globe__node globe__node--origin" cx="118" cy="60" r="8"/>
+          <circle class="globe__node globe__node--origin" cx="118" cy="104" r="8"/>
+          <circle class="globe__node globe__node--origin" cx="118" cy="148" r="8"/>
+          <circle class="globe__node globe__node--origin" cx="118" cy="294" r="8"/>
+          <circle class="globe__node" cx="214" cy="40" r="6"/>
+          <circle class="globe__node" cx="214" cy="84" r="6"/>
+          <circle class="globe__node" cx="214" cy="128" r="6"/>
+          <circle class="globe__node" cx="214" cy="172" r="6"/>
+          <circle class="globe__node" cx="214" cy="246" r="6"/>
+          <circle class="globe__node" cx="214" cy="294" r="6"/>
+          <circle class="globe__node" cx="214" cy="342" r="6"/>
+          <text x="104" y="66" text-anchor="end" class="globe__lbl globe__lbl--big">ALEXANDRIA</text>
+          <text x="104" y="110" text-anchor="end" class="globe__lbl globe__lbl--big">DAMIETTA</text>
+          <text x="104" y="154" text-anchor="end" class="globe__lbl globe__lbl--big">PORT SAID</text>
+          <text x="104" y="300" text-anchor="end" class="globe__lbl globe__lbl--big">AIN SOKHNA</text>
+          <text x="228" y="46" text-anchor="start" class="globe__lbl globe__lbl--big">NORTH EUROPE</text>
+          <text x="228" y="90" text-anchor="start" class="globe__lbl globe__lbl--big">WEST MED</text>
+          <text x="228" y="134" text-anchor="start" class="globe__lbl globe__lbl--big">EAST MED</text>
+          <text x="228" y="178" text-anchor="start" class="globe__lbl globe__lbl--big">US EAST COAST</text>
+          <text x="228" y="252" text-anchor="start" class="globe__lbl globe__lbl--big">GULF &amp; RED SEA</text>
+          <text x="228" y="300" text-anchor="start" class="globe__lbl globe__lbl--big">INDIA</text>
+          <text x="228" y="348" text-anchor="start" class="globe__lbl globe__lbl--big">CHINA</text>
+        </svg>
+        <div class="globe__stage" aria-hidden="true">
+          <canvas class="globe__canvas"></canvas>
+          <span class="globe__pin globe__pin--origin" data-pin="alex" data-dirs="w sw nw" data-lead="30"><span class="globe__tag"><b>Alexandria · Dekheila</b><span class="globe__sub">EGALY · EGEDK</span><b class="globe__abbr">Alexandria</b></span></span>
+          <span class="globe__pin globe__pin--origin" data-pin="damietta" data-dirs="ne n nw" data-lead="36"><span class="globe__tag"><b>Damietta</b><span class="globe__sub">EGDAM</span><b class="globe__abbr">Damietta</b></span></span>
+          <span class="globe__pin globe__pin--origin" data-pin="portSaid" data-dirs="ne e se" data-lead="36"><span class="globe__tag"><b>Port Said</b><span class="globe__sub">EGPSD</span><b class="globe__abbr">Port Said</b></span></span>
+          <span class="globe__pin globe__pin--origin" data-pin="sokhna" data-dirs="s s:1.8 se:1.8 sw" data-lead="34"><span class="globe__tag"><b>Ain Sokhna</b><span class="globe__sub">EGSOK</span><b class="globe__abbr">Sokhna</b></span></span>
+          <span class="globe__pin" data-pin="northEurope" data-dirs="w nw n e" data-lead="12"><span class="globe__tag"><b>North Europe</b><span class="globe__sub">Rotterdam · Hamburg</span><b class="globe__abbr">N. Europe</b></span></span>
+          <span class="globe__pin" data-pin="westMed" data-dirs="w sw s nw" data-lead="12"><span class="globe__tag"><b>West Med</b><span class="globe__sub">Valencia · Genoa</span><b class="globe__abbr">W. Med</b></span></span>
+          <span class="globe__pin" data-pin="eastMed" data-dirs="nw n ne w" data-lead="12"><span class="globe__tag"><b>East Med</b><span class="globe__sub">Piraeus · Mersin</span><b class="globe__abbr">E. Med</b></span></span>
+          <span class="globe__pin" data-pin="usEast" data-dirs="w nw sw e" data-lead="12"><span class="globe__tag"><b>US East Coast</b><span class="globe__sub">New York · Savannah</span><b class="globe__abbr">US East</b></span></span>
+          <span class="globe__pin" data-pin="gulf" data-dirs="e ne se s" data-lead="12"><span class="globe__tag"><b>Gulf &amp; Red Sea</b><span class="globe__sub">Jebel Ali · Jeddah</span><b class="globe__abbr">Gulf</b></span></span>
+          <span class="globe__pin" data-pin="india" data-dirs="s se e sw" data-lead="12"><span class="globe__tag"><b>India</b><span class="globe__sub">Nhava Sheva</span><b class="globe__abbr">India</b></span></span>
+          <span class="globe__pin" data-pin="china" data-dirs="e ne n se w" data-lead="12"><span class="globe__tag"><b>China</b><span class="globe__sub">Shanghai · Ningbo</span><b class="globe__abbr">China</b></span></span>
+        </div>
+        <figcaption class="sr-only">Globe of the main sea trade lanes from Egypt’s ports. From Alexandria and Dekheila, Damietta and Port Said on the Mediterranean: to North Europe (Rotterdam, Hamburg), the western Mediterranean (Valencia, Genoa), the eastern Mediterranean (Piraeus, Mersin) and the US East Coast (New York, Savannah). From Port Said through the Suez Canal: to India (Nhava Sheva) and China (Shanghai, Ningbo). From Sokhna on the Red Sea: to Jeddah and to Jebel Ali in the Gulf.</figcaption>
+      </figure>
+      <div class="routes__side">
+        <p>We clear and move cargo through Alexandria and Dekheila, Damietta and Port Said on the Mediterranean, and Sokhna on the Red Sea, with freight to and from Europe, North America, Asia and Africa.</p>
+        <dl class="routes__ports" aria-label="Egypt’s ports">
+          <div><dt>Alexandria + Dekheila <span class="mono">Mediterranean</span></dt><dd>Egypt’s main gateway for general cargo and containers, next to our head office.</dd></div>
+          <div><dt>Damietta <span class="mono">Mediterranean</span></dt><dd>Container port east of the Nile Delta.</dd></div>
+          <div><dt>Port Said <span class="mono">Mediterranean</span></dt><dd>At the northern entrance of the Suez Canal.</dd></div>
+          <div><dt>Sokhna <span class="mono">Red Sea</span></dt><dd>Closest deep-water port to Greater Cairo, facing Asia and the Gulf.</dd></div>
+        </dl>
+        <p class="routes__fine mono">Lanes shown are the main trade routes from Egypt’s ports, not a sailing schedule.</p>
+        <div class="routes__actions">
+          <a class="btn btn--green" href="quote">Request a quote <span aria-hidden="true">→</span></a>
+          <a class="link-arrow mono" href="sea-freight/">Sea freight <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

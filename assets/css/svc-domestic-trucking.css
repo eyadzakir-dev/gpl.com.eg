@@ -1,0 +1,49 @@
+/* Domestic trucking page only (EN + AR): the code-drawn FTL/LTL load plan in the hero and the cross-link to
+   inland transportation. Builds on site.css and service.css. */
+
+/* ---------- Load plan (inline SVG; classes map drawing parts to tokens) ---------- */
+.dtl-plan { align-self: center; }
+.dtl-plan__svg { width: 100%; height: auto; overflow: visible; }
+.dtl-plan__svg .reg { fill: none; stroke: var(--ink); stroke-opacity: 0.5; stroke-width: 1; }
+.dtl-plan__svg .trl { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.5; }
+.dtl-plan__svg .cab { fill: var(--paper-hi); stroke: var(--ink); stroke-width: 1.5; }
+.dtl-plan__svg .wsc { fill: var(--paper); stroke: var(--ink); stroke-width: 1; }
+.dtl-plan__svg .cpl { fill: var(--ink-2); }
+.dtl-plan__svg .axle { fill: var(--ink); }
+.dtl-plan__svg .pal { stroke: var(--ink); stroke-width: 1; }
+.dtl-plan__svg .pal--you { fill: var(--green); }
+.dtl-plan__svg .pal--other { fill: var(--paper); }
+.dtl-plan__svg .pal--other2 { fill: var(--rule); }
+.dtl-plan__svg .pal--free { fill: none; stroke: var(--ink-2); stroke-dasharray: 3 3; stroke-opacity: 0.6; }
+.dtl-plan__svg .ldr { fill: none; stroke: var(--ink); stroke-width: 1; }
+.dtl-plan__svg text { font-family: var(--f-mono); fill: var(--ink-2); }
+.dtl-plan__svg .k { font-size: 10px; letter-spacing: 0.12em; fill: var(--ink-2); }
+.dtl-plan__svg .k--dim { fill-opacity: 0.75; }
+.dtl-plan__svg .h { font-family: var(--f-latin); font-size: 30px; font-weight: 800; font-stretch: 80%; letter-spacing: -0.02em; fill: var(--ink); }
+.dtl-plan__svg .s { font-size: 12px; letter-spacing: 0.02em; }
+.dtl-plan__svg .s--you { fill: var(--green-ink); font-weight: 500; }
+:lang(ar) .dtl-plan__svg text { font-family: var(--f-sans); }
+:lang(ar) .dtl-plan__svg .h { font-family: var(--f-sans); font-size: 24px; font-weight: 700; }
+:lang(ar) .dtl-plan__svg .s { font-size: 13px; }
+:lang(ar) .dtl-plan__svg .k { font-size: 11px; }
+@media (max-width: 899px) {
+  .dtl-plan__svg .h { font-size: 36px; }
+  .dtl-plan__svg .s { font-size: 16px; }
+  .dtl-plan__svg .k { font-size: 13px; }
+  :lang(ar) .dtl-plan__svg .h { font-size: 30px; }
+  :lang(ar) .dtl-plan__svg .s { font-size: 17px; }
+  :lang(ar) .dtl-plan__svg .k { font-size: 14px; }
+}
+.motion .dtl-plan.is-armed .pal:not(.pal--free) { opacity: 0; }
+.motion .dtl-plan.is-in .pal:not(.pal--free) { opacity: 1; transition: opacity 0.35s var(--ease-out) calc(var(--i, 0) * 22ms); }
+
+/* ---------- Cross-link paragraph ---------- */
+.prose .dtl-switch {
+  margin-top: 28px;
+  padding-block: 14px;
+  padding-inline: 18px 0;
+  border-inline-start: 3px solid var(--green);
+  font-size: 17px;
+  color: var(--ink-2);
+}
+.svc-docs__note .link-arrow { justify-self: start; margin-top: 6px; }

@@ -1,0 +1,330 @@
+/* Prototype 2 · tile-sphere. Page-only styles on top of site.css (tokens, components) and globe.css (flat diagram).
+   Modes set by main.js on .ts: .is-story (motion + WebGL2: fixed canvas, sticky globe figure, tall chapters)
+   or .ts--flat (no WebGL2 or reduced motion: SVG mark + flat route diagram, compact chapters). */
+
+.ts { position: relative; }
+
+/* ---------- Canvas: one fixed layer drawn behind the text of the hero and the routes story ---------- */
+.ts__canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  visibility: hidden;
+}
+.ts.is-story.is-gl .ts__canvas.is-on { visibility: visible; }
+.ts:not(.is-story) .ts__canvas { display: none; }
+
+/* ---------- Hero ---------- */
+.ts-hero { border-bottom: 0; }
+.ts-hero__in { row-gap: 0; }
+.ts-hero__in > :not(.ts-hero__orb) { position: relative; z-index: 2; }
+.ts-hero__title { grid-column: 1 / 8; grid-row: 2; margin-top: clamp(32px, 6.5vh, 80px); font-weight: inherit; }
+.ts-hero__kicker {
+  display: block;
+  max-width: 17em;
+  font-size: clamp(22px, 2.25vw, 34px);
+  font-weight: 700;
+  font-stretch: 88%;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.ts-hero__word {
+  display: block;
+  margin-top: clamp(18px, 3vh, 32px);
+  margin-inline-start: -0.04em;
+  font-size: clamp(72px, 12.2vw, 192px);
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 0.84;
+  letter-spacing: -0.05em;
+}
+.ts-hero__line { display: block; white-space: nowrap; }
+.ts-hero__dot { display: inline-block; color: var(--green); transform-origin: 50% 80%; }
+.ts-hero__orb {
+  position: relative;
+  grid-column: 8 / 13;
+  grid-row: 2 / 5;
+  align-self: center;
+  justify-self: end;
+  width: min(100%, 72vh);
+  aspect-ratio: 1;
+  margin-top: 24px;
+}
+.ts-hero__mark { width: 100%; height: 100%; }
+.ts-hero__cap {
+  position: absolute;
+  inset: auto 0 -30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink-2);
+  font-size: 11px;
+}
+.ts-hero__lead { grid-column: 1 / 6; grid-row: 3; }
+.ts-hero__actions { grid-column: 1 / 8; grid-row: 4; }
+
+/* With motion the SVG mark waits for the WebGL sphere; it shows if WebGL is missing or never arrives. */
+@keyframes ts-show { to { opacity: 1; } }
+.motion .ts:not(.ts--flat) .ts-hero__mark { opacity: 0; animation: ts-show 0.4s 6s forwards; }
+.motion .ts.is-gl .ts-hero__mark { animation: none; }
+.ts.is-story.is-gl .ts-hero__cap [data-ts-count] { font-variant-numeric: tabular-nums; }
+@keyframes ts-emit {
+  0% { transform: none; }
+  18% { transform: scale(1.9); color: var(--lime); }
+  100% { transform: none; }
+}
+.motion .ts-hero__dot.is-emit { animation: ts-emit 1.1s var(--ease-out); }
+
+@media (max-width: 899px) {
+  .ts-hero__orb { grid-column: 1 / -1; grid-row: 2; justify-self: center; width: min(86%, 330px, 40svh); margin-top: 24px; margin-bottom: 30px; }
+  .ts-hero__cap { justify-content: center; }
+  .ts-hero__cap [data-ts-count] { display: none; }
+  .ts-hero__title { grid-column: 1 / -1; grid-row: 3; margin-top: 18px; }
+  .ts-hero__kicker { font-size: 21px; }
+  .ts-hero__word { margin-top: 14px; font-size: clamp(54px, 16.8vw, 88px); }
+  .ts-hero__lead { grid-column: 1 / -1; grid-row: 4; }
+  .ts-hero__actions { grid-column: 1 / -1; grid-row: 5; }
+}
+
+/* ---------- Routes story ---------- */
+.ts-routes { position: relative; }
+.ts-routes .sec__head, .ts-routes__chapters { position: relative; z-index: 2; }
+.ts-routes__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  align-items: start;
+}
+.ts-routes__chapters { grid-column: 1 / 6; grid-row: 1; }
+.ts-routes__rail { grid-column: 6 / 13; grid-row: 1; align-self: stretch; }
+.ts-routes__fig {
+  position: relative;
+  border: 1px solid var(--ink);
+  background-color: var(--paper-hi);
+  background-image: radial-gradient(var(--rule) 1px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+.ts-routes__rail { position: relative; }
+/* HUD and pins live in a sibling layer: a sticky figure is its own stacking context, so it sits under the canvas. */
+.ts-routes__over { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+.ts-routes__over::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  background:
+    linear-gradient(var(--green), var(--green)) 50% 0 / 2px 100% no-repeat,
+    linear-gradient(var(--green), var(--green)) 0 50% / 100% 2px no-repeat;
+}
+.ts-hud { position: absolute; z-index: 2; margin: 0; color: var(--ink-2); font-size: 10.5px; pointer-events: none; }
+.ts-hud--tl { top: 12px; left: 14px; }
+.ts-hud--tr { top: 12px; right: 44px; }
+.ts-hud--bl { bottom: 12px; left: 14px; color: var(--green-ink); }
+.ts-hud--br { bottom: 12px; right: 14px; }
+.ts-pins { display: none; }
+
+.ts-ch { padding-block: 28px; border-top: 1px solid var(--rule); }
+.ts-ch:first-child { border-top: 0; padding-top: 0; }
+.ts-ch__k { color: var(--green-ink); }
+.ts-ch__title {
+  margin-top: 14px;
+  font-size: clamp(28px, 2.7vw, 42px);
+  font-weight: 750;
+  font-stretch: 86%;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.ts-ch__dot { color: var(--green); }
+.ts-ch__text { margin-top: 16px; max-width: 30em; font-size: 18px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.ts-ch__ports { margin-top: 24px; }
+.ts-ch__tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.ts-ch__tags span { padding: 5px 8px; border: 1px solid var(--ink); }
+.ts-ch__fine { margin-top: 18px; max-width: 34em; color: var(--ink-2); font-size: 11px; line-height: 1.5; }
+.ts-ch__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 24px; }
+
+/* Flat mode: figure in the page flow with the route diagram. */
+.ts--flat .ts-routes__fig { padding: 56px 24px 48px; }
+.ts--flat .ts-routes__chapters { padding-top: 4px; }
+.ts--flat .ts-routes__rail { align-self: start; position: sticky; top: calc(var(--hdr-h) + 24px); }
+
+/* Story mode: the figure sticks while the chapters scroll past; the globe is drawn into it on the canvas. */
+.ts.is-story { --fig-top: calc(var(--hdr-h) + 20px); --fig-h: max(420px, calc(100svh - var(--hdr-h) - 40px)); }
+.ts.is-story .ts-routes__fig, .ts.is-story .ts-routes__over { position: sticky; top: var(--fig-top); height: var(--fig-h); }
+.ts.is-story .ts-routes__over { right: auto; bottom: auto; left: auto; width: 100%; margin-top: calc(var(--fig-h) * -1); }
+.ts.is-story .globe__diagram { display: none; }
+.ts.is-story.is-gl .ts-pins { display: block; position: absolute; inset: 0; }
+.ts.is-story .ts-ch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 82svh;
+  padding-block: 8svh;
+  border-top: 0;
+}
+.ts.is-story .ts-ch:first-child { min-height: 70svh; padding-top: 0; }
+.ts.is-story .ts-ch--end { min-height: 92svh; }
+.motion .ts.is-story .ts-ch > * { transition: opacity 0.5s, transform 0.6s var(--ease-out); }
+.motion .ts.is-story .ts-ch:not(.is-active) > * { opacity: 0.22; }
+.motion .ts.is-story .ts-ch:not(.is-active) > .ts-ch__title { transform: translateY(6px); }
+.ts:not(.is-story) .ts-hud--tr, .ts:not(.is-story) .ts-hud--bl { display: none; }
+
+/* Pins: placed in figure pixels by main.js (physical left/top, like globe.js, so they also hold in RTL). */
+.ts-pin, .ts-point {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0s linear 0.3s;
+}
+.ts-pin.is-on, .ts-point.is-on { opacity: 1; visibility: visible; transition: opacity 0.3s, visibility 0s; }
+.ts-pin i {
+  position: absolute;
+  left: -4.5px;
+  top: -4.5px;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper-hi);
+}
+.ts-pin--origin i { background: var(--lime); }
+.ts-pin--origin[data-pin="alex"] i::after { inset: -1.5px; }
+.ts-pin::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -0.5px;
+  width: var(--lead, 22px);
+  height: 1px;
+  background: var(--ink);
+  transform: rotate(var(--ang, 0deg));
+  transform-origin: 0 50%;
+}
+.ts-pin__tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 4px 8px 5px;
+  white-space: nowrap;
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+}
+.ts-pin__tag b { font: 650 12.5px/1.2 var(--f-sans); letter-spacing: 0.005em; }
+.ts-pin__tag span { font: 500 9.5px/1.3 var(--f-mono); letter-spacing: 0.07em; text-transform: uppercase; }
+.ts-pin--origin .ts-pin__tag { background: var(--ink); color: var(--paper); }
+.ts-pin--origin .ts-pin__tag span { color: var(--lime); }
+.ts-pin:not(.ts-pin--origin) .ts-pin__tag { padding: 2px 5px 3px; background: color-mix(in srgb, var(--paper-hi) 85%, transparent); color: var(--ink); }
+.ts-pin:not(.ts-pin--origin) .ts-pin__tag span { color: var(--ink-2); }
+.ts-point i {
+  position: absolute;
+  left: calc(var(--s, 14px) / -2);
+  top: calc(var(--s, 14px) / -2);
+  width: var(--s, 14px);
+  height: var(--s, 14px);
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--lime) 35%, transparent);
+}
+.ts-point::before, .ts-point::after { content: ""; position: absolute; background: var(--rule); }
+.ts-point::before { left: -2000px; top: -0.5px; width: 4000px; height: 1px; }
+.ts-point::after { top: -2000px; left: -0.5px; width: 1px; height: 4000px; }
+.ts-point .ts-pin__tag { transform: translate(18px, 10px); background: var(--ink); color: var(--paper); }
+.ts-point .ts-pin__tag span { color: var(--lime); }
+@keyframes ts-ripple { from { transform: scale(0.4); opacity: 0.9; } to { transform: scale(3.4); opacity: 0; } }
+.motion .ts-point.is-on i::after,
+.motion .ts-pin--origin[data-pin="alex"].is-on i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--green);
+  border-radius: 50%;
+  animation: ts-ripple 2.2s var(--ease-out) infinite;
+}
+
+@media (max-width: 899px) {
+  .ts-routes__chapters, .ts-routes__rail { grid-column: 1 / -1; }
+  .ts--flat .ts-routes__rail { grid-row: 1; position: relative; top: auto; margin-bottom: 32px; }
+  .ts--flat .ts-routes__chapters { grid-row: 2; }
+  .ts--flat .ts-routes__fig { padding: 40px 12px 36px; }
+  .ts.is-story .ts-routes__rail { grid-row: 1; }
+  .ts.is-story .ts-routes__chapters { grid-row: 1; padding-top: calc(var(--fig-h) + 24px); }
+  .ts.is-story { --fig-top: calc(var(--hdr-h) + 8px); --fig-h: max(300px, 54svh); }
+  /* Each card is followed by a gap taller than the figure, so the globe is clear between cards. */
+  .ts.is-story .ts-ch, .ts.is-story .ts-ch:first-child, .ts.is-story .ts-ch--end {
+    justify-content: flex-start;
+    min-height: 0;
+    padding: 0 0 calc(var(--fig-h) + 6svh);
+  }
+  .ts.is-story .ts-ch > * { background: var(--paper); }
+  .ts.is-story .ts-ch__k { padding-top: 16px; border-top: 3px solid var(--ink); }
+  .ts.is-story .ts-ch > :last-child { padding-bottom: 24px; }
+  .ts.is-story .ts-ch__title, .ts.is-story .ts-ch__text, .ts.is-story .ts-ch__ports, .ts.is-story .ts-ch__tags,
+  .ts.is-story .ts-ch__fine, .ts.is-story .ts-ch__actions { margin-top: 0; padding-top: 12px; }
+  .ts-ch__title { font-size: 30px; }
+  .ts-ch__text { font-size: 17px; }
+  .ts-hud { font-size: 9.5px; }
+  .ts-hud--tr { right: 40px; }
+  .ts-hud--br { display: none; }
+  .ts-pin__tag span { display: none; }
+  .ts-pin__tag b { font-size: 11px; }
+}
+
+/* ---------- Other sections ---------- */
+.ts-services__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 40px;
+  margin-top: 40px;
+}
+.ts-source { margin: -40px 0 48px; margin-inline-start: calc((100% + var(--gut)) / 12); color: var(--ink-2); font-size: 11px; }
+.ts-clearance__illo { margin-top: 64px; }
+.ts-clearance__foot { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 16px 40px; margin-top: 28px; }
+.ts-fine { max-width: 52em; color: var(--ink-2); font-size: 11px; line-height: 1.5; }
+.ts-card--ask { background: var(--paper-hi); }
+.ts-more { margin-top: 32px; }
+
+.ts-why {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gut);
+  border-top: 1px solid var(--ink);
+}
+.ts-why__item { display: flex; flex-direction: column; gap: 14px; padding: 20px 0 8px; }
+.ts-why__item + .ts-why__item { padding-inline-start: var(--gut); border-inline-start: 1px solid var(--rule); margin-inline-start: calc(var(--gut) * -1); }
+.ts-why__no { color: var(--green-ink); }
+.ts-why__title { font-size: clamp(24px, 2.1vw, 32px); font-weight: 750; font-stretch: 86%; line-height: 1.02; letter-spacing: -0.025em; }
+.ts-why__text { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+.ts-why__tag { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--rule); }
+
+.ts-cta__dot { color: var(--lime); }
+.ts-cta__fine { position: relative; z-index: 1; grid-column: 1 / 8; color: var(--paper-dim); }
+.ts-cta__fine a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+.ts-cta__fine a:hover { color: var(--lime); }
+
+@media (max-width: 1100px) {
+  .ts-why { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+  .ts-why__item:nth-child(3) { padding-inline-start: 0; border-inline-start: 0; margin-inline-start: 0; }
+}
+@media (max-width: 899px) {
+  .ts-source { margin: -24px 0 32px; }
+  .ts-cta__fine { grid-column: 1 / -1; }
+}
+@media (max-width: 599px) {
+  .ts-why { grid-template-columns: 1fr; row-gap: 0; }
+  .ts-why__item, .ts-why__item + .ts-why__item { padding: 20px 0; padding-inline-start: 0; border-inline-start: 0; margin-inline-start: 0; border-bottom: 1px solid var(--rule); }
+}

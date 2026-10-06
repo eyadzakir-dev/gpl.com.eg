@@ -1,0 +1,15 @@
+/* /sea-freight/ (EN + AR): the two-figure strip under the intro. Builds on service.css. */
+
+.sea-figs {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 32px;
+  margin-top: 72px;
+}
+.sea-figs > .illo { grid-column: span 6; }
+
+@media (max-width: 899px) {
+  .sea-figs { margin-top: 48px; }
+  .sea-figs > .illo { grid-column: 1 / -1; }
+}

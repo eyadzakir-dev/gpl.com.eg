@@ -1,0 +1,337 @@
+/* Request a Quote page, plus the .iform form component that the contact and track pages reuse.
+   Error states use var(--alert) when site.css defines it and fall back to ink. */
+
+[hidden] { display: none !important; }
+
+/* ---------- Compact form hero ---------- */
+.phero--form .phero__title { margin-top: clamp(28px, 5vh, 64px); font-size: clamp(48px, 6.4vw, 104px); }
+.phero--form .phero__lead { grid-column: 1 / 8; margin-top: 28px; }
+.phero--form .phero__in { padding-bottom: 40px; }
+
+/* ---------- Page layout: form + side panel ---------- */
+.qlayout {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gut);
+  row-gap: 40px;
+  align-items: start;
+}
+.qlayout__main { grid-column: 1 / 9; min-width: 0; }
+.qlayout__side { grid-column: 9 / 13; min-width: 0; }
+@media (min-width: 900px) and (min-height: 760px) {
+  .qlayout__side { position: sticky; top: calc(var(--hdr-h) + 24px); }
+}
+
+/* ---------- Form panel ---------- */
+.iform-panel { border: 1px solid var(--ink); background: var(--paper-hi); }
+.iform { container-type: inline-size; }
+.iform__bar { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--ink); color: var(--ink-2); }
+.iform__req { color: var(--green-ink); }
+.iform__fallback { padding: 16px 24px; border-bottom: 1px solid var(--ink); font-size: 16px; line-height: 1.5; }
+.iform__fallback a { text-decoration: underline; text-underline-offset: 3px; }
+.iform__prefill {
+  margin: 20px 24px 0;
+  padding: 12px 16px;
+  border-inline-start: 4px solid var(--green);
+  background: var(--paper);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* Error summary: focused on an invalid submit, links jump to each field. */
+.iform__summary {
+  margin: 20px 24px 0;
+  padding: 16px 20px 18px;
+  border: 2px solid var(--alert, var(--ink));
+  border-inline-start-width: 8px;
+  background: var(--paper);
+}
+.iform__summary:focus-visible { outline-offset: 4px; }
+.iform__summary, .iform__done, .iform__notice, .iform__notice-title { scroll-margin-top: 20px; }
+.iform__summary-title { font-size: 19px; font-weight: 700; line-height: 1.3; }
+.iform__summary ul { margin-top: 10px; padding-inline-start: 1.2em; list-style: square; }
+.iform__summary li + li { margin-top: 4px; }
+.iform__summary a { color: var(--alert, var(--ink)); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+.iform__set { min-width: 0; margin: 0; padding: 22px 24px 28px; border: 0; }
+.iform__set + .iform__set { border-top: 1px solid var(--ink); }
+/* Floated so the legend lays out as a normal full-width grid box. */
+.iform__legend {
+  float: inline-start;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 14px;
+  margin-bottom: 22px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--rule);
+}
+.iform__legend + * { clear: both; }
+.iform__no { color: var(--green-ink); }
+.iform__title { font-size: 20px; font-weight: 700; font-stretch: 90%; line-height: 1.2; letter-spacing: -0.01em; }
+.iform__tag { color: var(--ink-2); text-align: end; }
+
+.iform__grid, .iform__sub { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px 20px; }
+.iform__field, .iform__group { min-width: 0; }
+.iform__field--full, .iform__sub, .iform__size { grid-column: 1 / -1; }
+@container (min-width: 600px) {
+  .iform__grid, .iform__sub { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Block, not flex: flex gaps would split inline <bdi> codes from their parentheses in Arabic labels. */
+.iform__label {
+  display: block;
+  margin-bottom: 8px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.iform__label .iform__req { margin-inline-start: 4px; }
+.iform__opt { float: inline-end; margin-inline-start: 12px; font-size: 11px; font-weight: 500; line-height: 1.9; color: var(--ink-2); }
+.iform__hint { margin: -2px 0 8px; font-size: 14px; line-height: 1.4; color: var(--ink-2); }
+
+.iform__input {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 11px 14px;
+  border: 1px solid var(--ink-2);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 17px/1.4 var(--f-sans);
+}
+.iform__input::placeholder { color: var(--ink-2); opacity: 0.8; }
+.iform__input:hover { border-color: var(--ink); }
+.iform__input:focus { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.iform__input:focus-visible { outline-offset: 2px; }
+.iform__input[aria-invalid="true"] {
+  border-color: var(--alert, var(--ink));
+  border-inline-start-width: 5px;
+  box-shadow: inset 0 0 0 1px var(--alert, var(--ink));
+}
+/* LTR values (email, phone, codes) still start at the inline-start edge of an Arabic form. */
+:where([dir="rtl"]) .iform__input[dir="ltr"] { text-align: right; }
+.iform__input[type="date"] { min-height: 48px; }
+
+.iform__unit { position: relative; display: block; }
+.iform__unit .iform__input { padding-inline-end: 64px; appearance: textfield; -moz-appearance: textfield; }
+.iform__unit .iform__input::-webkit-inner-spin-button,
+.iform__unit .iform__input::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+.iform__unit-tag { position: absolute; top: 50%; inset-inline-end: 14px; color: var(--ink-2); transform: translateY(-50%); pointer-events: none; }
+
+.iform__select {
+  padding-inline-end: 44px;
+  background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 9'%3E%3Cpath d='M1 1.5l6 6 6-6' fill='none' stroke='%23111' stroke-width='1.8'/%3E%3C/svg%3E") no-repeat right 16px center / 14px 9px;
+  appearance: none;
+  cursor: pointer;
+}
+[dir="rtl"] .iform__select { background-position: left 16px center; }
+.iform__select option { color: var(--ink); }
+.iform__textarea { min-height: 144px; resize: vertical; line-height: 1.5; }
+
+.iform__err { margin-top: 6px; font-size: 14px; font-weight: 600; line-height: 1.35; color: var(--alert, var(--ink)); }
+.iform__err::before {
+  content: "!" / "";
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin-inline-end: 8px;
+  background: var(--alert, var(--ink));
+  color: var(--paper);
+  font: 700 12px/1 var(--f-latin);
+  vertical-align: 1px;
+}
+.iform__err:empty { display: none; }
+
+/* Radio groups as tiles; the native control stays visible and keyboard-operable. */
+.iform__group { margin: 0; padding: 0; border: 0; }
+.iform__group > legend { float: inline-start; width: 100%; }
+.iform__group > legend + * { clear: both; }
+.iform__choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 168px), 1fr)); gap: 8px; }
+.iform__choice, .iform__check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--ink-2);
+  background: var(--paper);
+  font-size: 16px;
+  line-height: 1.3;
+  cursor: pointer;
+}
+.iform__choice:hover, .iform__check:hover { border-color: var(--ink); }
+.iform__choice input, .iform__check input { flex: none; width: 20px; height: 20px; margin: 0; accent-color: var(--green-ink); cursor: pointer; }
+/* Checked state hangs off "input:checked + span" because :has(:checked) can paint stale when a radio is unchecked. */
+.iform__choice, .iform__check { position: relative; }
+.iform__choice input:checked + span, .iform__check input:checked + span { font-weight: 600; }
+.iform__choice input:checked + span::before, .iform__check input:checked + span::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 2px solid var(--ink);
+  pointer-events: none;
+}
+.iform__choice:has(:focus-visible), .iform__check:has(:focus-visible) { outline: 3px solid var(--green-ink); outline-offset: 2px; }
+.iform__choice input:focus-visible, .iform__check input:focus-visible { outline: none; }
+.iform__group:has([aria-invalid="true"]) .iform__choice { border-color: var(--alert, var(--ink)); }
+.iform__checks { display: grid; gap: 8px; }
+
+/* Shipment size: container fields for FCL, weight and volume for the other modes. */
+.iform__size { display: grid; gap: 14px; padding: 16px; border: 1px dashed var(--ink-2); }
+.iform__size-head { font-size: 16px; font-weight: 600; line-height: 1.3; }
+.iform__size > .iform__hint { margin: -8px 0 0; }
+
+/* Dropzone: the whole cut-line box is the file input's label. */
+.iform__drop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 2px;
+  padding: 20px;
+  border: 1.5px dashed var(--ink);
+  background: var(--paper);
+  cursor: pointer;
+}
+.iform__drop > * { pointer-events: none; }
+.iform__drop:hover { background: var(--paper-hi); }
+.iform__drop:hover .iform__drop-link { color: var(--green-ink); }
+.iform__drop:focus-within { outline: 3px solid var(--green-ink); outline-offset: 3px; }
+@supports selector(:has(a)) {
+  .iform__drop:focus-within:not(:has(:focus-visible)) { outline: none; }
+}
+.iform__drop.is-over { border-style: solid; border-color: var(--green); background: var(--paper-hi); }
+.iform__ico { width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.iform__ico .acc { stroke: var(--green); }
+.iform__drop .iform__ico { grid-row: 1 / 4; }
+.iform__drop-main { font-size: 17px; font-weight: 700; font-stretch: 92%; line-height: 1.3; }
+.iform__drop-sub { font-size: 15px; line-height: 1.4; color: var(--ink-2); }
+.iform__drop-link { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.iform__drop-hint { margin-top: 8px; font-size: 11px; color: var(--ink-2); }
+
+.iform__files { margin-top: 12px; border-top: 1px solid var(--ink); }
+.iform__files:empty { display: none; }
+.iform__pill {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto 44px;
+  align-items: center;
+  column-gap: 12px;
+  min-height: 48px;
+  border-bottom: 1px solid var(--rule);
+}
+.iform__pill-no { color: var(--green-ink); }
+.iform__pill-name { overflow: hidden; font-size: 16px; font-weight: 600; white-space: nowrap; text-overflow: ellipsis; }
+.iform__pill-size { color: var(--ink-2); white-space: nowrap; }
+.iform__pill-x { width: 44px; height: 44px; padding: 0; border: 0; background: none; font-size: 24px; line-height: 1; cursor: pointer; }
+.iform__pill-x:hover { background: var(--ink); color: var(--paper); }
+.iform__pill-x:focus-visible { outline-offset: -3px; }
+
+/* Off-screen rather than display:none so bots still fill it. */
+.iform__hp { position: absolute; inset-inline-start: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+.iform__foot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 20px;
+  padding: 22px 24px 24px;
+  border-top: 1px solid var(--ink);
+}
+.iform__submit:disabled { background: var(--ink); cursor: progress; }
+.iform__note { font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.iform__note a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.iform__note a:hover { color: var(--green-ink); }
+
+/* Failure and "not switched on yet" notices. */
+.iform__notice { display: grid; gap: 10px; padding: 20px 24px 24px; border-top: 4px solid var(--alert, var(--ink)); background: var(--paper); }
+.iform__notice-title { font-size: 20px; font-weight: 700; line-height: 1.25; }
+.iform__notice-title:focus-visible { outline-offset: 4px; }
+.iform__notice-body { font-size: 16px; line-height: 1.5; max-width: 44em; }
+.iform__notice-acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+
+/* Success panel. */
+.iform__done-body { position: relative; padding: 40px 24px 32px; }
+.iform__done-ico { position: absolute; top: 20px; inset-inline-end: 20px; width: 48px; height: 48px; }
+.iform__done-h {
+  max-width: calc(100% - 64px);
+  font-size: clamp(34px, 3.4vw, 52px);
+  font-weight: 750;
+  font-stretch: 86%;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+:lang(ar) .iform__done-h { line-height: 1.3; }
+.iform__done-h:focus-visible { outline-offset: 6px; }
+.iform__done-text { margin-top: 20px; max-width: 36em; font-size: 19px; line-height: 1.45; }
+.iform__done-text bdi { font-family: var(--f-mono); font-weight: 600; background: var(--paper); padding: 1px 6px; border: 1px solid var(--rule); }
+.iform__done-note { margin-top: 14px; padding: 10px 14px; border-inline-start: 4px solid var(--ink-2); background: var(--paper); font-size: 15px; color: var(--ink-2); }
+.iform__done-acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+/* ---------- Side panel ---------- */
+.qside { display: grid; gap: 0; border: 1px solid var(--ink); background: var(--paper); }
+.qside__block { padding: 20px 22px 22px; }
+.qside__block + .qside__block { border-top: 1px solid var(--ink); }
+.qside__k { margin-bottom: 14px; color: var(--green-ink); }
+.qside__steps { counter-reset: qs; display: grid; gap: 14px; }
+.qside__steps li { counter-increment: qs; display: grid; grid-template-columns: 32px minmax(0, 1fr); column-gap: 10px; }
+.qside__steps li::before { content: counter(qs, decimal-leading-zero); grid-row: 1 / 3; font: 500 12px/1.9 var(--f-mono); color: var(--green-ink); }
+.qside__steps b { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.qside__steps p { font-size: 15px; line-height: 1.45; color: var(--ink-2); }
+.qside__reply { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 15px; line-height: 1.45; }
+.qside__list li { position: relative; padding-block: 7px; padding-inline: 26px 0; border-bottom: 1px solid var(--rule); font-size: 15px; line-height: 1.4; }
+.qside__list li::before { content: ""; position: absolute; inset-inline-start: 0; top: 10px; width: 13px; height: 13px; border: 1.5px solid var(--ink); }
+.qside__direct { display: grid; gap: 2px; }
+.qside__direct a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+}
+.qside__direct a:hover .qside__v { color: var(--green-ink); text-decoration: underline; text-underline-offset: 3px; }
+.qside__v { font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.qside__direct .mono { color: var(--ink-2); }
+.qside__privacy { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+.qside__privacy a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .iform__input, .iform__choice, .iform__check { transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s; }
+  .iform__drop { transition: background-color 0.2s, border-color 0.2s; }
+  .iform__pill-x { transition: background-color 0.15s, color 0.15s; }
+}
+
+@media (max-width: 1180px) {
+  .qlayout__main { grid-column: 1 / 9; }
+  .qlayout__side { grid-column: 9 / 13; }
+}
+
+@media (max-width: 1023px) {
+  .qlayout__main, .qlayout__side { grid-column: 1 / -1; }
+  .qlayout__side { position: static; }
+}
+
+@media (max-width: 899px) {
+  .phero--form .phero__lead { grid-column: 1 / -1; }
+  .iform__set { padding: 18px 16px 24px; }
+  .iform__summary, .iform__prefill { margin-inline: 16px; }
+  .iform__legend { grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; row-gap: 2px; margin-bottom: 18px; }
+  .iform__tag { grid-column: 2; text-align: start; }
+  .iform__drop { padding: 16px; column-gap: 14px; }
+  .iform__pill { grid-template-columns: 40px minmax(0, 1fr) auto 44px; column-gap: 8px; }
+  .iform__foot { grid-template-columns: minmax(0, 1fr); row-gap: 14px; padding: 20px 16px; }
+  .iform__submit { width: 100%; min-width: 0; }
+  .iform__notice { padding: 18px 16px 20px; }
+  .iform__notice-acts .btn { flex: 1 1 100%; }
+  .iform__done-body { padding: 32px 16px 24px; }
+  .iform__done-ico { top: 16px; inset-inline-end: 16px; width: 40px; height: 40px; }
+  .iform__done-acts .btn { flex: 1 1 100%; }
+}

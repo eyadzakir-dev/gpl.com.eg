@@ -1,0 +1,26 @@
+/* Styleguide-only helpers (swatches, specimens, mark sheet). Not used by site pages. */
+.sg-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--gut); }
+.sg-swatch { border: 1px solid var(--ink); background: var(--paper-hi); }
+.sg-swatch__chip { height: 110px; border-bottom: 1px solid var(--ink); }
+.sg-swatch__meta { display: grid; gap: 2px; padding: 10px 12px 12px; font-size: 14px; }
+.sg-swatch__meta b { font-size: 16px; }
+.sg-swatch__meta .mono { color: var(--ink-2); font-size: 11px; }
+.sg-type { display: grid; gap: 28px; border-top: 1px solid var(--ink); padding-top: 24px; }
+.sg-type__row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: var(--gut); align-items: baseline; }
+.sg-type__row > .mono { color: var(--green-ink); }
+.sg-demo { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.sg-demo + .sg-demo { margin-top: 24px; }
+.sg-dark { padding: 28px; background: var(--ink); color: var(--paper); }
+.sg-forest { padding: 28px; background: var(--forest); color: var(--paper); }
+.sg-marks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--gut); }
+.sg-marks > div { display: grid; place-items: center; gap: 12px; min-height: 260px; padding: 20px; border: 1px solid var(--rule); }
+.sg-marks svg, .sg-marks img { width: 160px; height: 160px; }
+.sg-marks .mono { color: var(--ink-2); }
+.sg-marks .sg-dark .mono, .sg-marks .sg-forest .mono { color: var(--paper-dim); }
+.sg-gallery { display: flex; flex-wrap: wrap; gap: 12px; }
+.sg-gallery a { display: block; width: 180px; padding: 12px; border: 1px solid var(--ink); background: var(--paper-hi); }
+.sg-gallery img { width: 100%; height: 100px; object-fit: contain; }
+.sg-stack > * + * { margin-top: 40px; }
+@media (max-width: 899px) {
+  .sg-type__row { grid-template-columns: 1fr; gap: 6px; }
+}

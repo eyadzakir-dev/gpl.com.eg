@@ -1,0 +1,147 @@
+<!--
+  Routes globe section (AR). Paste inside <main> of an Arabic page. Paths below are written for ar/index.html
+  ({{root}} = "../", {{home}} = ""). On deeper Arabic pages add "../" per folder: assets go through {{root}}
+  (ar/sea-freight/index.html -> ../../assets/js/globe/globe.css) and Arabic page links through {{home}}
+  (-> ../quote, ../sea-freight/).
+  Needs: site.js (lazy-loads assets/js/globe/globe.js for [data-globe]) and globe.css (linked below; you may
+  move the <link> into <head> after site.css instead). Renumber .sec__idx to the section's place on the page.
+  Port codes stay LTR inside <bdi dir="ltr">. Lanes are the main trade lanes from Egypt's ports, not GPL
+  sailings. No transit times are shown: egypt-logistics-context.md lists clearance times, not sea transit times.
+-->
+<link rel="stylesheet" href="../assets/js/globe/globe.css">
+<section class="sec routes" aria-labelledby="routes-title">
+  <div class="wrap">
+    <header class="sec__head">
+      <p class="sec__idx mono">05</p>
+      <h2 class="sec__title" id="routes-title">خطوط التجارة الرئيسية من موانئ مصر.</h2>
+      <p class="sec__note mono">البحر المتوسط · قناة السويس · البحر الأحمر</p>
+    </header>
+    <div class="routes__grid">
+      <figure class="routes__map globe" data-globe>
+        <svg class="globe__diagram globe__diagram--wide" viewBox="0 0 720 450" width="720" height="450" direction="rtl" aria-hidden="true" focusable="false">
+          <line class="globe__rule" x1="704" y1="262" x2="16" y2="262"/>
+          <text x="704" y="30" text-anchor="start" class="globe__lbl globe__lbl--sea">البحر المتوسط</text>
+          <text x="704" y="292" text-anchor="start" class="globe__lbl globe__lbl--sea">البحر الأحمر</text>
+          <path class="globe__lane" pathLength="1" d="M458 150 H404 C364 150 368 46 328 46 H220"/>
+          <path class="globe__lane" pathLength="1" d="M458 150 H404 C364 150 368 104 328 104 H220"/>
+          <path class="globe__lane" pathLength="1" d="M458 150 H404 C364 150 368 162 328 162 H220"/>
+          <path class="globe__lane" pathLength="1" d="M458 150 H404 C364 150 368 220 328 220 H220"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M458 360 H404 C364 360 368 306 328 306 H220"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M458 360 H404 C364 360 368 362 328 362 H220"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M458 360 H404 C364 360 368 418 328 418 H220"/>
+          <path class="globe__bus" d="M458 92 V208"/>
+          <path class="globe__canal" d="M458 208 V360"/>
+          <path class="globe__bus" d="M508 92 H458"/>
+          <path class="globe__bus" d="M508 150 H458"/>
+          <path class="globe__bus" d="M508 208 H458"/>
+          <path class="globe__bus" d="M508 360 H458"/>
+          <text x="470" y="300" text-anchor="middle" class="globe__lbl" transform="rotate(-90 470 300)">قناة السويس</text>
+          <circle class="globe__node globe__node--origin" cx="508" cy="92" r="9"/>
+          <circle class="globe__node globe__node--origin" cx="508" cy="150" r="9"/>
+          <circle class="globe__node globe__node--origin" cx="508" cy="208" r="9"/>
+          <circle class="globe__node globe__node--origin" cx="508" cy="360" r="9"/>
+          <circle class="globe__node" cx="220" cy="46" r="8"/>
+          <circle class="globe__node" cx="220" cy="104" r="8"/>
+          <circle class="globe__node" cx="220" cy="162" r="8"/>
+          <circle class="globe__node" cx="220" cy="220" r="8"/>
+          <circle class="globe__node" cx="220" cy="306" r="8"/>
+          <circle class="globe__node" cx="220" cy="362" r="8"/>
+          <circle class="globe__node" cx="220" cy="418" r="8"/>
+          <text x="526" y="94" text-anchor="end" class="globe__lbl globe__lbl--big">الإسكندرية</text>
+          <text x="526" y="110" text-anchor="end" class="globe__lbl">+ الدخيلة · EGALY · EGEDK</text>
+          <text x="526" y="152" text-anchor="end" class="globe__lbl globe__lbl--big">دمياط</text>
+          <text x="526" y="168" text-anchor="end" class="globe__lbl">EGDAM</text>
+          <text x="526" y="210" text-anchor="end" class="globe__lbl globe__lbl--big">بورسعيد</text>
+          <text x="526" y="226" text-anchor="end" class="globe__lbl">EGPSD</text>
+          <text x="526" y="362" text-anchor="end" class="globe__lbl globe__lbl--big">العين السخنة</text>
+          <text x="526" y="378" text-anchor="end" class="globe__lbl">EGSOK</text>
+          <text x="200" y="48" text-anchor="start" class="globe__lbl globe__lbl--big">شمال أوروبا</text>
+          <text x="200" y="64" text-anchor="start" class="globe__lbl">روتردام · هامبورغ</text>
+          <text x="200" y="106" text-anchor="start" class="globe__lbl globe__lbl--big">غرب المتوسط</text>
+          <text x="200" y="122" text-anchor="start" class="globe__lbl">فالنسيا · جنوة</text>
+          <text x="200" y="164" text-anchor="start" class="globe__lbl globe__lbl--big">شرق المتوسط</text>
+          <text x="200" y="180" text-anchor="start" class="globe__lbl">بيريوس · مرسين</text>
+          <text x="200" y="222" text-anchor="start" class="globe__lbl globe__lbl--big">شرق الولايات المتحدة</text>
+          <text x="200" y="238" text-anchor="start" class="globe__lbl">نيويورك · سافانا</text>
+          <text x="200" y="308" text-anchor="start" class="globe__lbl globe__lbl--big">الخليج والبحر الأحمر</text>
+          <text x="200" y="324" text-anchor="start" class="globe__lbl">جبل علي · جدة</text>
+          <text x="200" y="364" text-anchor="start" class="globe__lbl globe__lbl--big">الهند</text>
+          <text x="200" y="380" text-anchor="start" class="globe__lbl">نهافا شيفا</text>
+          <text x="200" y="420" text-anchor="start" class="globe__lbl globe__lbl--big">الصين</text>
+          <text x="200" y="436" text-anchor="start" class="globe__lbl">شنغهاي · نينغبو</text>
+        </svg>
+        <svg class="globe__diagram globe__diagram--tall" viewBox="0 0 360 360" width="360" height="360" direction="rtl" aria-hidden="true" focusable="false">
+          <line class="globe__rule" x1="344" y1="204" x2="16" y2="204"/>
+          <text x="344" y="22" text-anchor="start" class="globe__lbl globe__lbl--sea">البحر المتوسط</text>
+          <text x="344" y="228" text-anchor="start" class="globe__lbl globe__lbl--sea">البحر الأحمر</text>
+          <path class="globe__lane" pathLength="1" d="M210 106 H194 C170 106 174 40 156 40 H146"/>
+          <path class="globe__lane" pathLength="1" d="M210 106 H194 C170 106 174 84 156 84 H146"/>
+          <path class="globe__lane" pathLength="1" d="M210 106 H194 C170 106 174 128 156 128 H146"/>
+          <path class="globe__lane" pathLength="1" d="M210 106 H194 C170 106 174 172 156 172 H146"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M210 294 H194 C170 294 174 246 156 246 H146"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M210 294 H194 C170 294 174 294 156 294 H146"/>
+          <path class="globe__lane globe__lane--red" pathLength="1" d="M210 294 H194 C170 294 174 342 156 342 H146"/>
+          <path class="globe__bus" d="M210 60 V148"/>
+          <path class="globe__canal" d="M210 148 V294"/>
+          <path class="globe__bus" d="M242 60 H210"/>
+          <path class="globe__bus" d="M242 104 H210"/>
+          <path class="globe__bus" d="M242 148 H210"/>
+          <path class="globe__bus" d="M242 294 H210"/>
+          <text x="220" y="250" text-anchor="middle" class="globe__lbl" transform="rotate(-90 220 250)">قناة السويس</text>
+          <circle class="globe__node globe__node--origin" cx="242" cy="60" r="8"/>
+          <circle class="globe__node globe__node--origin" cx="242" cy="104" r="8"/>
+          <circle class="globe__node globe__node--origin" cx="242" cy="148" r="8"/>
+          <circle class="globe__node globe__node--origin" cx="242" cy="294" r="8"/>
+          <circle class="globe__node" cx="146" cy="40" r="6"/>
+          <circle class="globe__node" cx="146" cy="84" r="6"/>
+          <circle class="globe__node" cx="146" cy="128" r="6"/>
+          <circle class="globe__node" cx="146" cy="172" r="6"/>
+          <circle class="globe__node" cx="146" cy="246" r="6"/>
+          <circle class="globe__node" cx="146" cy="294" r="6"/>
+          <circle class="globe__node" cx="146" cy="342" r="6"/>
+          <text x="256" y="66" text-anchor="end" class="globe__lbl globe__lbl--big">الإسكندرية</text>
+          <text x="256" y="110" text-anchor="end" class="globe__lbl globe__lbl--big">دمياط</text>
+          <text x="256" y="154" text-anchor="end" class="globe__lbl globe__lbl--big">بورسعيد</text>
+          <text x="256" y="300" text-anchor="end" class="globe__lbl globe__lbl--big">العين السخنة</text>
+          <text x="132" y="46" text-anchor="start" class="globe__lbl globe__lbl--big">شمال أوروبا</text>
+          <text x="132" y="90" text-anchor="start" class="globe__lbl globe__lbl--big">غرب المتوسط</text>
+          <text x="132" y="134" text-anchor="start" class="globe__lbl globe__lbl--big">شرق المتوسط</text>
+          <text x="132" y="178" text-anchor="start" class="globe__lbl globe__lbl--big">شرق أمريكا</text>
+          <text x="132" y="252" text-anchor="start" class="globe__lbl globe__lbl--big">الخليج · جدة</text>
+          <text x="132" y="300" text-anchor="start" class="globe__lbl globe__lbl--big">الهند</text>
+          <text x="132" y="348" text-anchor="start" class="globe__lbl globe__lbl--big">الصين</text>
+        </svg>
+        <div class="globe__stage" aria-hidden="true">
+          <canvas class="globe__canvas"></canvas>
+          <span class="globe__pin globe__pin--origin" data-pin="alex" data-dirs="w sw nw" data-lead="30"><span class="globe__tag"><b>الإسكندرية · الدخيلة</b><span class="globe__sub"><bdi dir="ltr">EGALY · EGEDK</bdi></span><b class="globe__abbr">الإسكندرية</b></span></span>
+          <span class="globe__pin globe__pin--origin" data-pin="damietta" data-dirs="ne n nw" data-lead="36"><span class="globe__tag"><b>دمياط</b><span class="globe__sub"><bdi dir="ltr">EGDAM</bdi></span><b class="globe__abbr">دمياط</b></span></span>
+          <span class="globe__pin globe__pin--origin" data-pin="portSaid" data-dirs="ne e se" data-lead="36"><span class="globe__tag"><b>بورسعيد</b><span class="globe__sub"><bdi dir="ltr">EGPSD</bdi></span><b class="globe__abbr">بورسعيد</b></span></span>
+          <span class="globe__pin globe__pin--origin" data-pin="sokhna" data-dirs="s s:1.8 se:1.8 sw" data-lead="34"><span class="globe__tag"><b>العين السخنة</b><span class="globe__sub"><bdi dir="ltr">EGSOK</bdi></span><b class="globe__abbr">السخنة</b></span></span>
+          <span class="globe__pin" data-pin="northEurope" data-dirs="w nw n e" data-lead="12"><span class="globe__tag"><b>شمال أوروبا</b><span class="globe__sub">روتردام · هامبورغ</span><b class="globe__abbr">شمال أوروبا</b></span></span>
+          <span class="globe__pin" data-pin="westMed" data-dirs="w sw s nw" data-lead="12"><span class="globe__tag"><b>غرب المتوسط</b><span class="globe__sub">فالنسيا · جنوة</span><b class="globe__abbr">غرب المتوسط</b></span></span>
+          <span class="globe__pin" data-pin="eastMed" data-dirs="nw n ne w" data-lead="12"><span class="globe__tag"><b>شرق المتوسط</b><span class="globe__sub">بيريوس · مرسين</span><b class="globe__abbr">شرق المتوسط</b></span></span>
+          <span class="globe__pin" data-pin="usEast" data-dirs="w nw sw e" data-lead="12"><span class="globe__tag"><b>الساحل الشرقي الأمريكي</b><span class="globe__sub">نيويورك · سافانا</span><b class="globe__abbr">شرق أمريكا</b></span></span>
+          <span class="globe__pin" data-pin="gulf" data-dirs="e ne se s" data-lead="12"><span class="globe__tag"><b>الخليج والبحر الأحمر</b><span class="globe__sub">جبل علي · جدة</span><b class="globe__abbr">الخليج</b></span></span>
+          <span class="globe__pin" data-pin="india" data-dirs="s se e sw" data-lead="12"><span class="globe__tag"><b>الهند</b><span class="globe__sub">نهافا شيفا</span><b class="globe__abbr">الهند</b></span></span>
+          <span class="globe__pin" data-pin="china" data-dirs="e ne n se w" data-lead="12"><span class="globe__tag"><b>الصين</b><span class="globe__sub">شنغهاي · نينغبو</span><b class="globe__abbr">الصين</b></span></span>
+        </div>
+        <figcaption class="sr-only">كرة أرضية توضح خطوط التجارة البحرية الرئيسية من موانئ مصر. من الإسكندرية والدخيلة ودمياط وبورسعيد على البحر المتوسط: إلى شمال أوروبا (روتردام وهامبورغ)، وغرب المتوسط (فالنسيا وجنوة)، وشرق المتوسط (بيريوس ومرسين)، والساحل الشرقي للولايات المتحدة (نيويورك وسافانا). ومن بورسعيد عبر قناة السويس: إلى الهند (نهافا شيفا) والصين (شنغهاي ونينغبو). ومن العين السخنة على البحر الأحمر: إلى جدة وإلى جبل علي في الخليج.</figcaption>
+      </figure>
+      <div class="routes__side">
+        <p>نتولى التخليص الجمركي ونقل البضائع عبر الإسكندرية والدخيلة ودمياط وبورسعيد على البحر المتوسط، والعين السخنة على البحر الأحمر، مع شحن من وإلى أوروبا وأمريكا الشمالية وآسيا وأفريقيا.</p>
+        <!-- TODO(ar-review): port descriptions and the trade-lane disclaimer -->
+        <dl class="routes__ports" aria-label="موانئ مصر">
+          <div><dt>الإسكندرية + الدخيلة <span class="mono">البحر المتوسط</span></dt><dd>البوابة الرئيسية لمصر للبضائع العامة والحاويات، وبجوارها مقرنا الرئيسي.</dd></div>
+          <div><dt>دمياط <span class="mono">البحر المتوسط</span></dt><dd>ميناء حاويات شرق دلتا النيل.</dd></div>
+          <div><dt>بورسعيد <span class="mono">البحر المتوسط</span></dt><dd>عند المدخل الشمالي لقناة السويس.</dd></div>
+          <div><dt>العين السخنة <span class="mono">البحر الأحمر</span></dt><dd>أقرب ميناء عميق المياه إلى القاهرة الكبرى، على الطريق إلى آسيا والخليج.</dd></div>
+        </dl>
+        <p class="routes__fine mono">الخطوط المعروضة هي طرق التجارة الرئيسية من موانئ مصر، وليست جدول إبحار.</p>
+        <div class="routes__actions">
+          <a class="btn btn--green" href="quote">اطلب عرض سعر <span aria-hidden="true">→</span></a>
+          <a class="link-arrow mono" href="sea-freight/">الشحن البحري <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
