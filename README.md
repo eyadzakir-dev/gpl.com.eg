@@ -204,7 +204,10 @@ The stubs are **not** in `sitemap.xml` and have no chrome markers, so `sync_chro
 
 ## Quote and contact forms: changing the endpoint
 
-Both forms are `<form data-quote-form …>` elements run by `assets/js/quote-form.js`, and each posts to the URL in its own `data-endpoint` attribute. There are four forms, so change the attribute **in all four files**: `quote.html`, `ar/quote.html`, `contact-us/index.html` and `ar/contact-us/index.html`. No script changes are needed:
+Both forms are `<form data-quote-form …>` elements run by `assets/js/quote-form.js`, and each posts to the URL in its own `data-endpoint` attribute. There are four forms: `quote.html`, `ar/quote.html`, `contact-us/index.html` and `ar/contact-us/index.html`. No script changes are needed:
+
+- **Quote forms** (`quote.html`, `ar/quote.html`) post to Fabrik (Option 1).
+- **Contact forms** keep `data-endpoint=""`, so they open the visitor's mail app (see "When the endpoint is empty"). Fabrik has no contact route yet. To move them to a stopgap, change the attribute in both contact files.
 
 ```html
 <form class="iform" data-quote-form data-strings="quote-strings" data-endpoint="" …>
@@ -224,30 +227,26 @@ Field names the backend receives (from the form markup):
 
 \* required in the browser. The quote form also needs container type and count for FCL, or a weight or volume for the other modes (not for "not sure").
 
-### Option 1: Fabrik (planned)
+### Option 1: Fabrik (live on the quote forms)
 
 ```html
-data-endpoint="https://book.threestarsfashion.com/api/website/freight-quotes"
+data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freight-quotes"
 ```
 
-- **This route does not exist yet.** It is planned Fabrik work in a separate repo, and this repo must not change it. The existing Three Stars inquiries route is for garment inquiries and rejects `gpl.com.eg`, so do not point the form at it.
-- Before switching, the Fabrik side needs:
-  - the route, accepting `origin=gpl-website`
-  - the route switched on
-  - an exact Origin allowlist containing `https://gpl.com.eg` and `https://www.gpl.com.eg`
-
-  Any other Origin gets a 403.
-- Switch only **after the DNS cutover**. Until then, browsers send the github.io or localhost Origin, which the allowlist rejects.
+- The route lives in the Fabrik repo (`one-book`). This repo must not change it. The Three Stars garment route `/api/website/inquiries` rejects `gpl.com.eg`, so do not point a form at it.
+- Fabrik production needs `GREEN_POINT_QUOTE_ENABLED=true` and `GREEN_POINT_QUOTE_ORIGINS=https://gpl.com.eg,https://www.gpl.com.eg`. Any other Origin gets a 403, so github.io and localhost previews cannot send to production. `GREEN_POINT_QUOTE_NOTIFY_EMAILS` lists who gets an email for each new request.
+- Only `form_type=quote` is accepted. The contact form would get a 400.
 - Check the preflight from the real Origin. Expect `204` with `access-control-allow-origin: https://gpl.com.eg`:
 
   ```sh
   curl -si -X OPTIONS \
     -H "Origin: https://gpl.com.eg" \
     -H "Access-Control-Request-Method: POST" \
-    https://book.threestarsfashion.com/api/website/freight-quotes | head -20
+    https://book.threestarsfashion.com/api/green-point/website/freight-quotes | head -20
   ```
 
-- Fabrik answers `201 {"reference": "GPL-Q-YYYY-NNNNN"}` (planned format), and the success panel shows that reference. A 429 (too many requests) or 413 (too large) shows the form's normal error message.
+- Fabrik answers `201 {"reference": "GPL-Q-YYYY-NNNNN"}`, and the success panel shows that reference. A 400, 429 (too many requests) or 413 (too large) shows the form's normal error message.
+- Staff who can see all inquiries find each request in Fabrik under **Inquiries**, with the Green Point Logistics name and GPL logo in the Source column. Each request opens at `/inquiries/quotes/<id>`.
 
 ### Option 2: Formspree (stopgap)
 
@@ -289,7 +288,7 @@ With either stopgap, the quote data is held by a third party. Name the provider 
 
 ### When the endpoint is empty
 
-`data-endpoint=""` is the shipped state.
+`data-endpoint=""` is the shipped state of the contact forms.
 
 - On `localhost` and `127.0.0.1` only, the script **simulates success** after a short delay, without a network request, and the success panel shows a sample reference marked as a preview. Use this to test validation and the success panel locally.
 - On any other host, including `gpl.com.eg` and a `*.github.io` preview, the script **does not fake a success**. It shows "Online sending is not switched on yet." and opens the visitor's mail app with a `mailto:info@gpl.com.eg` message prefilled with their answers (attachments must be added by hand), with email and WhatsApp buttons as a backup. Nothing reaches GPL unless the visitor presses send, so set a real endpoint before the site goes live.
