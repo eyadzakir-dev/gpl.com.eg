@@ -107,13 +107,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://gpl.com.eg/contact-us/"/>
   </url>
   <url>
-    <loc>https://gpl.com.eg/track-your-shipment/</loc>
-    <lastmod>2026-10-06</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://gpl.com.eg/track-your-shipment/"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://gpl.com.eg/ar/track-your-shipment/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gpl.com.eg/track-your-shipment/"/>
-  </url>
-  <url>
     <loc>https://gpl.com.eg/faq</loc>
     <lastmod>2026-10-06</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://gpl.com.eg/faq"/>
@@ -231,13 +224,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://gpl.com.eg/contact-us/"/>
     <xhtml:link rel="alternate" hreflang="ar" href="https://gpl.com.eg/ar/contact-us/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://gpl.com.eg/contact-us/"/>
-  </url>
-  <url>
-    <loc>https://gpl.com.eg/ar/track-your-shipment/</loc>
-    <lastmod>2026-10-06</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://gpl.com.eg/track-your-shipment/"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://gpl.com.eg/ar/track-your-shipment/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://gpl.com.eg/track-your-shipment/"/>
   </url>
   <url>
     <loc>https://gpl.com.eg/ar/faq</loc>

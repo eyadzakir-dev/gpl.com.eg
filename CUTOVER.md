@@ -229,7 +229,7 @@ The old WordPress slugs and every new page must return 200, in both languages:
 ```sh
 for p in "" services sea-freight/ air-freight/ customs-clearance/ inland-transportation/ \
          domestic-trucking/ warehousing/ roro-services/ last-mile-delivery/ industries \
-         about-greenpoint/ quote contact-us/ track-your-shipment/ faq privacy-policy; do
+         about-greenpoint/ quote contact-us/ faq privacy-policy; do
   for prefix in "" "ar/"; do
     printf '%s  /%s%s\n' "$(curl -s -o /dev/null -w '%{http_code}' "https://gpl.com.eg/$prefix$p")" "$prefix" "$p"
   done
