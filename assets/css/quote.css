@@ -232,6 +232,41 @@
 .iform__pill-x:hover { background: var(--ink); color: var(--paper); }
 .iform__pill-x:focus-visible { outline-offset: -3px; }
 
+/* Three-step quote form: step strip, mode pills, route hint, stepper and the optional "More details" block. */
+.iform__steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; border-bottom: 1px solid var(--ink); list-style: none; }
+.iform__steps li { display: flex; align-items: center; gap: 10px; padding: 12px 14px; color: var(--ink-2); font-size: 12px; }
+.iform__steps li + li { border-inline-start: 1px solid var(--rule); }
+.iform__steps-no { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid currentColor; border-radius: 50%; }
+.iform__steps li[aria-current="step"] { color: var(--ink); font-weight: 600; box-shadow: inset 0 -3px 0 var(--green); }
+.iform__steps li.is-done .iform__steps-no { border-color: var(--green-ink); background: var(--green-ink); color: var(--paper); }
+.iform--steps .iform__set + .iform__set { border-top: 0; }
+.iform__legend:focus { outline: none; }
+.iform__legend:focus-visible { outline: 3px solid var(--green-ink); outline-offset: 4px; }
+
+.iform__choices--pills { display: flex; flex-wrap: wrap; }
+.iform__choices--pills .iform__choice { flex: 1 1 auto; }
+.iform__checks--row { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.iform__route { margin: -10px 0 0; padding: 8px 12px; border-inline-start: 3px solid var(--green); background: var(--paper); font-size: 12px; color: var(--ink-2); }
+
+.iform__stepper { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; }
+.iform__stepper .iform__input { text-align: center; appearance: textfield; -moz-appearance: textfield; }
+.iform__stepper .iform__input::-webkit-inner-spin-button,
+.iform__stepper .iform__input::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+.iform__stepper-btn { border: 1px solid var(--ink-2); background: var(--paper); color: var(--ink); font-size: 22px; line-height: 1; cursor: pointer; }
+.iform__stepper-btn:first-child { border-inline-end: 0; }
+.iform__stepper-btn:last-child { border-inline-start: 0; }
+.iform__stepper-btn:hover { background: var(--ink); color: var(--paper); }
+
+.iform__more { border-top: 1px solid var(--rule); }
+.iform__more-sum { display: flex; align-items: center; gap: 12px; min-height: 48px; font-size: 16px; font-weight: 600; cursor: pointer; list-style: none; }
+.iform__more-sum::-webkit-details-marker { display: none; }
+.iform__more-sum .iform__opt { float: none; margin: 0; }
+.iform__more[open] .iform__more-sum { margin-bottom: 14px; }
+.iform__more-body { padding-bottom: 4px; }
+
+.iform__nav { display: flex; flex-wrap: wrap; gap: 10px; }
+.iform__back { min-width: 0; }
+
 /* Off-screen rather than display:none so bots still fill it. */
 .iform__hp { position: absolute; inset-inline-start: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
@@ -329,6 +364,12 @@
   .iform__pill { grid-template-columns: 40px minmax(0, 1fr) auto 44px; column-gap: 8px; }
   .iform__foot { grid-template-columns: minmax(0, 1fr); row-gap: 14px; padding: 20px 16px; }
   .iform__submit { width: 100%; min-width: 0; }
+  .iform__nav { display: grid; grid-template-columns: auto minmax(0, 1fr); }
+  .iform__nav .btn--green { width: 100%; min-width: 0; }
+  .iform__nav .iform__back[hidden] + .btn--green, .iform__back[hidden] ~ .iform__submit { grid-column: 1 / -1; }
+  .iform__steps li { justify-content: center; padding: 10px 6px; }
+  .iform__steps li > span:last-child { display: none; }
+  .iform__steps li[aria-current="step"] > span:last-child { display: inline; }
   .iform__notice { padding: 18px 16px 20px; }
   .iform__notice-acts .btn { flex: 1 1 100%; }
   .iform__done-body { padding: 32px 16px 24px; }
