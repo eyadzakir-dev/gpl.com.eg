@@ -35,7 +35,6 @@ GitHub Pages serves `/x` from `x.html` and `/x/` from `x/index.html`. The old Wo
 | About | `about-greenpoint/index.html` | `ar/about-greenpoint/index.html` | `/about-greenpoint/` · `/ar/about-greenpoint/` |
 | Request a Quote | `quote.html` | `ar/quote.html` | `/quote` · `/ar/quote` |
 | Contact | `contact-us/index.html` | `ar/contact-us/index.html` | `/contact-us/` · `/ar/contact-us/` |
-| Track Shipment | `track-your-shipment/index.html` | `ar/track-your-shipment/index.html` | `/track-your-shipment/` · `/ar/track-your-shipment/` |
 | FAQ | `faq.html` | `ar/faq.html` | `/faq` · `/ar/faq` |
 | Privacy policy | `privacy-policy.html` | `ar/privacy-policy.html` | `/privacy-policy` · `/ar/privacy-policy` |
 | 404 | `404.html` (one bilingual page) | none | any missing URL |

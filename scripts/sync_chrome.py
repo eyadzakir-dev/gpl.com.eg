@@ -33,7 +33,7 @@ SERVICE_KEYS = {
 # Pages that exist in both languages (BUILD-CONTRACT section 2).
 MIRRORED_KEYS = SERVICE_KEYS | {
     "home", "services", "industries", "network", "about-greenpoint/", "quote", "contact-us/",
-    "track-your-shipment/", "faq", "privacy-policy",
+    "faq", "privacy-policy",
 }
 
 BLOCK_RE = {

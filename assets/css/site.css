@@ -378,8 +378,6 @@ button { font: inherit; color: inherit; }
 .hdr__mm-btn svg { width: 10px; height: 6px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.25s var(--ease-out); }
 .hdr__mm-btn:hover, .hdr__mm-btn[aria-expanded="true"] { color: var(--green-ink); }
 .hdr__mm-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
-.hdr__clock { color: var(--ink-2); white-space: nowrap; }
-.hdr__clock span { color: var(--green-ink); }
 .hdr__lang, .hdr__social {
   display: grid;
   place-items: center;
@@ -397,7 +395,7 @@ button { font: inherit; color: inherit; }
 .hdr__lang:lang(en) { font-family: var(--f-latin); }
 .hdr__social svg { width: 18px; height: 18px; fill: currentColor; }
 .hdr__lang:hover, .hdr__social:hover { background: var(--ink); color: var(--paper); }
-.hdr__track, .hdr__cta { padding: 12px 16px; font-size: 14px; }
+.hdr__cta { padding: 12px 16px; font-size: 14px; }
 
 .menu { display: none; position: relative; }
 .menu__btn {
@@ -451,16 +449,10 @@ button { font: inherit; color: inherit; }
 /* A closed <details> still lays its panel out in the narrow summary box, so the links spill past the viewport. */
 .menu:not([open]) .menu__panel { display: none; }
 
-@media (max-width: 1320px) {
-  .hdr__clock { display: none; }
-}
 @media (max-width: 1180px) {
   .hdr__nav { display: none; }
   .menu { display: block; }
   .hdr__in { gap: 12px; }
-}
-@media (max-width: 899px) {
-  .hdr__track { display: none; }
 }
 @media (max-width: 560px) {
   .hdr__cta { display: none; }

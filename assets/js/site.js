@@ -1,4 +1,4 @@
-// Shared behaviour for every page: header clock, mobile menu, services mega menu loader, one-shot reveals, image
+// Shared behaviour for every page: mobile menu, services mega menu loader, one-shot reveals, image
 // lightbox, lazy route globe.
 
 const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
@@ -6,7 +6,6 @@ const DESKTOP_NAV = matchMedia("(min-width: 1181px)");
 // Same query as the toggle's CSS in site.css: the mega menu only exists on wide screens with a hover pointer.
 const MEGAMENU_MEDIA = matchMedia("(min-width: 1181px) and (hover: hover)");
 const MEGAMENU_IDLE_TIMEOUT_MS = 2000;
-const CLOCK_TICK_MS = 15000;
 const REVEAL_THRESHOLD = 0.3;
 const GLOBE_PRELOAD_MARGIN = "150% 0px";
 // .sweep is the GPL mark tile sweep; [data-reveal] lets a page arm its own is-armed/is-in animation.
@@ -16,21 +15,6 @@ const IS_RTL = document.documentElement.dir === "rtl";
 const LIGHTBOX_TEXT = document.documentElement.lang.startsWith("ar")
   ? { viewer: "عارض الصور", close: "إغلاق", prev: "الصورة السابقة", next: "الصورة التالية" }
   : { viewer: "Image viewer", close: "Close", prev: "Previous image", next: "Next image" };
-
-const cairoTime = new Intl.DateTimeFormat("en-GB", {
-  timeZone: "Africa/Cairo",
-  hour: "2-digit",
-  minute: "2-digit",
-  hourCycle: "h23",
-});
-
-function initHeaderClock() {
-  const clock = document.querySelector("[data-cairo-clock]");
-  if (!clock) return;
-  const render = () => { clock.textContent = cairoTime.format(new Date()); };
-  render();
-  setInterval(render, CLOCK_TICK_MS);
-}
 
 function initMenu() {
   const menu = document.querySelector(".menu");
@@ -203,7 +187,6 @@ function initLightbox() {
   ui.dialog.addEventListener("close", () => state.trigger?.focus());
 }
 
-initHeaderClock();
 initMenu();
 initMegamenuLoader();
 initReveal(REVEAL_SELECTOR);
