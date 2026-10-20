@@ -310,7 +310,7 @@
         <li><span class="k">RE.</span> Reply by email or WhatsApp</li>
       </ul>
       <h1 class="phero__title" id="page-title">Request a quote<span class="dot">.</span></h1>
-      <p class="phero__lead">Tell us what you are shipping, from where to where, and when it is ready. The more detail you give, the more exact the price. Fields marked * are required.</p>
+      <p class="phero__lead">Three short steps: the route, the cargo, and where we send the price. A packing list is enough for the cargo. Fields marked * are required.</p>
     </div>
   </section>
 
@@ -319,141 +319,77 @@
       <div class="qlayout__main">
         <h2 class="sr-only" id="form-title">Quote request form</h2>
         <div class="iform-panel" data-form-panel>
-          <!-- Endpoint: leave empty until the Fabrik route (or a stopgap form service) is live; see README. -->
-          <form class="iform" data-quote-form data-strings="quote-strings" data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freight-quotes" action="mailto:info@gpl.com.eg?subject=Quote%20request" method="post" enctype="text/plain" novalidate aria-labelledby="form-title">
+          <!-- Endpoint: the Fabrik intake. For a local test, open the page with ?endpoint=http://localhost:3000 (localhost only; see README). -->
+          <form class="iform iform--steps" data-quote-form data-strings="quote-strings" data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freight-quotes" action="mailto:info@gpl.com.eg?subject=Quote%20request" method="post" enctype="text/plain" novalidate aria-labelledby="form-title">
             <p class="iform__bar mono"><span>New quote request</span><span aria-hidden="true"><span class="iform__req">*</span> Required</span></p>
             <noscript><p class="iform__fallback">This form needs JavaScript. You can also email your request to <a href="mailto:info@gpl.com.eg?subject=Quote%20request">info@gpl.com.eg</a> or call <a href="tel:+2034800912">+20 3 480 0912</a>.</p></noscript>
+            <ol class="iform__steps mono" data-step-nav aria-label="Form steps">
+              <li data-step-tab="1" aria-current="step"><span class="iform__steps-no">1</span><span>Route</span></li>
+              <li data-step-tab="2"><span class="iform__steps-no">2</span><span>Cargo</span></li>
+              <li data-step-tab="3"><span class="iform__steps-no">3</span><span>Contact</span></li>
+            </ol>
             <p class="iform__prefill" data-prefill-note role="status" hidden></p>
             <div class="iform__summary" data-error-summary tabindex="-1" aria-labelledby="q-summary-title" hidden>
               <p class="iform__summary-title" id="q-summary-title">Please check the highlighted fields.</p>
               <ul></ul>
             </div>
 
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">01</span><span class="iform__title">Your details</span><span class="iform__tag mono">All required</span></legend>
+            <fieldset class="iform__set" data-step="1">
+              <legend class="iform__legend" tabindex="-1" data-step-title><span class="iform__no mono" aria-hidden="true">1/3</span><span class="iform__title">Route and service</span><span class="iform__tag mono">About 20 seconds</span></legend>
               <div class="iform__grid">
-                <div class="iform__field">
-                  <label class="iform__label" for="q-name">Full name <span class="iform__req" aria-hidden="true">*</span></label>
-                  <input class="iform__input" id="q-name" name="name" type="text" autocomplete="name" required maxlength="120" data-validate="required" aria-describedby="q-name-err">
-                  <p class="iform__err" id="q-name-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-company">Company <span class="iform__req" aria-hidden="true">*</span></label>
-                  <input class="iform__input" id="q-company" name="company" type="text" autocomplete="organization" required maxlength="160" data-validate="required" aria-describedby="q-company-err">
-                  <p class="iform__err" id="q-company-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-email">Email <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-email-hint">We send the quote here.</p>
-                  <input class="iform__input" id="q-email" name="email" type="email" autocomplete="email" required maxlength="254" spellcheck="false" placeholder="name@company.com" dir="ltr" data-validate="required email" aria-describedby="q-email-hint q-email-err">
-                  <p class="iform__err" id="q-email-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-phone">Phone or WhatsApp <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-phone-hint">Include the country code, e.g. +20 122 000 0000.</p>
-                  <input class="iform__input" id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" placeholder="+20 1XX XXX XXXX" dir="ltr" data-validate="required phone" aria-describedby="q-phone-hint q-phone-err">
-                  <p class="iform__err" id="q-phone-err"></p>
-                </div>
-              </div>
-            </fieldset>
-
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">02</span><span class="iform__title">Shipment</span><span class="iform__tag mono">Route and timing</span></legend>
-              <div class="iform__grid">
-                <fieldset class="iform__group iform__field--full" data-group="direction" data-err="q-direction-err">
-                  <legend class="iform__label">Import or export <span class="iform__req" aria-hidden="true">*</span></legend>
-                  <div class="iform__choices">
-                    <label class="iform__choice"><input type="radio" id="q-direction-import" name="direction" value="import" required aria-describedby="q-direction-err"><span>Import into Egypt</span></label>
-                    <label class="iform__choice"><input type="radio" id="q-direction-export" name="direction" value="export" required aria-describedby="q-direction-err"><span>Export from Egypt</span></label>
-                    <label class="iform__choice"><input type="radio" id="q-direction-cross" name="direction" value="cross-trade" required aria-describedby="q-direction-err"><span>Other / cross-trade</span></label>
-                  </div>
-                  <p class="iform__err" id="q-direction-err"></p>
-                </fieldset>
                 <fieldset class="iform__group iform__field--full" data-group="mode" data-err="q-mode-err">
-                  <legend class="iform__label">Mode <span class="iform__req" aria-hidden="true">*</span></legend>
-                  <div class="iform__choices">
-                    <label class="iform__choice"><input type="radio" id="q-mode-fcl" name="mode" value="sea-fcl" required aria-describedby="q-mode-err"><span>Sea, full container (FCL)</span></label>
-                    <label class="iform__choice"><input type="radio" id="q-mode-lcl" name="mode" value="sea-lcl" required aria-describedby="q-mode-err"><span>Sea, shared container (LCL)</span></label>
+                  <legend class="iform__label">What do you need? <span class="iform__req" aria-hidden="true">*</span></legend>
+                  <div class="iform__choices iform__choices--pills">
+                    <label class="iform__choice"><input type="radio" id="q-mode-fcl" name="mode" value="sea-fcl" required aria-describedby="q-mode-err"><span>Sea · full container</span></label>
+                    <label class="iform__choice"><input type="radio" id="q-mode-lcl" name="mode" value="sea-lcl" required aria-describedby="q-mode-err"><span>Sea · shared (LCL)</span></label>
                     <label class="iform__choice"><input type="radio" id="q-mode-air" name="mode" value="air" required aria-describedby="q-mode-err"><span>Air</span></label>
-                    <label class="iform__choice"><input type="radio" id="q-mode-land" name="mode" value="land" required aria-describedby="q-mode-err"><span>Land (truck)</span></label>
+                    <label class="iform__choice"><input type="radio" id="q-mode-land" name="mode" value="land" required aria-describedby="q-mode-err"><span>Truck</span></label>
+                    <label class="iform__choice"><input type="radio" id="q-mode-customs" name="mode" value="customs" required aria-describedby="q-mode-err"><span>Customs clearance only</span></label>
                     <label class="iform__choice"><input type="radio" id="q-mode-unsure" name="mode" value="not-sure" required aria-describedby="q-mode-err"><span>Not sure, advise me</span></label>
                   </div>
                   <p class="iform__err" id="q-mode-err"></p>
                 </fieldset>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-origin">Origin (port or city) <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-origin-hint">Where the cargo starts, e.g. Shanghai or Alexandria.</p>
-                  <input class="iform__input" id="q-origin" name="origin_place" type="text" required maxlength="160" data-validate="required" aria-describedby="q-origin-hint q-origin-err">
+                <div class="iform__field" data-hide-for="customs">
+                  <label class="iform__label" for="q-origin">From <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-origin" name="origin_place" type="text" list="q-places" autocomplete="off" required maxlength="160" placeholder="e.g. Shanghai" data-validate="required" aria-describedby="q-origin-err">
                   <p class="iform__err" id="q-origin-err"></p>
                 </div>
                 <div class="iform__field">
-                  <label class="iform__label" for="q-destination">Destination (port or city) <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-destination-hint">Where the cargo ends, e.g. 10th of Ramadan or Hamburg.</p>
-                  <input class="iform__input" id="q-destination" name="destination" type="text" required maxlength="160" data-validate="required" aria-describedby="q-destination-hint q-destination-err">
+                  <label class="iform__label" for="q-destination"><span data-hide-for="customs">To</span><span data-show-for="customs" hidden>Port or terminal of arrival</span> <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-destination" name="destination" type="text" list="q-places" autocomplete="off" required maxlength="160" placeholder="e.g. Alexandria" data-validate="required" aria-describedby="q-destination-err">
                   <p class="iform__err" id="q-destination-err"></p>
                 </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-port">Egyptian port or airport <span class="iform__opt mono">Optional</span></label>
-                  <select class="iform__input iform__select" id="q-port" name="egypt_port">
-                    <option value="">Choose if you know it</option>
-                    <option value="alexandria">Alexandria</option>
-                    <option value="dekheila">Dekheila</option>
-                    <option value="damietta">Damietta</option>
-                    <option value="port-said">Port Said</option>
-                    <option value="sokhna">Sokhna</option>
-                    <option value="cairo-airport">Cairo International Airport</option>
-                    <option value="borg-el-arab-airport">Borg El Arab Airport</option>
-                    <option value="not-sure">Not sure</option>
-                  </select>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-ready">Ready date <span class="iform__opt mono">Optional</span></label>
-                  <p class="iform__hint" id="q-ready-hint">When the cargo is ready to collect.</p>
-                  <input class="iform__input" id="q-ready" name="ready_date" type="date" data-validate="date" aria-describedby="q-ready-hint q-ready-err">
-                  <p class="iform__err" id="q-ready-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-incoterm">Incoterm <span class="iform__opt mono">Optional</span></label>
-                  <p class="iform__hint" id="q-incoterm-hint">The delivery term in your sales contract.</p>
-                  <select class="iform__input iform__select" id="q-incoterm" name="incoterm" aria-describedby="q-incoterm-hint">
-                    <option value="">Choose</option>
-                    <option value="EXW">EXW</option>
-                    <option value="FCA">FCA</option>
-                    <option value="FOB">FOB</option>
-                    <option value="CFR">CFR</option>
-                    <option value="CIF">CIF</option>
-                    <option value="CPT">CPT</option>
-                    <option value="CIP">CIP</option>
-                    <option value="DAP">DAP</option>
-                    <option value="DPU">DPU</option>
-                    <option value="DDP">DDP</option>
-                    <option value="not-sure">Not sure</option>
-                  </select>
+                <datalist id="q-places" data-places></datalist>
+                <p class="iform__route mono iform__field--full" data-route-note aria-live="polite" hidden></p>
+                <div class="iform__checks iform__checks--row iform__field--full">
+                  <label class="iform__check" for="q-clearance" data-hide-for="customs"><input id="q-clearance" name="needs_clearance" type="checkbox" value="1"><span>Add customs clearance in Egypt</span></label>
+                  <label class="iform__check" for="q-trucking"><input id="q-trucking" name="needs_trucking" type="checkbox" value="1"><span>Add trucking to or from the port</span></label>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">03</span><span class="iform__title">Cargo</span><span class="iform__tag mono">What and how much</span></legend>
+            <fieldset class="iform__set" data-step="2" hidden>
+              <legend class="iform__legend" tabindex="-1" data-step-title><span class="iform__no mono" aria-hidden="true">2/3</span><span class="iform__title">Cargo</span><span class="iform__tag mono">A file is enough</span></legend>
               <div class="iform__grid">
                 <div class="iform__field iform__field--full">
-                  <label class="iform__label" for="q-cargo">Cargo description <span class="iform__opt mono">Optional</span></label>
-                  <p class="iform__hint" id="q-cargo-hint">What the goods are, how they are packed, and anything special (fragile, temperature, dangerous goods).</p>
-                  <textarea class="iform__input iform__textarea" id="q-cargo" name="cargo" rows="3" maxlength="2000" aria-describedby="q-cargo-hint"></textarea>
+                  <p class="iform__label" id="q-files-label">Packing list or invoice <span class="iform__opt mono">Fastest</span></p>
+                  <label class="iform__drop" data-dropzone>
+                    <input class="sr-only" id="q-files" name="files" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" aria-labelledby="q-files-label" aria-describedby="q-files-hint q-files-err" data-file-picker>
+                    <svg class="iform__ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M9 5h15l7 7v23H9z"/><path d="M24 5v7h7"/><path class="acc" d="M20 30V18M15 23l5-5 5 5"/></svg>
+                    <span class="iform__drop-main">Drop your packing list here and skip the sizes</span>
+                    <span class="iform__drop-sub">or <span class="iform__drop-link">browse</span> your files</span>
+                    <span class="iform__drop-hint mono" id="q-files-hint">PDF · XLSX · XLS · CSV · JPG · PNG · WebP · up to 10 files, 25&nbsp;MB in total</span>
+                  </label>
+                  <p class="iform__err" id="q-files-err" aria-live="polite" data-file-error></p>
+                  <ul class="iform__files" data-file-list></ul>
+                  <p class="sr-only" aria-live="polite" data-file-live></p>
                 </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-hs">HS code <span class="iform__opt mono">Optional</span></label>
-                  <p class="iform__hint" id="q-hs-hint">6 to 10 digits if you have it. We can help classify it.</p>
-                  <input class="iform__input" id="q-hs" name="hs_code" type="text" inputmode="numeric" maxlength="16" pattern="[0-9. ]{6,16}" placeholder="e.g. 610910" spellcheck="false" dir="ltr" data-validate="hs" aria-describedby="q-hs-hint q-hs-err">
-                  <p class="iform__err" id="q-hs-err"></p>
-                </div>
-                <div class="iform__size" id="q-size" data-size-group data-err="q-size-err">
-                  <p class="iform__size-head">Shipment size</p>
-                  <p class="iform__hint" id="q-size-hint">Give container type and count, or weight and volume.</p>
-                  <div class="iform__sub" data-show-for="sea-fcl">
+                <div class="iform__size" id="q-size" data-size-group data-hide-for="customs" data-err="q-size-err">
+                  <p class="iform__size-head"><span data-size-label="required">Or enter the size</span><span data-size-label="optional" hidden>Size <span class="iform__opt mono">Optional with a file</span></span></p>
+                  <div class="iform__sub" data-show-for="sea-fcl not-sure">
                     <div class="iform__field">
                       <label class="iform__label" for="q-ctype">Container type</label>
-                      <select class="iform__input iform__select" id="q-ctype" name="container_type" aria-describedby="q-size-hint q-size-err">
+                      <select class="iform__input iform__select" id="q-ctype" name="container_type" aria-describedby="q-size-err">
                         <option value="">Choose</option>
                         <option value="20gp">20′ dry (20GP)</option>
                         <option value="40gp">40′ dry (40GP)</option>
@@ -468,26 +404,28 @@
                       </select>
                     </div>
                     <div class="iform__field">
-                      <label class="iform__label" for="q-ccount">Number of containers</label>
-                      <input class="iform__input" id="q-ccount" name="container_count" type="number" min="1" max="999" step="1" inputmode="numeric" placeholder="e.g. 2" data-validate="number" aria-describedby="q-size-hint q-ccount-err q-size-err">
+                      <label class="iform__label" for="q-ccount">How many</label>
+                      <span class="iform__stepper" data-stepper>
+                        <button class="iform__stepper-btn" type="button" data-step-by="-1" aria-label="One fewer container" tabindex="-1">−</button>
+                        <input class="iform__input" id="q-ccount" name="container_count" type="number" min="1" max="999" step="1" inputmode="numeric" placeholder="1" data-validate="number" aria-describedby="q-ccount-err q-size-err">
+                        <button class="iform__stepper-btn" type="button" data-step-by="1" aria-label="One more container" tabindex="-1">+</button>
+                      </span>
                       <p class="iform__err" id="q-ccount-err"></p>
                     </div>
                   </div>
-                  <div class="iform__sub" data-show-for="sea-lcl air land">
+                  <div class="iform__sub" data-show-for="sea-lcl air land not-sure">
                     <div class="iform__field">
-                      <label class="iform__label" for="q-weight">Total weight (kg)</label>
-                      <p class="iform__hint" id="q-weight-hint">For LCL, air or truck.</p>
+                      <label class="iform__label" for="q-weight">Total weight</label>
                       <span class="iform__unit">
-                        <input class="iform__input" id="q-weight" name="weight_kg" type="number" min="0.1" max="10000000" step="any" inputmode="decimal" placeholder="e.g. 1200" data-validate="number" aria-describedby="q-weight-hint q-weight-err q-size-err">
+                        <input class="iform__input" id="q-weight" name="weight_kg" type="number" min="0.1" max="10000000" step="any" inputmode="decimal" placeholder="e.g. 1200" data-validate="number" aria-describedby="q-weight-err q-size-err">
                         <span class="iform__unit-tag mono" aria-hidden="true">kg</span>
                       </span>
                       <p class="iform__err" id="q-weight-err"></p>
                     </div>
                     <div class="iform__field">
-                      <label class="iform__label" for="q-volume">Total volume (m³)</label>
-                      <p class="iform__hint" id="q-volume-hint">Length × width × height of all pieces.</p>
+                      <label class="iform__label" for="q-volume">Total volume</label>
                       <span class="iform__unit">
-                        <input class="iform__input" id="q-volume" name="volume_cbm" type="number" min="0.01" max="100000" step="any" inputmode="decimal" placeholder="e.g. 6.5" data-validate="number" aria-describedby="q-volume-hint q-volume-err q-size-err">
+                        <input class="iform__input" id="q-volume" name="volume_cbm" type="number" min="0.01" max="100000" step="any" inputmode="decimal" placeholder="e.g. 6.5" data-validate="number" aria-describedby="q-volume-err q-size-err">
                         <span class="iform__unit-tag mono" aria-hidden="true">m³</span>
                       </span>
                       <p class="iform__err" id="q-volume-err"></p>
@@ -495,37 +433,77 @@
                   </div>
                   <p class="iform__err" id="q-size-err"></p>
                 </div>
+                <details class="iform__more iform__field--full" data-more>
+                  <summary class="iform__more-sum">+ More details <span class="iform__opt mono">Optional</span></summary>
+                  <div class="iform__grid iform__more-body">
+                    <div class="iform__field">
+                      <label class="iform__label" for="q-incoterm">Incoterm</label>
+                      <select class="iform__input iform__select" id="q-incoterm" name="incoterm">
+                        <option value="">Choose</option>
+                        <option value="EXW">EXW</option>
+                        <option value="FCA">FCA</option>
+                        <option value="FOB">FOB</option>
+                        <option value="CFR">CFR</option>
+                        <option value="CIF">CIF</option>
+                        <option value="CPT">CPT</option>
+                        <option value="CIP">CIP</option>
+                        <option value="DAP">DAP</option>
+                        <option value="DPU">DPU</option>
+                        <option value="DDP">DDP</option>
+                        <option value="not-sure">Not sure</option>
+                      </select>
+                    </div>
+                    <div class="iform__field">
+                      <label class="iform__label" for="q-ready">Ready date</label>
+                      <input class="iform__input" id="q-ready" name="ready_date" type="date" data-validate="date" data-min-today aria-describedby="q-ready-err">
+                      <p class="iform__err" id="q-ready-err"></p>
+                    </div>
+                    <fieldset class="iform__group iform__field--full">
+                      <legend class="iform__label">Special handling</legend>
+                      <div class="iform__checks iform__checks--row">
+                        <label class="iform__check" for="q-hz"><input id="q-hz" name="handling" type="checkbox" value="hazardous" data-handling-hazardous><span>Dangerous goods</span></label>
+                        <label class="iform__check" for="q-reefer"><input id="q-reefer" name="handling" type="checkbox" value="reefer"><span>Temperature controlled</span></label>
+                        <label class="iform__check" for="q-qiz"><input id="q-qiz" name="handling" type="checkbox" value="qiz-eur1"><span>QIZ or EUR.1</span></label>
+                      </div>
+                    </fieldset>
+                    <div class="iform__field" data-un-class hidden>
+                      <label class="iform__label" for="q-un">UN class</label>
+                      <input class="iform__input" id="q-un" name="un_class" type="text" maxlength="16" placeholder="e.g. 3" dir="ltr" disabled>
+                    </div>
+                    <div class="iform__field iform__field--full">
+                      <label class="iform__label" for="q-message">Anything else?</label>
+                      <textarea class="iform__input iform__textarea" id="q-message" name="message" rows="3" maxlength="4000" placeholder="What the goods are, deadlines, documents you already have"></textarea>
+                    </div>
+                  </div>
+                </details>
               </div>
             </fieldset>
 
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">04</span><span class="iform__title">Services</span><span class="iform__tag mono">Tick what you need</span></legend>
-              <div class="iform__checks">
-                <label class="iform__check" for="q-clearance"><input id="q-clearance" name="needs_clearance" type="checkbox" value="1"><span>I need customs clearance in Egypt</span></label>
-                <label class="iform__check" for="q-trucking"><input id="q-trucking" name="needs_trucking" type="checkbox" value="1"><span>I need trucking to or from the port</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">05</span><span class="iform__title">Files and notes</span><span class="iform__tag mono">All optional</span></legend>
+            <fieldset class="iform__set" data-step="3" hidden>
+              <legend class="iform__legend" tabindex="-1" data-step-title><span class="iform__no mono" aria-hidden="true">3/3</span><span class="iform__title">Where we send the quote</span><span class="iform__tag mono">Last step</span></legend>
               <div class="iform__grid">
-                <div class="iform__field iform__field--full">
-                  <label class="iform__label" for="q-message">Anything else? <span class="iform__opt mono">Optional</span></label>
-                  <p class="iform__hint" id="q-message-hint">Deadlines, free-day concerns, documents you already have.</p>
-                  <textarea class="iform__input iform__textarea" id="q-message" name="message" rows="5" maxlength="4000" aria-describedby="q-message-hint"></textarea>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-name">Full name <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-name" name="name" type="text" autocomplete="name" required maxlength="120" data-validate="required" aria-describedby="q-name-err">
+                  <p class="iform__err" id="q-name-err"></p>
                 </div>
-                <div class="iform__field iform__field--full">
-                  <p class="iform__label" id="q-files-label">Attachments</p>
-                  <label class="iform__drop" data-dropzone>
-                    <input class="sr-only" id="q-files" name="files" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" aria-labelledby="q-files-label" aria-describedby="q-files-hint q-files-err" data-file-picker>
-                    <svg class="iform__ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M9 5h15l7 7v23H9z"/><path d="M24 5v7h7"/><path class="acc" d="M20 30V18M15 23l5-5 5 5"/></svg>
-                    <span class="iform__drop-main">Drop your packing list, invoice or photos here</span>
-                    <span class="iform__drop-sub">or <span class="iform__drop-link">browse</span> your files</span>
-                    <span class="iform__drop-hint mono" id="q-files-hint">PDF · XLSX · XLS · CSV · JPG · PNG · WebP · up to 10 files, 25&nbsp;MB in total</span>
-                  </label>
-                  <p class="iform__err" id="q-files-err" aria-live="polite" data-file-error></p>
-                  <ul class="iform__files" data-file-list></ul>
-                  <p class="sr-only" aria-live="polite" data-file-live></p>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-company">Company <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-company" name="company" type="text" autocomplete="organization" required maxlength="160" data-validate="required" aria-describedby="q-company-err">
+                  <p class="iform__err" id="q-company-err"></p>
+                </div>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-email">Email <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-email" name="email" type="email" autocomplete="email" required maxlength="254" spellcheck="false" placeholder="name@company.com" dir="ltr" data-validate="required email" aria-describedby="q-email-err">
+                  <p class="iform__err" id="q-email-err"></p>
+                </div>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-phone">Phone <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" placeholder="+20 1XX XXX XXXX" dir="ltr" data-validate="required phone" aria-describedby="q-phone-err">
+                  <p class="iform__err" id="q-phone-err"></p>
+                </div>
+                <div class="iform__checks iform__field--full">
+                  <label class="iform__check" for="q-whatsapp"><input id="q-whatsapp" name="whatsapp" type="checkbox" value="1"><span>You can reach me on WhatsApp at this number</span></label>
                 </div>
               </div>
             </fieldset>
@@ -536,7 +514,11 @@
             <input type="hidden" name="lang" value="en">
 
             <div class="iform__foot">
-              <button class="btn btn--green btn--lg iform__submit" type="submit" data-form-submit><span data-submit-label>Send quote request</span> <span aria-hidden="true">→</span></button>
+              <div class="iform__nav">
+                <button class="btn btn--line iform__back" type="button" data-step-back hidden><span aria-hidden="true">←</span> Back</button>
+                <button class="btn btn--green btn--lg" type="button" data-step-next>Next <span aria-hidden="true">→</span></button>
+                <button class="btn btn--green btn--lg iform__submit" type="submit" data-form-submit hidden><span data-submit-label>Send quote request</span> <span aria-hidden="true">→</span></button>
+              </div>
               <p class="iform__note">We use your details only to answer this request. See our <a href="privacy-policy">privacy policy</a>.</p>
             </div>
             <div class="iform__notice" data-form-status aria-live="polite" hidden></div>
@@ -575,7 +557,6 @@
             <h2 class="qside__k mono" id="side-ready">Have these ready</h2>
             <ul class="qside__list">
               <li>Packing list or commercial invoice</li>
-              <li>HS code, if you know it</li>
               <li>Container type and count, or weight and volume</li>
               <li>Incoterm</li>
               <li>Ready date</li>
@@ -671,22 +652,21 @@
   "retry": "Try again",
   "emailInstead": "Email instead",
   "whatsappInstead": "Send on WhatsApp ↗",
+  "route": { "import": "Ending in Egypt, so we will quote this as an import.", "export": "Starting in Egypt, so we will quote this as an export." },
   "prefill": "We filled in the details from your shipment. Please check them, then add your contact details.",
   "errors": {
     "name": { "required": "Please enter your name." },
     "company": { "required": "Please enter your company name." },
     "email": { "required": "Please enter your email address.", "email": "Please enter a valid email address, like name@company.com." },
     "phone": { "required": "Please enter a phone or WhatsApp number.", "phone": "Please enter a valid phone number with country code." },
-    "direction": { "required": "Please choose import or export." },
     "mode": { "required": "Please choose a mode." },
     "origin_place": { "required": "Please enter the origin port or city." },
     "destination": { "required": "Please enter the destination port or city." },
     "ready_date": { "date": "Please enter a date that is today or later." },
-    "hs_code": { "hs": "HS codes are 6 to 10 digits. Leave it blank if you are not sure." },
     "container_count": { "number": "Please enter a number of containers from 1 to 999." },
     "weight_kg": { "number": "Please enter a weight in kg." },
     "volume_cbm": { "number": "Please enter a volume in m³." },
-    "size": { "required": "Please give container details, or weight and volume." }
+    "size": { "required": "Please give container details, or weight and volume, or attach your packing list." }
   },
   "files": {
     "selected": "{n} file(s) attached, {size} of 25 MB.",

@@ -312,7 +312,7 @@
         <li><span class="k">الرد</span> بالبريد الإلكتروني أو واتساب</li>
       </ul>
       <h1 class="phero__title" id="page-title">اطلب عرض سعر<span class="dot">.</span></h1>
-      <p class="phero__lead">أخبرنا بما تشحنه، ومن أين وإلى أين، ومتى تكون الشحنة جاهزة. كلما زادت التفاصيل كان السعر أدق. الحقول المميزة بعلامة * مطلوبة.</p>
+      <p class="phero__lead">ثلاث خطوات قصيرة: خط السير، والبضائع، وأين نرسل السعر. قائمة التعبئة تكفي لبيانات البضائع. الحقول المميزة بعلامة * مطلوبة.</p>
     </div>
   </section>
 
@@ -321,142 +321,77 @@
       <div class="qlayout__main">
         <h2 class="sr-only" id="form-title">نموذج طلب عرض السعر</h2>
         <div class="iform-panel" data-form-panel>
-          <!-- Endpoint: leave empty until the Fabrik route (or a stopgap form service) is live; see README. -->
-          <form class="iform" data-quote-form data-strings="quote-strings" data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freight-quotes" action="mailto:info@gpl.com.eg?subject=%D8%B7%D9%84%D8%A8%20%D8%B9%D8%B1%D8%B6%20%D8%B3%D8%B9%D8%B1" method="post" enctype="text/plain" novalidate aria-labelledby="form-title">
+          <!-- Endpoint: the Fabrik intake. For a local test, open the page with ?endpoint=http://localhost:3000 (localhost only; see README). -->
+          <form class="iform iform--steps" data-quote-form data-strings="quote-strings" data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freight-quotes" action="mailto:info@gpl.com.eg?subject=%D8%B7%D9%84%D8%A8%20%D8%B9%D8%B1%D8%B6%20%D8%B3%D8%B9%D8%B1" method="post" enctype="text/plain" novalidate aria-labelledby="form-title">
             <p class="iform__bar mono"><span>طلب عرض سعر جديد</span><span aria-hidden="true"><span class="iform__req">*</span> مطلوب</span></p>
             <noscript><p class="iform__fallback">يحتاج هذا النموذج إلى تفعيل JavaScript. يمكنك أيضًا إرسال طلبك إلى <a href="mailto:info@gpl.com.eg"><bdi>info@gpl.com.eg</bdi></a> أو الاتصال على <a href="tel:+2034800912"><bdi dir="ltr">+20 3 480 0912</bdi></a>.</p></noscript>
+            <ol class="iform__steps mono" data-step-nav aria-label="خطوات النموذج">
+              <li data-step-tab="1" aria-current="step"><span class="iform__steps-no">1</span><span>خط السير</span></li>
+              <li data-step-tab="2"><span class="iform__steps-no">2</span><span>البضائع</span></li>
+              <li data-step-tab="3"><span class="iform__steps-no">3</span><span>التواصل</span></li>
+            </ol>
             <p class="iform__prefill" data-prefill-note role="status" hidden></p>
             <div class="iform__summary" data-error-summary tabindex="-1" aria-labelledby="q-summary-title" hidden>
               <p class="iform__summary-title" id="q-summary-title">من فضلك راجع الحقول المحددة.</p>
               <ul></ul>
             </div>
 
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">01</span><span class="iform__title">بياناتك</span><span class="iform__tag mono">كل الحقول مطلوبة</span></legend>
+            <fieldset class="iform__set" data-step="1">
+              <legend class="iform__legend" tabindex="-1" data-step-title><span class="iform__no mono" aria-hidden="true">1/3</span><span class="iform__title">خط السير والخدمة</span><span class="iform__tag mono">حوالي 20 ثانية</span></legend>
               <div class="iform__grid">
-                <div class="iform__field">
-                  <label class="iform__label" for="q-name">الاسم بالكامل <span class="iform__req" aria-hidden="true">*</span></label>
-                  <input class="iform__input" id="q-name" name="name" type="text" autocomplete="name" required maxlength="120" data-validate="required" aria-describedby="q-name-err">
-                  <p class="iform__err" id="q-name-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-company">اسم الشركة <span class="iform__req" aria-hidden="true">*</span></label>
-                  <input class="iform__input" id="q-company" name="company" type="text" autocomplete="organization" required maxlength="160" data-validate="required" aria-describedby="q-company-err">
-                  <p class="iform__err" id="q-company-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-email">البريد الإلكتروني <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-email-hint">سنرسل عرض السعر إلى هذا العنوان.</p>
-                  <input class="iform__input" id="q-email" name="email" type="email" autocomplete="email" required maxlength="254" spellcheck="false" placeholder="name@company.com" dir="ltr" data-validate="required email" aria-describedby="q-email-hint q-email-err">
-                  <p class="iform__err" id="q-email-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-phone">رقم الهاتف أو واتساب <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-phone-hint">اكتب الرقم بكود الدولة، مثل <bdi dir="ltr">+20 122 000 0000</bdi>.</p>
-                  <input class="iform__input" id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" placeholder="+20 1XX XXX XXXX" dir="ltr" data-validate="required phone" aria-describedby="q-phone-hint q-phone-err">
-                  <p class="iform__err" id="q-phone-err"></p>
-                </div>
-              </div>
-            </fieldset>
-
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">02</span><span class="iform__title">بيانات الشحنة</span><span class="iform__tag mono">خط السير والتوقيت</span></legend>
-              <div class="iform__grid">
-                <fieldset class="iform__group iform__field--full" data-group="direction" data-err="q-direction-err">
-                  <legend class="iform__label">استيراد أم تصدير <span class="iform__req" aria-hidden="true">*</span></legend>
-                  <div class="iform__choices">
-                    <label class="iform__choice"><input type="radio" id="q-direction-import" name="direction" value="import" required aria-describedby="q-direction-err"><span>استيراد إلى مصر</span></label>
-                    <label class="iform__choice"><input type="radio" id="q-direction-export" name="direction" value="export" required aria-describedby="q-direction-err"><span>تصدير من مصر</span></label>
-                    <label class="iform__choice"><input type="radio" id="q-direction-cross" name="direction" value="cross-trade" required aria-describedby="q-direction-err"><span>أخرى / تجارة بين دولتين</span></label>
-                  </div>
-                  <p class="iform__err" id="q-direction-err"></p>
-                </fieldset>
                 <fieldset class="iform__group iform__field--full" data-group="mode" data-err="q-mode-err">
-                  <legend class="iform__label">وسيلة الشحن <span class="iform__req" aria-hidden="true">*</span></legend>
-                  <div class="iform__choices">
+                  <legend class="iform__label">ماذا تحتاج؟ <span class="iform__req" aria-hidden="true">*</span></legend>
+                  <div class="iform__choices iform__choices--pills">
                     <label class="iform__choice"><input type="radio" id="q-mode-fcl" name="mode" value="sea-fcl" required aria-describedby="q-mode-err"><span>بحري، حاوية كاملة (<bdi>FCL</bdi>)</span></label>
                     <label class="iform__choice"><input type="radio" id="q-mode-lcl" name="mode" value="sea-lcl" required aria-describedby="q-mode-err"><span>بحري، شحن جزئي (<bdi>LCL</bdi>)</span></label>
                     <label class="iform__choice"><input type="radio" id="q-mode-air" name="mode" value="air" required aria-describedby="q-mode-err"><span>جوي</span></label>
                     <label class="iform__choice"><input type="radio" id="q-mode-land" name="mode" value="land" required aria-describedby="q-mode-err"><span>بري (شاحنات)</span></label>
+                    <label class="iform__choice"><input type="radio" id="q-mode-customs" name="mode" value="customs" required aria-describedby="q-mode-err"><span>تخليص جمركي فقط</span></label>
                     <label class="iform__choice"><input type="radio" id="q-mode-unsure" name="mode" value="not-sure" required aria-describedby="q-mode-err"><span>غير متأكد، انصحوني</span></label>
                   </div>
                   <p class="iform__err" id="q-mode-err"></p>
                 </fieldset>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-origin">جهة الشحن (ميناء أو مدينة) <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-origin-hint">من أين تبدأ الشحنة، مثل شنغهاي أو الإسكندرية.</p>
-                  <input class="iform__input" id="q-origin" name="origin_place" type="text" required maxlength="160" data-validate="required" aria-describedby="q-origin-hint q-origin-err">
+                <div class="iform__field" data-hide-for="customs">
+                  <label class="iform__label" for="q-origin">من <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-origin" name="origin_place" type="text" list="q-places" autocomplete="off" required maxlength="160" placeholder="مثل شنغهاي" data-validate="required" aria-describedby="q-origin-err">
                   <p class="iform__err" id="q-origin-err"></p>
                 </div>
                 <div class="iform__field">
-                  <label class="iform__label" for="q-destination">جهة الوصول (ميناء أو مدينة) <span class="iform__req" aria-hidden="true">*</span></label>
-                  <p class="iform__hint" id="q-destination-hint">أين تنتهي الشحنة، مثل العاشر من رمضان أو هامبورج.</p>
-                  <input class="iform__input" id="q-destination" name="destination" type="text" required maxlength="160" data-validate="required" aria-describedby="q-destination-hint q-destination-err">
+                  <label class="iform__label" for="q-destination"><span data-hide-for="customs">إلى</span><span data-show-for="customs" hidden>ميناء أو منفذ الوصول</span> <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-destination" name="destination" type="text" list="q-places" autocomplete="off" required maxlength="160" placeholder="مثل الإسكندرية" data-validate="required" aria-describedby="q-destination-err">
                   <p class="iform__err" id="q-destination-err"></p>
                 </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-port">الميناء أو المطار في مصر <span class="iform__opt mono">اختياري</span></label>
-                  <select class="iform__input iform__select" id="q-port" name="egypt_port">
-                    <option value="">اختر إن كنت تعرفه</option>
-                    <option value="alexandria">الإسكندرية</option>
-                    <option value="dekheila">الدخيلة</option>
-                    <option value="damietta">دمياط</option>
-                    <option value="port-said">بورسعيد</option>
-                    <option value="sokhna">السخنة</option>
-                    <option value="cairo-airport">مطار القاهرة الدولي</option>
-                    <option value="borg-el-arab-airport">مطار برج العرب</option>
-                    <option value="not-sure">غير متأكد</option>
-                  </select>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-ready">تاريخ جاهزية الشحنة <span class="iform__opt mono">اختياري</span></label>
-                  <p class="iform__hint" id="q-ready-hint">متى تكون البضائع جاهزة للاستلام.</p>
-                  <input class="iform__input" id="q-ready" name="ready_date" type="date" data-validate="date" aria-describedby="q-ready-hint q-ready-err">
-                  <p class="iform__err" id="q-ready-err"></p>
-                </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-incoterm">شرط التسليم (<bdi>Incoterm</bdi>) <span class="iform__opt mono">اختياري</span></label>
-                  <p class="iform__hint" id="q-incoterm-hint">شرط التسليم المذكور في عقد البيع.</p>
-                  <!-- TODO(ar-review): Arabic Incoterm names vary between translations; confirm against the ICC Arabic edition. -->
-                  <select class="iform__input iform__select" id="q-incoterm" name="incoterm" aria-describedby="q-incoterm-hint">
-                    <option value="">اختر</option>
-                    <option value="EXW">EXW – التسليم في مقر البائع</option>
-                    <option value="FCA">FCA – التسليم للناقل</option>
-                    <option value="FOB">FOB – التسليم على ظهر السفينة</option>
-                    <option value="CFR">CFR – التكلفة والنولون</option>
-                    <option value="CIF">CIF – التكلفة والتأمين والنولون</option>
-                    <option value="CPT">CPT – أجرة النقل مدفوعة إلى</option>
-                    <option value="CIP">CIP – أجرة النقل والتأمين مدفوعان إلى</option>
-                    <option value="DAP">DAP – التسليم في مكان الوصول</option>
-                    <option value="DPU">DPU – التسليم في مكان الوصول بعد التفريغ</option>
-                    <option value="DDP">DDP – التسليم مع دفع الرسوم</option>
-                    <option value="not-sure">غير متأكد</option>
-                  </select>
+                <datalist id="q-places" data-places></datalist>
+                <p class="iform__route mono iform__field--full" data-route-note aria-live="polite" hidden></p>
+                <div class="iform__checks iform__checks--row iform__field--full">
+                  <label class="iform__check" for="q-clearance" data-hide-for="customs"><input id="q-clearance" name="needs_clearance" type="checkbox" value="1"><span>أضف التخليص الجمركي في مصر</span></label>
+                  <label class="iform__check" for="q-trucking"><input id="q-trucking" name="needs_trucking" type="checkbox" value="1"><span>أضف النقل من الميناء أو إليه</span></label>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">03</span><span class="iform__title">البضائع</span><span class="iform__tag mono">النوع والكمية</span></legend>
+            <fieldset class="iform__set" data-step="2" hidden>
+              <legend class="iform__legend" tabindex="-1" data-step-title><span class="iform__no mono" aria-hidden="true">2/3</span><span class="iform__title">البضائع</span><span class="iform__tag mono">ملف واحد يكفي</span></legend>
               <div class="iform__grid">
                 <div class="iform__field iform__field--full">
-                  <label class="iform__label" for="q-cargo">وصف البضائع <span class="iform__opt mono">اختياري</span></label>
-                  <p class="iform__hint" id="q-cargo-hint">نوع البضائع وطريقة تعبئتها وأي متطلبات خاصة (قابلة للكسر، درجة حرارة، بضائع خطرة).</p>
-                  <textarea class="iform__input iform__textarea" id="q-cargo" name="cargo" rows="3" maxlength="2000" aria-describedby="q-cargo-hint"></textarea>
+                  <p class="iform__label" id="q-files-label">قائمة التعبئة أو الفاتورة <span class="iform__opt mono">الأسرع</span></p>
+                  <label class="iform__drop" data-dropzone>
+                    <input class="sr-only" id="q-files" name="files" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" aria-labelledby="q-files-label" aria-describedby="q-files-hint q-files-err" data-file-picker>
+                    <svg class="iform__ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M9 5h15l7 7v23H9z"/><path d="M24 5v7h7"/><path class="acc" d="M20 30V18M15 23l5-5 5 5"/></svg>
+                    <span class="iform__drop-main">أفلت قائمة التعبئة هنا ولا داعي لكتابة الحجم</span>
+                    <span class="iform__drop-sub">أو <span class="iform__drop-link">تصفّح</span> ملفاتك</span>
+                    <span class="iform__drop-hint mono" id="q-files-hint"><bdi>PDF · XLSX · XLS · CSV · JPG · PNG · WebP</bdi> · حتى <bdi>10</bdi> ملفات و<bdi>25</bdi> ميجابايت إجمالًا</span>
+                  </label>
+                  <p class="iform__err" id="q-files-err" aria-live="polite" data-file-error></p>
+                  <ul class="iform__files" data-file-list></ul>
+                  <p class="sr-only" aria-live="polite" data-file-live></p>
                 </div>
-                <div class="iform__field">
-                  <label class="iform__label" for="q-hs">البند الجمركي (<bdi>HS Code</bdi>) <span class="iform__opt mono">اختياري</span></label>
-                  <p class="iform__hint" id="q-hs-hint">من 6 إلى 10 أرقام إن كان متاحًا لديك، ويمكننا مساعدتك في تحديده.</p>
-                  <input class="iform__input" id="q-hs" name="hs_code" type="text" inputmode="numeric" maxlength="16" pattern="[0-9. ]{6,16}" placeholder="610910" spellcheck="false" dir="ltr" data-validate="hs" aria-describedby="q-hs-hint q-hs-err">
-                  <p class="iform__err" id="q-hs-err"></p>
-                </div>
-                <div class="iform__size" id="q-size" data-size-group data-err="q-size-err">
-                  <p class="iform__size-head">حجم الشحنة</p>
-                  <p class="iform__hint" id="q-size-hint">اكتب نوع الحاويات وعددها، أو الوزن والحجم.</p>
-                  <div class="iform__sub" data-show-for="sea-fcl">
+                <div class="iform__size" id="q-size" data-size-group data-hide-for="customs" data-err="q-size-err">
+                  <p class="iform__size-head"><span data-size-label="required">أو اكتب حجم الشحنة</span><span data-size-label="optional" hidden>حجم الشحنة <span class="iform__opt mono">اختياري مع الملف</span></span></p>
+                  <div class="iform__sub" data-show-for="sea-fcl not-sure">
                     <div class="iform__field">
                       <label class="iform__label" for="q-ctype">نوع الحاوية</label>
-                      <select class="iform__input iform__select" id="q-ctype" name="container_type" aria-describedby="q-size-hint q-size-err">
+                      <select class="iform__input iform__select" id="q-ctype" name="container_type" aria-describedby="q-size-err">
                         <option value="">اختر</option>
                         <option value="20gp">حاوية 20 قدم عادية (20GP)</option>
                         <option value="40gp">حاوية 40 قدم عادية (40GP)</option>
@@ -472,25 +407,27 @@
                     </div>
                     <div class="iform__field">
                       <label class="iform__label" for="q-ccount">عدد الحاويات</label>
-                      <input class="iform__input" id="q-ccount" name="container_count" type="number" min="1" max="999" step="1" inputmode="numeric" placeholder="2" data-validate="number" aria-describedby="q-size-hint q-ccount-err q-size-err">
+                      <span class="iform__stepper" data-stepper>
+                        <button class="iform__stepper-btn" type="button" data-step-by="-1" aria-label="حاوية أقل" tabindex="-1">−</button>
+                        <input class="iform__input" id="q-ccount" name="container_count" type="number" min="1" max="999" step="1" inputmode="numeric" placeholder="1" data-validate="number" aria-describedby="q-ccount-err q-size-err">
+                        <button class="iform__stepper-btn" type="button" data-step-by="1" aria-label="حاوية أكثر" tabindex="-1">+</button>
+                      </span>
                       <p class="iform__err" id="q-ccount-err"></p>
                     </div>
                   </div>
-                  <div class="iform__sub" data-show-for="sea-lcl air land">
+                  <div class="iform__sub" data-show-for="sea-lcl air land not-sure">
                     <div class="iform__field">
-                      <label class="iform__label" for="q-weight">الوزن الإجمالي (كجم)</label>
-                      <p class="iform__hint" id="q-weight-hint">للشحن الجزئي أو الجوي أو البري.</p>
+                      <label class="iform__label" for="q-weight">الوزن الإجمالي</label>
                       <span class="iform__unit">
-                        <input class="iform__input" id="q-weight" name="weight_kg" type="number" min="0.1" max="10000000" step="any" inputmode="decimal" placeholder="1200" data-validate="number" aria-describedby="q-weight-hint q-weight-err q-size-err">
+                        <input class="iform__input" id="q-weight" name="weight_kg" type="number" min="0.1" max="10000000" step="any" inputmode="decimal" placeholder="1200" data-validate="number" aria-describedby="q-weight-err q-size-err">
                         <span class="iform__unit-tag mono" aria-hidden="true">كجم</span>
                       </span>
                       <p class="iform__err" id="q-weight-err"></p>
                     </div>
                     <div class="iform__field">
-                      <label class="iform__label" for="q-volume">الحجم الإجمالي (م³)</label>
-                      <p class="iform__hint" id="q-volume-hint">الطول × العرض × الارتفاع لكل الطرود.</p>
+                      <label class="iform__label" for="q-volume">الحجم الإجمالي</label>
                       <span class="iform__unit">
-                        <input class="iform__input" id="q-volume" name="volume_cbm" type="number" min="0.01" max="100000" step="any" inputmode="decimal" placeholder="6.5" data-validate="number" aria-describedby="q-volume-hint q-volume-err q-size-err">
+                        <input class="iform__input" id="q-volume" name="volume_cbm" type="number" min="0.01" max="100000" step="any" inputmode="decimal" placeholder="6.5" data-validate="number" aria-describedby="q-volume-err q-size-err">
                         <span class="iform__unit-tag mono" aria-hidden="true">م³</span>
                       </span>
                       <p class="iform__err" id="q-volume-err"></p>
@@ -498,37 +435,77 @@
                   </div>
                   <p class="iform__err" id="q-size-err"></p>
                 </div>
+                <details class="iform__more iform__field--full" data-more>
+                  <summary class="iform__more-sum">+ تفاصيل أخرى <span class="iform__opt mono">اختياري</span></summary>
+                  <div class="iform__grid iform__more-body">
+                    <div class="iform__field">
+                      <label class="iform__label" for="q-incoterm">شرط التسليم (<bdi>Incoterm</bdi>)</label>
+                      <select class="iform__input iform__select" id="q-incoterm" name="incoterm">
+                        <option value="">اختر</option>
+                        <option value="EXW">EXW</option>
+                        <option value="FCA">FCA</option>
+                        <option value="FOB">FOB</option>
+                        <option value="CFR">CFR</option>
+                        <option value="CIF">CIF</option>
+                        <option value="CPT">CPT</option>
+                        <option value="CIP">CIP</option>
+                        <option value="DAP">DAP</option>
+                        <option value="DPU">DPU</option>
+                        <option value="DDP">DDP</option>
+                        <option value="not-sure">غير متأكد</option>
+                      </select>
+                    </div>
+                    <div class="iform__field">
+                      <label class="iform__label" for="q-ready">تاريخ جاهزية الشحنة</label>
+                      <input class="iform__input" id="q-ready" name="ready_date" type="date" data-validate="date" data-min-today aria-describedby="q-ready-err">
+                      <p class="iform__err" id="q-ready-err"></p>
+                    </div>
+                    <fieldset class="iform__group iform__field--full">
+                      <legend class="iform__label">متطلبات خاصة</legend>
+                      <div class="iform__checks iform__checks--row">
+                        <label class="iform__check" for="q-hz"><input id="q-hz" name="handling" type="checkbox" value="hazardous" data-handling-hazardous><span>بضائع خطرة</span></label>
+                        <label class="iform__check" for="q-reefer"><input id="q-reefer" name="handling" type="checkbox" value="reefer"><span>درجة حرارة محكومة</span></label>
+                        <label class="iform__check" for="q-qiz"><input id="q-qiz" name="handling" type="checkbox" value="qiz-eur1"><span><bdi>QIZ</bdi> أو <bdi>EUR.1</bdi></span></label>
+                      </div>
+                    </fieldset>
+                    <div class="iform__field" data-un-class hidden>
+                      <label class="iform__label" for="q-un">فئة الأمم المتحدة (<bdi>UN</bdi>)</label>
+                      <input class="iform__input" id="q-un" name="un_class" type="text" maxlength="16" placeholder="3" dir="ltr" disabled>
+                    </div>
+                    <div class="iform__field iform__field--full">
+                      <label class="iform__label" for="q-message">ملاحظات أخرى</label>
+                      <textarea class="iform__input iform__textarea" id="q-message" name="message" rows="3" maxlength="4000" placeholder="نوع البضائع، المواعيد النهائية، المستندات المتاحة لديك"></textarea>
+                    </div>
+                  </div>
+                </details>
               </div>
             </fieldset>
 
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">04</span><span class="iform__title">الخدمات المطلوبة</span><span class="iform__tag mono">اختر ما تحتاجه</span></legend>
-              <div class="iform__checks">
-                <label class="iform__check" for="q-clearance"><input id="q-clearance" name="needs_clearance" type="checkbox" value="1"><span>أحتاج إلى تخليص جمركي في مصر</span></label>
-                <label class="iform__check" for="q-trucking"><input id="q-trucking" name="needs_trucking" type="checkbox" value="1"><span>أحتاج إلى نقل من الميناء أو إليه</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="iform__set">
-              <legend class="iform__legend"><span class="iform__no mono" aria-hidden="true">05</span><span class="iform__title">الملفات والملاحظات</span><span class="iform__tag mono">كلها اختيارية</span></legend>
+            <fieldset class="iform__set" data-step="3" hidden>
+              <legend class="iform__legend" tabindex="-1" data-step-title><span class="iform__no mono" aria-hidden="true">3/3</span><span class="iform__title">أين نرسل عرض السعر</span><span class="iform__tag mono">الخطوة الأخيرة</span></legend>
               <div class="iform__grid">
-                <div class="iform__field iform__field--full">
-                  <label class="iform__label" for="q-message">ملاحظات إضافية <span class="iform__opt mono">اختياري</span></label>
-                  <p class="iform__hint" id="q-message-hint">المواعيد النهائية، أو قلقك بشأن أيام السماح، أو المستندات المتاحة لديك.</p>
-                  <textarea class="iform__input iform__textarea" id="q-message" name="message" rows="5" maxlength="4000" aria-describedby="q-message-hint"></textarea>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-name">الاسم بالكامل <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-name" name="name" type="text" autocomplete="name" required maxlength="120" data-validate="required" aria-describedby="q-name-err">
+                  <p class="iform__err" id="q-name-err"></p>
                 </div>
-                <div class="iform__field iform__field--full">
-                  <p class="iform__label" id="q-files-label">المرفقات</p>
-                  <label class="iform__drop" data-dropzone>
-                    <input class="sr-only" id="q-files" name="files" type="file" multiple accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" aria-labelledby="q-files-label" aria-describedby="q-files-hint q-files-err" data-file-picker>
-                    <svg class="iform__ico" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M9 5h15l7 7v23H9z"/><path d="M24 5v7h7"/><path class="acc" d="M20 30V18M15 23l5-5 5 5"/></svg>
-                    <span class="iform__drop-main">اسحب قائمة التعبئة أو الفاتورة أو الصور وأفلتها هنا</span>
-                    <span class="iform__drop-sub">أو <span class="iform__drop-link">تصفّح</span> ملفاتك</span>
-                    <span class="iform__drop-hint mono" id="q-files-hint"><bdi>PDF · XLSX · XLS · CSV · JPG · PNG · WebP</bdi> · حتى <bdi>10</bdi> ملفات و<bdi>25</bdi> ميجابايت إجمالًا</span>
-                  </label>
-                  <p class="iform__err" id="q-files-err" aria-live="polite" data-file-error></p>
-                  <ul class="iform__files" data-file-list></ul>
-                  <p class="sr-only" aria-live="polite" data-file-live></p>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-company">الشركة <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-company" name="company" type="text" autocomplete="organization" required maxlength="160" data-validate="required" aria-describedby="q-company-err">
+                  <p class="iform__err" id="q-company-err"></p>
+                </div>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-email">البريد الإلكتروني <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-email" name="email" type="email" autocomplete="email" required maxlength="254" spellcheck="false" placeholder="name@company.com" dir="ltr" data-validate="required email" aria-describedby="q-email-err">
+                  <p class="iform__err" id="q-email-err"></p>
+                </div>
+                <div class="iform__field">
+                  <label class="iform__label" for="q-phone">الهاتف <span class="iform__req" aria-hidden="true">*</span></label>
+                  <input class="iform__input" id="q-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="40" placeholder="+20 1XX XXX XXXX" dir="ltr" data-validate="required phone" aria-describedby="q-phone-err">
+                  <p class="iform__err" id="q-phone-err"></p>
+                </div>
+                <div class="iform__checks iform__field--full">
+                  <label class="iform__check" for="q-whatsapp"><input id="q-whatsapp" name="whatsapp" type="checkbox" value="1"><span>يمكنكم التواصل معي عبر واتساب على هذا الرقم</span></label>
                 </div>
               </div>
             </fieldset>
@@ -539,7 +516,11 @@
             <input type="hidden" name="lang" value="ar">
 
             <div class="iform__foot">
-              <button class="btn btn--green btn--lg iform__submit" type="submit" data-form-submit><span data-submit-label>إرسال طلب عرض السعر</span> <span aria-hidden="true">→</span></button>
+              <div class="iform__nav">
+                <button class="btn btn--line iform__back" type="button" data-step-back hidden><span aria-hidden="true">←</span> السابق</button>
+                <button class="btn btn--green btn--lg" type="button" data-step-next>التالي <span aria-hidden="true">→</span></button>
+                <button class="btn btn--green btn--lg iform__submit" type="submit" data-form-submit hidden><span data-submit-label>إرسال طلب عرض السعر</span> <span aria-hidden="true">→</span></button>
+              </div>
               <p class="iform__note">نستخدم بياناتك للرد على هذا الطلب فقط. راجع <a href="privacy-policy">سياسة الخصوصية</a>.</p>
             </div>
             <div class="iform__notice" data-form-status aria-live="polite" hidden></div>
@@ -578,7 +559,6 @@
             <h2 class="qside__k mono" id="side-ready">جهّز هذه البيانات</h2>
             <ul class="qside__list">
               <li>قائمة التعبئة أو الفاتورة التجارية</li>
-              <li>البند الجمركي (<bdi>HS Code</bdi>) إن وُجد</li>
               <li>نوع الحاويات وعددها، أو الوزن والحجم</li>
               <li>شرط التسليم (<bdi>Incoterm</bdi>)</li>
               <li>تاريخ الجاهزية</li>
@@ -674,22 +654,21 @@
   "retry": "حاول مرة أخرى",
   "emailInstead": "أرسل بالبريد الإلكتروني",
   "whatsappInstead": "أرسل عبر واتساب ↗",
+  "route": { "import": "الشحنة تنتهي في مصر، لذا سنسعّرها كاستيراد.", "export": "الشحنة تبدأ من مصر، لذا سنسعّرها كتصدير." },
   "prefill": "ملأنا بيانات الشحنة من اختياراتك. من فضلك راجعها، ثم أضف بيانات التواصل.",
   "errors": {
     "name": { "required": "من فضلك اكتب اسمك." },
     "company": { "required": "من فضلك اكتب اسم الشركة." },
     "email": { "required": "من فضلك اكتب بريدك الإلكتروني.", "email": "من فضلك اكتب بريدًا إلكترونيًا صحيحًا، مثل name@company.com." },
     "phone": { "required": "من فضلك اكتب رقم الهاتف أو واتساب.", "phone": "من فضلك اكتب رقم هاتف صحيحًا بكود الدولة." },
-    "direction": { "required": "من فضلك اختر استيراد أو تصدير." },
     "mode": { "required": "من فضلك اختر وسيلة الشحن." },
     "origin_place": { "required": "من فضلك اكتب ميناء أو مدينة الشحن." },
     "destination": { "required": "من فضلك اكتب ميناء أو مدينة الوصول." },
     "ready_date": { "date": "من فضلك اختر تاريخ اليوم أو تاريخًا لاحقًا." },
-    "hs_code": { "hs": "البند الجمركي من 6 إلى 10 أرقام. اتركه فارغًا إن لم تكن متأكدًا." },
     "container_count": { "number": "من فضلك اكتب عدد الحاويات من 1 إلى 999." },
     "weight_kg": { "number": "من فضلك اكتب الوزن بالكيلوجرام." },
     "volume_cbm": { "number": "من فضلك اكتب الحجم بالمتر المكعب." },
-    "size": { "required": "من فضلك اكتب بيانات الحاويات، أو الوزن والحجم." }
+    "size": { "required": "من فضلك اكتب بيانات الحاويات، أو الوزن والحجم، أو أرفق قائمة التعبئة." }
   },
   "files": {
     "selected": "عدد الملفات المرفقة: {n}، بإجمالي {size} من 25 ميجابايت.",
