@@ -1,5 +1,8 @@
 // Quote and contact forms: inline validation with an error summary, attachments, URL prefill and a multipart submit
 // with honest fallbacks. Every visible string comes from the page's JSON strings block, so EN and AR share this file.
+// The quote form is three steps ([data-step]); the contact form has none and runs as one page.
+
+import { EGYPT_PLACES, WORLD_PLACES } from "./quote-places.js";
 
 const MAX_FILES = 10;
 const BYTES_PER_KB = 1024;
@@ -18,13 +21,17 @@ const PHONE_DIGITS = { min: 7, max: 15 };
 const HS_PATTERN = /^\d{6,10}$/;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const UNSAFE_CHARS = /[\u0000-\u001F\u007F<>]/g;
-const SIZE_FREE_MODES = new Set(["", "not-sure"]);
+const SIZE_FREE_MODES = new Set(["", "not-sure", "customs"]);
+// With no mode chosen yet, mode-dependent blocks show as for "Not sure".
+const DEFAULT_MODE = "not-sure";
+const LOCAL_ENDPOINT_PATTERN = /^http:\/\/(localhost|127\.0\.0\.1):\d{2,5}$/;
+const QUOTE_PATH = "/api/green-point/website/freight-quotes";
+const STEP_COUNT_MIN = 2;
 
-const PREFILL_CHOICES = { direction: ["import", "export"], mode: ["sea-fcl", "sea-lcl", "air", "land"] };
+const PREFILL_CHOICES = { mode: ["sea-fcl", "sea-lcl", "air", "land", "customs"] };
 const PREFILL_TEXT = { origin: "origin_place", destination: "destination" };
 const PREFILL_NUMBERS = ["container_count", "weight_kg", "volume_cbm"];
 const PREFILL_FLAGS = { customs: "needs_clearance", trucking: "needs_trucking" };
-const PORT_ALIASES = { "ain-sokhna": "sokhna", "east-port-said": "port-said", portsaid: "port-said", alex: "alexandria" };
 const CONTAINER_ALIASES = { "20dv": "20gp", "20dc": "20gp", "40dv": "40gp", "40dc": "40gp", "40hq": "40hc", "45hq": "45hc", "40rh": "40rf" };
 
 const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, key) => (key in values ? values[key] : ""));
@@ -71,7 +78,8 @@ const RULES = {
   number: (c) => !c.validity.badInput && (c.value === "" || c.checkValidity()),
 };
 
-const isInactive = (el) => el.disabled || Boolean(el.closest("[hidden]"));
+// A control on another step is not inactive: it is still sent and still checked on submit.
+const isInactive = (el) => el.disabled || Boolean(el.closest("[hidden]:not([data-step])"));
 const getMessage = (ctx, name, rule) => ctx.strings.errors[name]?.[rule] || ctx.strings.errors._?.[rule] || "";
 const getChecked = (form, name) => form.querySelector(`input[name="${name}"]:checked`);
 
@@ -84,10 +92,11 @@ function getGroupError(ctx, group) {
   return getChecked(ctx.ui.form, group.dataset.group) ? "" : getMessage(ctx, group.dataset.group, "required");
 }
 
-// FCL needs container type and count; the other modes need weight or volume. "Not sure" leaves the group optional.
+// FCL needs container type and count; the other modes need weight or volume. "Not sure", customs only and an
+// attached file (a packing list carries the size) leave the group optional.
 function getSizeError(ctx) {
   const form = ctx.ui.form;
-  if (SIZE_FREE_MODES.has(getChecked(form, "mode")?.value || "")) return "";
+  if (ctx.files.length || SIZE_FREE_MODES.has(getChecked(form, "mode")?.value || "")) return "";
   const filled = (name) => !isInactive(form.elements[name]) && form.elements[name].value.trim() !== "";
   const hasContainers = filled("container_type") && filled("container_count");
   return hasContainers || filled("weight_kg") || filled("volume_cbm") ? "" : getMessage(ctx, "size", "required");
@@ -173,14 +182,138 @@ function validateAll(ctx) {
 
 /* ---------- Mode-dependent fields ---------- */
 
+// data-show-for lists the modes a block belongs to; data-hide-for the modes it does not. Outer blocks come first in
+// document order, so a nested block's own rule wins. Hidden controls are disabled, so they are neither checked nor sent.
 function syncMode(ctx) {
-  const mode = getChecked(ctx.ui.form, "mode")?.value || "";
-  ctx.ui.form.querySelectorAll("[data-show-for]").forEach((block) => {
-    const isShown = SIZE_FREE_MODES.has(mode) || block.dataset.showFor.split(/\s+/).includes(mode);
+  const mode = getChecked(ctx.ui.form, "mode")?.value || DEFAULT_MODE;
+  ctx.ui.form.querySelectorAll("[data-show-for], [data-hide-for]").forEach((block) => {
+    const isShown = block.dataset.showFor ? block.dataset.showFor.split(/\s+/).includes(mode) : !block.dataset.hideFor.split(/\s+/).includes(mode);
     block.hidden = !isShown;
     block.querySelectorAll("input, select, textarea").forEach((control) => { control.disabled = !isShown; });
   });
+  syncHandling(ctx);
+  syncRouteNote(ctx);
   ctx.checks.filter((check) => isInactive(check.el)).forEach((check) => setCheckError(check, ""));
+}
+
+// The UN class field belongs to dangerous goods only.
+function syncHandling(ctx) {
+  const box = ctx.ui.form.querySelector("[data-handling-hazardous]");
+  const field = ctx.ui.form.querySelector("[data-un-class]");
+  if (!box || !field) return;
+  field.hidden = !box.checked;
+  field.querySelectorAll("input").forEach((control) => { control.disabled = !box.checked; });
+}
+
+// After a file is attached the size fields become optional; the label says so.
+function syncSizeLabels(ctx) {
+  const optional = ctx.files.length > 0;
+  ctx.ui.form.querySelectorAll("[data-size-label]").forEach((label) => { label.hidden = (label.dataset.sizeLabel === "optional") !== optional; });
+  ctx.checks.filter((check) => check.kind === "size" && check.flagged).forEach((check) => runCheck(ctx, check));
+}
+
+/* ---------- Route: suggestions and import or export ---------- */
+
+const EGYPT_PATTERNS = [...EGYPT_PLACES.en, ...EGYPT_PLACES.ar, "Egypt", "مصر", "Alex", "Sokhna", "Dekheila", "السخنة"]
+  .map((name) => new RegExp(`(^|[^\\p{L}\\p{N}])${name.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}($|[^\\p{L}\\p{N}])`, "iu"));
+const isEgyptian = (text) => text.trim() !== "" && EGYPT_PATTERNS.some((pattern) => pattern.test(text.trim().toLowerCase()));
+
+// Same rule as Fabrik: ends in Egypt is an import, starts there is an export; both or neither says nothing.
+function getRouteDirection(origin, destination) {
+  const from = isEgyptian(origin);
+  const to = isEgyptian(destination);
+  if (from === to) return "";
+  return to ? "import" : "export";
+}
+
+function syncRouteNote(ctx) {
+  const note = ctx.ui.routeNote;
+  if (!note) return;
+  const { origin_place: origin, destination } = ctx.ui.form.elements;
+  const direction = origin.disabled ? "" : getRouteDirection(origin.value, destination.value);
+  note.textContent = direction ? ctx.strings.route[direction] : "";
+  note.hidden = !direction;
+}
+
+function fillPlaces(ctx) {
+  const list = ctx.ui.form.querySelector("[data-places]");
+  if (!list) return;
+  const lang = document.documentElement.lang === "ar" ? "ar" : "en";
+  const names = [...EGYPT_PLACES[lang], ...WORLD_PLACES];
+  list.replaceChildren(...names.map((name) => Object.assign(document.createElement("option"), { value: name })));
+}
+
+/* ---------- Small controls ---------- */
+
+function bindSteppers(form) {
+  form.querySelectorAll("[data-stepper]").forEach((stepper) => {
+    const input = stepper.querySelector("input");
+    stepper.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-step-by]");
+      if (!button || input.disabled) return;
+      const min = Number(input.min) || 1;
+      const max = Number(input.max) || Infinity;
+      const next = Math.min(max, Math.max(min, (Number(input.value) || 0) + Number(button.dataset.stepBy)));
+      input.value = String(next);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+  });
+}
+
+function setMinDates(form) {
+  const now = new Date();
+  const today = [now.getFullYear(), now.getMonth() + 1, now.getDate()].map((n) => String(n).padStart(2, "0")).join("-");
+  form.querySelectorAll("[data-min-today]").forEach((input) => { input.min = today; });
+}
+
+/* ---------- Steps ---------- */
+
+const getStep = (el) => Number(el.closest("[data-step]")?.dataset.step || 0);
+
+function showStep(ctx, number, { focus = true } = {}) {
+  const { steps, form } = ctx.ui;
+  ctx.step = number;
+  steps.sets.forEach((set) => { set.hidden = Number(set.dataset.step) !== number; });
+  steps.tabs.forEach((tab) => {
+    const tabNumber = Number(tab.dataset.stepTab);
+    if (tabNumber === number) tab.setAttribute("aria-current", "step");
+    else tab.removeAttribute("aria-current");
+    tab.classList.toggle("is-done", tabNumber < number);
+  });
+  const isLast = number === steps.sets.length;
+  steps.back.hidden = number === 1;
+  steps.next.hidden = isLast;
+  ctx.ui.submit.hidden = !isLast;
+  if (!focus) return;
+  const title = form.querySelector(`[data-step="${number}"] [data-step-title]`);
+  form.scrollIntoView({ block: "start" });
+  title?.focus({ preventScroll: true });
+}
+
+function validateStep(ctx, number) {
+  return ctx.checks.filter((check) => getStep(check.el) === number)
+    .map((check) => ({ check, message: runCheck(ctx, check) })).filter((failure) => failure.message);
+}
+
+function goNext(ctx) {
+  const failures = validateStep(ctx, ctx.step);
+  if (failures.length) {
+    showSummary(ctx, failures);
+    return;
+  }
+  hideSummary(ctx);
+  showStep(ctx, ctx.step + 1);
+}
+
+function bindSteps(ctx) {
+  const { steps } = ctx.ui;
+  if (!steps) return;
+  steps.next.addEventListener("click", () => goNext(ctx));
+  steps.back.addEventListener("click", () => {
+    hideSummary(ctx);
+    showStep(ctx, ctx.step - 1);
+  });
+  showStep(ctx, 1, { focus: false });
 }
 
 /* ---------- Attachments ---------- */
@@ -227,6 +360,7 @@ function createFileRow(ctx, file, index) {
 
 function renderFiles(ctx, prefix = "") {
   const t = ctx.strings.files;
+  syncSizeLabels(ctx);
   ctx.ui.fileList.replaceChildren(...ctx.files.map((file, index) => createFileRow(ctx, file, index)));
   const summary = ctx.files.length
     ? fill(t.selected, { n: ctx.files.length, size: formatSize(ctx, getTotalBytes(ctx.files)) })
@@ -319,18 +453,6 @@ function setText(control, value) {
   return true;
 }
 
-function prefillPort(form, params) {
-  const select = form.elements.egypt_port;
-  const raw = toSlug(params.get("port") || "");
-  const value = PORT_ALIASES[raw] || raw;
-  if (!value || !setSelect(select, value)) return false;
-  if (value === "not-sure") return true;
-  const direction = getChecked(form, "direction")?.value;
-  const target = direction === "import" ? form.elements.destination : direction === "export" ? form.elements.origin_place : null;
-  if (target && !target.value) target.value = select.selectedOptions[0].textContent.trim();
-  return true;
-}
-
 function prefillMisc(form, params) {
   const applied = [];
   Object.entries(PREFILL_TEXT).forEach(([param, name]) => applied.push(setText(form.elements[name], params.get(param))));
@@ -360,8 +482,7 @@ function prefillFromUrl(ctx) {
     return allowed.includes(value) && setRadio(form, name, value);
   });
   const misc = prefillMisc(form, params);
-  const port = prefillPort(form, params);
-  if (prefillNote && (choices.some(Boolean) || misc || port)) {
+  if (prefillNote && (choices.some(Boolean) || misc)) {
     prefillNote.textContent = ctx.strings.prefill;
     prefillNote.hidden = false;
   }
@@ -531,8 +652,15 @@ function showSuccess(ctx, reference, isSimulated) {
   done.title.focus({ preventScroll: true });
 }
 
+// On localhost only, ?endpoint=http://localhost:3000 sends the quote form to a local Fabrik instead of production.
+function getEndpoint(form) {
+  const local = new URLSearchParams(location.search).get("endpoint") || "";
+  if (PREVIEW_HOSTS.has(location.hostname) && form.querySelector("[data-step]") && LOCAL_ENDPOINT_PATTERN.test(local)) return `${local}${QUOTE_PATH}`;
+  return (form.dataset.endpoint || "").trim();
+}
+
 async function sendForm(ctx) {
-  const endpoint = (ctx.ui.form.dataset.endpoint || "").trim();
+  const endpoint = getEndpoint(ctx.ui.form);
   if (!endpoint && !PREVIEW_HOSTS.has(location.hostname)) {
     openOfflineFallback(ctx);
     return;
@@ -553,10 +681,17 @@ async function sendForm(ctx) {
 function handleSubmit(event, ctx) {
   event.preventDefault();
   if (ctx.isSending) return;
+  // Enter on an earlier step moves on rather than sending.
+  if (ctx.ui.steps && ctx.step < ctx.ui.steps.sets.length) {
+    goNext(ctx);
+    return;
+  }
   hideNotice(ctx);
   const failures = validateAll(ctx);
   if (failures.length) {
-    showSummary(ctx, failures);
+    const first = getStep(failures[0].check.el);
+    if (ctx.ui.steps && first && first !== ctx.step) showStep(ctx, first, { focus: false });
+    showSummary(ctx, ctx.ui.steps ? failures.filter((failure) => getStep(failure.check.el) === (first || ctx.step)) : failures);
     return;
   }
   hideSummary(ctx);
@@ -582,10 +717,17 @@ function resetForm(ctx) {
   hideNotice(ctx);
   done.root.hidden = true;
   form.hidden = false;
+  if (ctx.ui.steps) showStep(ctx, 1, { focus: false });
   form.querySelector("input:not([type=hidden]):not([tabindex='-1'])").focus();
 }
 
 /* ---------- Init ---------- */
+
+function getStepsUi(form) {
+  const sets = [...form.querySelectorAll("[data-step]")];
+  if (sets.length < STEP_COUNT_MIN) return null;
+  return { sets, tabs: [...form.querySelectorAll("[data-step-tab]")], next: form.querySelector("[data-step-next]"), back: form.querySelector("[data-step-back]") };
+}
 
 function getUi(form) {
   const panel = form.closest("[data-form-panel]");
@@ -601,6 +743,8 @@ function getUi(form) {
     fileError: form.querySelector("[data-file-error]"),
     fileLive: form.querySelector("[data-file-live]"),
     prefillNote: form.querySelector("[data-prefill-note]"),
+    routeNote: form.querySelector("[data-route-note]"),
+    steps: getStepsUi(form),
     submit: form.querySelector("[data-form-submit]"),
     submitLabel: form.querySelector("[data-submit-label]"),
     status: panel.querySelector("[data-form-status]"),
@@ -616,11 +760,16 @@ function getUi(form) {
 
 function initForm(form) {
   const strings = JSON.parse(document.getElementById(form.dataset.strings).textContent);
-  const ctx = { strings, ui: getUi(form), files: [], isSending: false, checks: [] };
+  const ctx = { strings, ui: getUi(form), files: [], isSending: false, checks: [], step: 1 };
   ctx.checks = [...form.querySelectorAll("[data-validate], [data-group], [data-size-group]")].map((el) => buildCheck(form, el));
+  fillPlaces(ctx);
+  setMinDates(form);
+  bindSteppers(form);
   prefillFromUrl(ctx);
   syncMode(ctx);
-  form.querySelectorAll('input[name="mode"]').forEach((radio) => radio.addEventListener("change", () => syncMode(ctx)));
+  form.querySelectorAll('input[name="mode"], [data-handling-hazardous]').forEach((input) => input.addEventListener("change", () => syncMode(ctx)));
+  form.querySelectorAll('input[name="origin_place"], input[name="destination"]').forEach((input) => input.addEventListener("input", () => syncRouteNote(ctx)));
+  bindSteps(ctx);
   bindRevalidation(ctx);
   bindFiles(ctx);
   form.addEventListener("submit", (event) => handleSubmit(event, ctx));

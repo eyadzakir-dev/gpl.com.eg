@@ -221,11 +221,21 @@ Field names the backend receives (from the form markup):
 
 | Form | Fields |
 | --- | --- |
-| Quote (`quote.html`, `ar/quote.html`) | `name`\*, `company`\*, `email`\*, `phone`\*, `direction`\* (`import`, `export`, `cross-trade`), `mode`\* (`sea-fcl`, `sea-lcl`, `air`, `land`, `not-sure`), `origin_place`\*, `destination`\*, `egypt_port` (`alexandria`, `dekheila`, `damietta`, `port-said`, `sokhna`, `cairo-airport`, `borg-el-arab-airport`, `not-sure`), `incoterm` (`EXW` … `DDP`, `not-sure`), `ready_date` (`YYYY-MM-DD`), `cargo`, `hs_code`, `container_type` (`20gp`, `40gp`, `40hc`, `20rf`, `40rf`, `20ot`, `40ot`, `20fr`, `40fr`, `other`), `container_count`, `weight_kg`, `volume_cbm`, `needs_clearance` and `needs_trucking` (checkboxes, `1` when ticked), `message`, `files` |
+| Quote (`quote.html`, `ar/quote.html`) | `mode`\* (`sea-fcl`, `sea-lcl`, `air`, `land`, `customs`, `not-sure`), `origin_place`\* (not for `customs`), `destination`\*, `needs_clearance` (not for `customs`) and `needs_trucking` (checkboxes, `1` when ticked), `files`, `container_type` (`20gp`, `40gp`, `40hc`, `20rf`, `40rf`, `20ot`, `40ot`, `20fr`, `40fr`, `other`), `container_count`, `weight_kg`, `volume_cbm`, `incoterm` (`EXW` … `DDP`, `not-sure`), `ready_date` (`YYYY-MM-DD`), `handling` (repeated: `hazardous`, `reefer`, `qiz-eur1`), `un_class` (only with `hazardous`), `message`, `name`\*, `company`\*, `email`\*, `phone`\*, `whatsapp` (`1` when ticked) |
 | Contact (`contact-us/index.html`, `ar/contact-us/index.html`) | `name`\*, `company`, `email`\*, `phone`, `message`\* |
 | Both (hidden) | `origin` = `gpl-website`, `form_type` = `quote` or `contact`, `lang` = `en` or `ar`, honeypot `website` (empty for people) |
 
-\* required in the browser. The quote form also needs container type and count for FCL, or a weight or volume for the other modes (not for "not sure").
+\* required in the browser. The quote form also needs container type and count for FCL, or a weight or volume for the other modes, unless the mode is "not sure" or customs only, or a file is attached (a packing list carries the size).
+
+The quote form runs in three steps (route and service, cargo, contact). Each step's fieldset is `[data-step]`; Next checks only the current step, and the last step submits. Fabrik reads import or export from the route (ends in Egypt is an import, starts there is an export); the form shows the same hint as the visitor types. The route fields suggest places from `assets/js/quote-places.js`. The older fields `direction`, `egypt_port`, `cargo` and `hs_code` are gone, and Fabrik still accepts them from a cached page.
+
+### Testing against a local Fabrik
+
+1. Run Fabrik on http://localhost:3000 with `GREEN_POINT_QUOTE_ENABLED=true` and `GREEN_POINT_QUOTE_ORIGINS=http://127.0.0.1:8080,http://localhost:8080` in its `.env`. Leave `BREVO_API_KEY` empty so no email goes out.
+2. Serve this site: `python3 scripts/serve.py . 8080`.
+3. Open http://127.0.0.1:8080/quote?endpoint=http://localhost:3000 and send a request. It appears under Green Point inquiries in Fabrik.
+
+The `endpoint` parameter works only when the page itself runs on localhost or 127.0.0.1 and only for an `http://localhost` or `http://127.0.0.1` address, so the live site cannot be pointed elsewhere.
 
 ### Option 1: Fabrik (live on the quote forms)
 
@@ -234,7 +244,7 @@ data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freigh
 ```
 
 - The route lives in the Fabrik repo (`one-book`). This repo must not change it. The Three Stars garment route `/api/website/inquiries` rejects `gpl.com.eg`, so do not point a form at it.
-- Fabrik production needs `GREEN_POINT_QUOTE_ENABLED=true` and `GREEN_POINT_QUOTE_ORIGINS=https://gpl.com.eg,https://www.gpl.com.eg`. Any other Origin gets a 403, so github.io and localhost previews cannot send to production. `GREEN_POINT_QUOTE_NOTIFY_EMAILS` lists who gets an email for each new request.
+- Fabrik production needs `GREEN_POINT_QUOTE_ENABLED=true` and `GREEN_POINT_QUOTE_ORIGINS=https://gpl.com.eg,https://www.gpl.com.eg`. Any other Origin gets a 403, so github.io and localhost previews cannot send to production. Fabrik emails ms@gpl.com.eg, eyad@tsf.com.eg and ziad@tsf.com.eg for each new request; `GREEN_POINT_QUOTE_NOTIFY_EMAILS` replaces that list, and `off` mutes it.
 - Only `form_type=quote` is accepted. The contact form would get a 400.
 - Check the preflight from the real Origin. Expect `204` with `access-control-allow-origin: https://gpl.com.eg`:
 
