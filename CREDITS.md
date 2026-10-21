@@ -57,5 +57,5 @@ Photo rules:
 | 3 | Domestic trucking: `domestic-trucking/index.html` / `ar/domestic-trucking/index.html` | Service hero / intro figure | `assets/img/illo/truck-container.svg` | GPL-operated or contracted truck being loaded or on the road | Wanted |
 | 4 | Inland transportation: `inland-transportation/index.html` / `ar/inland-transportation/index.html` | Service hero / intro figure | `assets/img/illo/truck-container.svg` | Container on a chassis leaving a port gate | Wanted |
 | 5 | About: `about-greenpoint/index.html` / `ar/about-greenpoint/index.html` | Team section | Code-drawn illustration | GPL team photo (with consent) | Wanted |
-| 6 | About / Contact: `about-greenpoint/index.html`, `contact-us/index.html` (+ AR) | Office figure | Code-drawn illustration / port map | GPL office, El Manshya, Alexandria: entrance or front desk | Wanted |
+| 6 | About / Contact: `about-greenpoint/index.html`, `contact-us/index.html` (+ AR) | Office figure | Code-drawn illustration / port map | GPL office, Smouha, Alexandria: entrance or front desk | Wanted |
 | 7 | Customs clearance: `customs-clearance/index.html` / `ar/customs-clearance/index.html` | Service hero / intro figure | `assets/img/illo/customs-docs.svg` | Clearance team at work, document handling (no readable client data) | Optional |
