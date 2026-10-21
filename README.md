@@ -304,7 +304,7 @@ With either stopgap, the quote data is held by a third party. Name the provider 
 
 ## Analytics
 
-There is no analytics script and no account yet. The hook is the **`ANALYTICS HOOK (disabled)` comment block at the end of `scripts/partials/head.en.html` and `scripts/partials/head.ar.html`**. Through the sync, it ends up inside every page's `chrome:head` block. To enable analytics:
+Cloudflare Web Analytics is live (cookie-free, token in the head partials, added 2026-10-21). The hook is the **`ANALYTICS HOOK (disabled)` comment block at the end of `scripts/partials/head.en.html` and `scripts/partials/head.ar.html`**. Through the sync, it ends up inside every page's `chrome:head` block. To enable analytics:
 
 1. Choose **one** provider. Put its live `<script>` tag(s) **below** the comment block, in both head partials. Do not uncomment inside the block: the block is one HTML comment, and the examples in it are reference only.
 2. Run `python3 scripts/sync_chrome.py` to copy it into every page, then run `python3 scripts/check_links.py`.
