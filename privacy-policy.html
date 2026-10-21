@@ -33,7 +33,7 @@
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
   })();
 </script>
-<!-- ===== ANALYTICS HOOK (disabled) =====
+<!-- ===== ANALYTICS HOOK (enabled: Cloudflare Web Analytics, below) =====
   Enable exactly ONE provider after approval, add its account key, and update the privacy policy.
   Cloudflare Web Analytics (cookie-free):
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "CF_BEACON_TOKEN"}'></script>
@@ -45,6 +45,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-XXXXXXXXXX');</script>
 ===== /ANALYTICS HOOK ===== -->
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ed0f25e9aa294294bc93983bbbe91048"}'></script><!-- End Cloudflare Web Analytics -->
 <!-- /chrome:head -->
 <link rel="stylesheet" href="assets/css/site.css">
 <link rel="stylesheet" href="assets/css/legal.css">
@@ -355,8 +356,7 @@
         <h2 id="cookies">4. Cookies and analytics</h2>
         <!-- The copy deck said the site stores your language; it does not (the language switch is a plain link), so this paragraph says what the site actually does. -->
         <p>Our website does not use advertising or tracking cookies, and it does not need cookies to work. The fonts on our pages are served from this website itself, so your browser does not contact any third-party font service.</p>
-        <!-- TODO(confirm): update this section with the analytics provider's name once one is chosen (Cloudflare Web Analytics, Plausible or GA4). If GA4 is chosen, add a consent banner and name Google. -->
-        <p>We may use privacy-friendly analytics to understand how the site is used in aggregate; such tools do not track you across other websites or build advertising profiles. You can control cookies through your browser settings.</p>
+        <p>We use Cloudflare Web Analytics to understand how the site is used in aggregate, such as page views and load times. It does not set cookies, does not track you across other websites and does not build advertising profiles.</p>
 
         <h2 id="retention">5. Data retention and security</h2>
         <p>We keep your information for as long as needed to answer your request and manage our relationship with you, or as long as the law requires (for example for customs and accounting records). We use appropriate technical and organisational measures to protect your personal data against unauthorised access, change or loss.</p>
