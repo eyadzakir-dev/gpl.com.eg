@@ -205,8 +205,8 @@ The stubs are **not** in `sitemap.xml` and have no chrome markers, so `sync_chro
 
 Both forms are `<form data-quote-form …>` elements run by `assets/js/quote-form.js`, and each posts to the URL in its own `data-endpoint` attribute. There are four forms: `quote.html`, `ar/quote.html`, `contact-us/index.html` and `ar/contact-us/index.html`. No script changes are needed:
 
-- **Quote forms** (`quote.html`, `ar/quote.html`) post to Fabrik (Option 1).
-- **Contact forms** keep `data-endpoint=""`, so they open the visitor's mail app (see "When the endpoint is empty"). Fabrik has no contact route yet. To move them to a stopgap, change the attribute in both contact files.
+- **Quote forms** (`quote.html`, `ar/quote.html`) post to Fabrik freight-quotes (Option 1).
+- **Contact forms** post to Fabrik contacts (`/api/green-point/website/contacts`). The `action="mailto:…"` attribute stays as a noscript / failure fallback: if the endpoint is empty or the request fails, the script opens the visitor's mail app.
 
 ```html
 <form class="iform" data-quote-form data-strings="quote-strings" data-endpoint="" …>
@@ -232,7 +232,7 @@ The quote form runs in three steps (route and service, cargo, contact). Each ste
 
 1. Run Fabrik on http://localhost:3000 with `GREEN_POINT_QUOTE_ENABLED=true` and `GREEN_POINT_QUOTE_ORIGINS=http://127.0.0.1:8080,http://localhost:8080` in its `.env`. Leave `BREVO_API_KEY` empty so no email goes out.
 2. Serve this site: `python3 scripts/serve.py . 8080`.
-3. Open http://127.0.0.1:8080/quote?endpoint=http://localhost:3000 and send a request. It appears under Green Point inquiries in Fabrik.
+3. Open http://127.0.0.1:8080/quote?endpoint=http://localhost:3000 and send a request. It appears under Green Point inquiries in Fabrik. Contact pages use the same `?endpoint=` override and append `/api/green-point/website/contacts`.
 
 The `endpoint` parameter works only when the page itself runs on localhost or 127.0.0.1 and only for an `http://localhost` or `http://127.0.0.1` address, so the live site cannot be pointed elsewhere.
 
@@ -244,7 +244,7 @@ data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freigh
 
 - The route lives in the Fabrik repo (`one-book`). This repo must not change it. The Three Stars garment route `/api/website/inquiries` rejects `gpl.com.eg`, so do not point a form at it.
 - Fabrik production needs `GREEN_POINT_QUOTE_ENABLED=true` and `GREEN_POINT_QUOTE_ORIGINS=https://gpl.com.eg,https://www.gpl.com.eg`. Any other Origin gets a 403, so github.io and localhost previews cannot send to production. Fabrik emails ms@gpl.com.eg, eyad@tsf.com.eg and ziad@tsf.com.eg for each new request; `GREEN_POINT_QUOTE_NOTIFY_EMAILS` replaces that list, and `off` mutes it.
-- Only `form_type=quote` is accepted. The contact form would get a 400.
+- Quote forms send `form_type=quote` to freight-quotes; contact forms send `form_type=contact` to `/api/green-point/website/contacts` (same `GREEN_POINT_QUOTE_*` switches). A contact body posted at the quote route still gets a 400.
 - Check the preflight from the real Origin. Expect `204` with `access-control-allow-origin: https://gpl.com.eg`:
 
   ```sh
@@ -254,8 +254,8 @@ data-endpoint="https://book.threestarsfashion.com/api/green-point/website/freigh
     https://book.threestarsfashion.com/api/green-point/website/freight-quotes | head -20
   ```
 
-- Fabrik answers `201 {"reference": "GPL-Q-YYYY-NNNNN"}`, and the success panel shows that reference. A 400, 429 (too many requests) or 413 (too large) shows the form's normal error message.
-- Staff who can see all inquiries find each request in Fabrik under **Inquiries**, with the Green Point Logistics name and GPL logo in the Source column. Each request opens at `/inquiries/quotes/<id>`.
+- Fabrik answers `201 {"reference": "GPL-Q-YYYY-NNNNN"}` for quotes and `GPL-C-YYYY-NNNNN` for contacts; the success panel shows that reference. A 400, 429 (too many requests) or 413 (too large) shows the form's normal error message; contact also falls back to mailto on failure.
+- Staff who can see Green Point inquiries find each quote in Fabrik under **Inquiries** at `/inquiries/quotes/<id>`. Contact messages are emailed and dual-written to Twenty CRM Web Inquiries (when `TWENTY_API_KEY` is set on Fabrik).
 
 ### Option 2: Formspree (stopgap)
 
@@ -297,10 +297,10 @@ With either stopgap, the quote data is held by a third party. Name the provider 
 
 ### When the endpoint is empty
 
-`data-endpoint=""` is the shipped state of the contact forms.
+Empty `data-endpoint` is the offline / preview path (quote forms ship with a Fabrik URL; contact forms also ship with Fabrik and keep mailto as `action` plus failure fallback).
 
-- On `localhost` and `127.0.0.1` only, the script **simulates success** after a short delay, without a network request, and the success panel shows a sample reference marked as a preview. Use this to test validation and the success panel locally.
-- On any other host, including `gpl.com.eg` and a `*.github.io` preview, the script **does not fake a success**. It shows "Online sending is not switched on yet." and opens the visitor's mail app with a `mailto:info@gpl.com.eg` message prefilled with their answers (attachments must be added by hand), with email and WhatsApp buttons as a backup. Nothing reaches GPL unless the visitor presses send, so set a real endpoint before the site goes live.
+- On `localhost` and `127.0.0.1` only, with an empty endpoint, the script **simulates success** after a short delay, without a network request, and the success panel shows a sample reference marked as a preview. Use this to test validation and the success panel locally.
+- On any other host with an empty endpoint, the script **does not fake a success**. It shows "Online sending is not switched on yet." and opens the visitor's mail app with a `mailto:info@gpl.com.eg` message prefilled with their answers (attachments must be added by hand). Contact forms also open mailto when a configured Fabrik endpoint fails.
 
 ## Analytics
 

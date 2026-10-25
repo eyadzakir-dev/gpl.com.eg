@@ -26,6 +26,7 @@ const SIZE_FREE_MODES = new Set(["", "not-sure", "customs"]);
 const DEFAULT_MODE = "not-sure";
 const LOCAL_ENDPOINT_PATTERN = /^http:\/\/(localhost|127\.0\.0\.1):\d{2,5}$/;
 const QUOTE_PATH = "/api/green-point/website/freight-quotes";
+const CONTACT_PATH = "/api/green-point/website/contacts";
 const STEP_COUNT_MIN = 2;
 
 const PREFILL_CHOICES = { mode: ["sea-fcl", "sea-lcl", "air", "land", "customs"] };
@@ -652,10 +653,17 @@ function showSuccess(ctx, reference, isSimulated) {
   done.title.focus({ preventScroll: true });
 }
 
-// On localhost only, ?endpoint=http://localhost:3000 sends the quote form to a local Fabrik instead of production.
+function isContactForm(form) {
+  return (form.elements.form_type?.value || "") === "contact";
+}
+
+// On localhost only, ?endpoint=http://localhost:3000 sends the form to a local Fabrik instead of production.
 function getEndpoint(form) {
   const local = new URLSearchParams(location.search).get("endpoint") || "";
-  if (PREVIEW_HOSTS.has(location.hostname) && form.querySelector("[data-step]") && LOCAL_ENDPOINT_PATTERN.test(local)) return `${local}${QUOTE_PATH}`;
+  if (PREVIEW_HOSTS.has(location.hostname) && LOCAL_ENDPOINT_PATTERN.test(local)) {
+    if (form.querySelector("[data-step]")) return `${local}${QUOTE_PATH}`;
+    if (isContactForm(form)) return `${local}${CONTACT_PATH}`;
+  }
   return (form.dataset.endpoint || "").trim();
 }
 
@@ -674,6 +682,11 @@ async function sendForm(ctx) {
     outcome = { failure: error.kind || "server" };
   }
   setSending(ctx, false);
+  // Contact keeps mailto as a failure fallback so a Fabrik outage still reaches the desk.
+  if (outcome.failure && isContactForm(ctx.ui.form) && endpoint) {
+    openOfflineFallback(ctx);
+    return;
+  }
   if (outcome.failure) showFailure(ctx, outcome.failure);
   else showSuccess(ctx, outcome.reference, outcome.simulated);
 }
