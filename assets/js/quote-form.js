@@ -10,11 +10,14 @@ const BYTES_PER_MB = 1024 * 1024;
 const MAX_TOTAL_BYTES = 25 * BYTES_PER_MB;
 const ALLOWED_EXTENSIONS = new Set(["pdf", "xlsx", "xls", "csv", "jpg", "jpeg", "png", "webp"]);
 const REQUEST_TIMEOUT_MS = 120000;
+const CRM_TIMEOUT_MS = 15000;
 const PREVIEW_DELAY_MS = 800;
 const PREVIEW_HOSTS = new Set(["localhost", "127.0.0.1"]);
 const PREVIEW_SERIAL = "00042";
 const MAILTO_TEXT_LIMIT = 1200;
 const STATUS_RATE_LIMITED = 429;
+const CRM_SOURCE_SITE = "GREEN_POINT";
+const CRM_SOURCE_LOGO = "https://gpl.com.eg/assets/img/brand/logo.svg";
 const EMAIL_PATTERN = /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)*\.[^@\s.]{2,}$/;
 const PHONE_PATTERN = /^\+?[\d\s().-]+$/;
 const PHONE_DIGITS = { min: 7, max: 15 };
@@ -657,6 +660,77 @@ function isContactForm(form) {
   return (form.elements.form_type?.value || "") === "contact";
 }
 
+function trimField(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function getModeLabel(form) {
+  const checked = getChecked(form, "mode");
+  if (!checked) return "";
+  return getCleanText(checked.closest("label")) || checked.value;
+}
+
+function buildCrmPayload(ctx) {
+  const form = ctx.ui.form;
+  const contact = isContactForm(form);
+  const payload = {
+    formType: contact ? "GPL_CONTACT" : "GPL_QUOTE",
+    sourceSite: CRM_SOURCE_SITE,
+    name: trimField(form.elements.name?.value),
+    email: trimField(form.elements.email?.value),
+    sourceLogoUrl: CRM_SOURCE_LOGO,
+    sourcePageUrl: location.href.split("#")[0],
+    submittedAt: new Date().toISOString(),
+  };
+  const company = trimField(form.elements.company?.value);
+  const phone = trimField(form.elements.phone?.value);
+  const message = trimField(form.elements.message?.value);
+  if (company) payload.company = company;
+  if (phone) payload.phone = phone;
+  if (message) payload.message = message;
+  if (!contact) {
+    const freightMode = getModeLabel(form) || trimField(getChecked(form, "mode")?.value);
+    const origin = trimField(form.elements.origin_place?.value);
+    const destination = trimField(form.elements.destination?.value);
+    const route = [origin, destination].filter(Boolean).join(" → ");
+    const cargoParts = [
+      trimField(form.elements.container_type?.value) && trimField(form.elements.container_count?.value)
+        ? `${trimField(form.elements.container_count.value)}×${trimField(form.elements.container_type.value)}`
+        : "",
+      trimField(form.elements.weight_kg?.value) ? `${trimField(form.elements.weight_kg.value)} kg` : "",
+      trimField(form.elements.volume_cbm?.value) ? `${trimField(form.elements.volume_cbm.value)} m³` : "",
+    ].filter(Boolean);
+    if (freightMode) payload.freightMode = freightMode;
+    if (route) payload.routeSummary = route;
+    if (cargoParts.length) payload.cargoSummary = cargoParts.join(" / ");
+  }
+  return payload;
+}
+
+async function postCrm(form, payload) {
+  const endpoint = (form.dataset.crmEndpoint || "").trim();
+  if (!endpoint) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), CRM_TIMEOUT_MS);
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`CRM endpoint responded with ${response.status}.`);
+    return true;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function sendCrm(ctx) {
+  if (!(ctx.ui.form.dataset.crmEndpoint || "").trim()) return Promise.resolve(null);
+  return postCrm(ctx.ui.form, buildCrmPayload(ctx));
+}
+
 // On localhost only, ?endpoint=http://localhost:3000 sends the form to a local Fabrik instead of production.
 function getEndpoint(form) {
   const local = new URLSearchParams(location.search).get("endpoint") || "";
@@ -667,28 +741,44 @@ function getEndpoint(form) {
   return (form.dataset.endpoint || "").trim();
 }
 
+async function sendFabrik(ctx, endpoint) {
+  if (!endpoint && PREVIEW_HOSTS.has(location.hostname)) return simulateSuccess();
+  if (!endpoint) throw new RequestError("server", "Endpoint is not configured.");
+  return postForm(endpoint, buildBody(ctx));
+}
+
 async function sendForm(ctx) {
   const endpoint = getEndpoint(ctx.ui.form);
-  if (!endpoint && !PREVIEW_HOSTS.has(location.hostname)) {
+  const crmConfigured = Boolean((ctx.ui.form.dataset.crmEndpoint || "").trim());
+  // Live contact/quote with neither Fabrik nor CRM: open mailto. Quote still prefers Fabrik when present.
+  if (!endpoint && !crmConfigured && !PREVIEW_HOSTS.has(location.hostname)) {
     openOfflineFallback(ctx);
     return;
   }
   setSending(ctx, true);
-  let outcome = null;
-  try {
-    outcome = endpoint ? await postForm(endpoint, buildBody(ctx)) : await simulateSuccess();
-  } catch (error) {
-    console.warn("Quote form submission failed.", error);
-    outcome = { failure: error.kind || "server" };
-  }
+  const [fabrik, crm] = await Promise.allSettled([
+    endpoint || PREVIEW_HOSTS.has(location.hostname) ? sendFabrik(ctx, endpoint) : Promise.reject(new RequestError("server", "No Fabrik endpoint.")),
+    sendCrm(ctx),
+  ]);
   setSending(ctx, false);
-  // Contact keeps mailto as a failure fallback so a Fabrik outage still reaches the desk.
-  if (outcome.failure && isContactForm(ctx.ui.form) && endpoint) {
+  if (crm.status === "rejected") console.warn("CRM form submission failed.", crm.reason);
+  if (fabrik.status === "fulfilled") {
+    showSuccess(ctx, fabrik.value.reference, fabrik.value.simulated);
+    return;
+  }
+  console.warn("Quote form submission failed.", fabrik.reason);
+  const kind = fabrik.reason?.kind || "server";
+  // Contact: mailto only when both Fabrik and CRM failed (or CRM was not configured).
+  if (isContactForm(ctx.ui.form) && crm.status !== "fulfilled") {
     openOfflineFallback(ctx);
     return;
   }
-  if (outcome.failure) showFailure(ctx, outcome.failure);
-  else showSuccess(ctx, outcome.reference, outcome.simulated);
+  // Contact with CRM-only success: thank the visitor without a Fabrik reference.
+  if (isContactForm(ctx.ui.form) && crm.status === "fulfilled") {
+    showSuccess(ctx, "", false);
+    return;
+  }
+  showFailure(ctx, kind);
 }
 
 function handleSubmit(event, ctx) {
