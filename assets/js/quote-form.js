@@ -3,6 +3,7 @@
 // The quote form is three steps ([data-step]); the contact form has none and runs as one page.
 
 import { EGYPT_PLACES, WORLD_PLACES } from "./quote-places.js";
+import { getCrmConfig, submitToTwentyCrm } from "./twenty-crm.js";
 
 const MAX_FILES = 10;
 const BYTES_PER_KB = 1024;
@@ -10,7 +11,6 @@ const BYTES_PER_MB = 1024 * 1024;
 const MAX_TOTAL_BYTES = 25 * BYTES_PER_MB;
 const ALLOWED_EXTENSIONS = new Set(["pdf", "xlsx", "xls", "csv", "jpg", "jpeg", "png", "webp"]);
 const REQUEST_TIMEOUT_MS = 120000;
-const CRM_TIMEOUT_MS = 15000;
 const PREVIEW_DELAY_MS = 800;
 const PREVIEW_HOSTS = new Set(["localhost", "127.0.0.1"]);
 const PREVIEW_SERIAL = "00042";
@@ -707,28 +707,13 @@ function buildCrmPayload(ctx) {
   return payload;
 }
 
-async function postCrm(form, payload) {
-  const endpoint = (form.dataset.crmEndpoint || "").trim();
-  if (!endpoint) return null;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), CRM_TIMEOUT_MS);
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { Accept: "application/json", "Content-Type": "application/json" },
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`CRM endpoint responded with ${response.status}.`);
-    return true;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
 function sendCrm(ctx) {
-  if (!(ctx.ui.form.dataset.crmEndpoint || "").trim()) return Promise.resolve(null);
-  return postCrm(ctx.ui.form, buildCrmPayload(ctx));
+  const cfg = getCrmConfig(ctx.ui.form);
+  if (!cfg.webhook && !cfg.apiKey) return Promise.resolve(null);
+  return submitToTwentyCrm(ctx.ui.form, {
+    payload: buildCrmPayload(ctx),
+    files: ctx.files,
+  });
 }
 
 // On localhost only, ?endpoint=http://localhost:3000 sends the form to a local Fabrik instead of production.
@@ -756,10 +741,11 @@ async function sendForm(ctx) {
     return;
   }
   setSending(ctx, true);
-  const [fabrik, crm] = await Promise.allSettled([
-    endpoint || PREVIEW_HOSTS.has(location.hostname) ? sendFabrik(ctx, endpoint) : Promise.reject(new RequestError("server", "No Fabrik endpoint.")),
-    sendCrm(ctx),
-  ]);
+  const fabrikWork = endpoint || PREVIEW_HOSTS.has(location.hostname)
+    ? sendFabrik(ctx, endpoint)
+    : Promise.reject(new RequestError("server", "No Fabrik endpoint."));
+  // Fabrik ERP + Twenty CRM stay parallel. Quote files go to Twenty storage independently of Fabrik.
+  const [fabrik, crm] = await Promise.allSettled([fabrikWork, sendCrm(ctx)]);
   setSending(ctx, false);
   if (crm.status === "rejected") console.warn("CRM form submission failed.", crm.reason);
   if (fabrik.status === "fulfilled") {
