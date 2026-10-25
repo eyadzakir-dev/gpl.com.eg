@@ -3,6 +3,7 @@
 // The quote form is three steps ([data-step]); the contact form has none and runs as one page.
 
 import { EGYPT_PLACES, WORLD_PLACES } from "./quote-places.js";
+import { getCrmConfig, submitToTwentyCrm } from "./twenty-crm.js";
 
 const MAX_FILES = 10;
 const BYTES_PER_KB = 1024;
@@ -10,7 +11,6 @@ const BYTES_PER_MB = 1024 * 1024;
 const MAX_TOTAL_BYTES = 25 * BYTES_PER_MB;
 const ALLOWED_EXTENSIONS = new Set(["pdf", "xlsx", "xls", "csv", "jpg", "jpeg", "png", "webp"]);
 const REQUEST_TIMEOUT_MS = 120000;
-const CRM_TIMEOUT_MS = 15000;
 const PREVIEW_DELAY_MS = 800;
 const PREVIEW_HOSTS = new Set(["localhost", "127.0.0.1"]);
 const PREVIEW_SERIAL = "00042";
@@ -558,27 +558,11 @@ function buildBody(ctx) {
   return body;
 }
 
-function readFabrikFiles(data) {
-  if (!Array.isArray(data?.files)) return [];
-  return data.files
-    .map((file) => ({
-      id: typeof file?.id === "string" ? file.id.trim() : "",
-      filename: typeof file?.filename === "string" ? file.filename.trim() : "",
-    }))
-    .filter((file) => file.id);
-}
-
-async function readFabrikResult(response) {
-  if (!response.headers.get("content-type")?.includes("json")) {
-    return { reference: "", id: "", files: [] };
-  }
+async function readReference(response) {
+  if (!response.headers.get("content-type")?.includes("json")) return "";
   // A 2xx already means success; the JSON body is optional.
   const data = await response.json().catch(() => null);
-  return {
-    reference: typeof data?.reference === "string" ? cleanParam(data.reference, 60) : "",
-    id: typeof data?.id === "string" ? cleanParam(data.id, 80) : "",
-    files: readFabrikFiles(data),
-  };
+  return typeof data?.reference === "string" ? cleanParam(data.reference, 60) : "";
 }
 
 async function postForm(endpoint, body) {
@@ -588,7 +572,7 @@ async function postForm(endpoint, body) {
     const response = await fetch(endpoint, { method: "POST", body, headers: { Accept: "application/json" }, signal: controller.signal });
     if (response.status === STATUS_RATE_LIMITED) throw new RequestError("rate", "Rate limited (429).");
     if (!response.ok) throw new RequestError("server", `Endpoint responded with ${response.status}.`);
-    return { ...await readFabrikResult(response), origin: new URL(endpoint, location.href).origin, simulated: false };
+    return { reference: await readReference(response), simulated: false };
   } catch (error) {
     if (error.name === "AbortError") throw new RequestError("timeout", "Request timed out.");
     throw error;
@@ -600,7 +584,7 @@ async function postForm(endpoint, body) {
 function simulateSuccess() {
   const reference = `GPL-Q-${new Date().getFullYear()}-${PREVIEW_SERIAL}`;
   return new Promise((resolve) => {
-    setTimeout(() => resolve({ reference, id: "", files: [], origin: "", simulated: true }), PREVIEW_DELAY_MS);
+    setTimeout(() => resolve({ reference, simulated: true }), PREVIEW_DELAY_MS);
   });
 }
 
@@ -686,40 +670,7 @@ function getModeLabel(form) {
   return getCleanText(checked.closest("label")) || checked.value;
 }
 
-function toAttachmentLinks(items) {
-  if (!items.length) return null;
-  const [first, ...rest] = items;
-  return {
-    primaryLinkUrl: first.url,
-    primaryLinkLabel: first.label,
-    secondaryLinks: rest.length ? rest.map((item) => ({ url: item.url, label: item.label })) : null,
-  };
-}
-
-function quoteAttachmentLinks(fabrik) {
-  if (!fabrik?.origin || !fabrik.id) return null;
-  const links = (fabrik.files || []).map((file) => ({
-    label: file.filename || "Attachment",
-    url: `${fabrik.origin}/api/green-point/quotes/files/${encodeURIComponent(file.id)}`,
-  }));
-  if (fabrik.reference) {
-    links.push({
-      label: `Fabrik ${fabrik.reference}`,
-      url: `${fabrik.origin}/inquiries/quotes/${encodeURIComponent(fabrik.id)}`,
-    });
-  }
-  return toAttachmentLinks(links);
-}
-
-function contactAttachmentLinks(fabrik) {
-  if (!fabrik?.origin || !fabrik.reference) return null;
-  return toAttachmentLinks([{
-    label: `Fabrik ${fabrik.reference}`,
-    url: `${fabrik.origin}/inquiries?company=GREEN_POINT&q=${encodeURIComponent(fabrik.reference)}`,
-  }]);
-}
-
-function buildCrmPayload(ctx, fabrik = null) {
+function buildCrmPayload(ctx) {
   const form = ctx.ui.form;
   const contact = isContactForm(form);
   const payload = {
@@ -753,43 +704,16 @@ function buildCrmPayload(ctx, fabrik = null) {
     if (route) payload.routeSummary = route;
     if (cargoParts.length) payload.cargoSummary = cargoParts.join(" / ");
   }
-  if (fabrik?.reference) payload.fabrikReference = fabrik.reference;
-  if (fabrik?.id) payload.fabrikRecordId = fabrik.id;
-  const attachmentLinks = contact ? contactAttachmentLinks(fabrik) : quoteAttachmentLinks(fabrik);
-  if (attachmentLinks) payload.attachmentLinks = attachmentLinks;
   return payload;
 }
 
-async function postCrm(form, payload) {
-  const endpoint = (form.dataset.crmEndpoint || "").trim();
-  if (!endpoint) return null;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), CRM_TIMEOUT_MS);
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { Accept: "application/json", "Content-Type": "application/json" },
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`CRM endpoint responded with ${response.status}.`);
-    return true;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-function sendCrm(ctx, fabrik = null) {
-  if (!(ctx.ui.form.dataset.crmEndpoint || "").trim()) return Promise.resolve(null);
-  return postCrm(ctx.ui.form, buildCrmPayload(ctx, fabrik));
-}
-
-async function settle(work) {
-  try {
-    return { status: "fulfilled", value: await work };
-  } catch (reason) {
-    return { status: "rejected", reason };
-  }
+function sendCrm(ctx) {
+  const cfg = getCrmConfig(ctx.ui.form);
+  if (!cfg.webhook && !cfg.apiKey) return Promise.resolve(null);
+  return submitToTwentyCrm(ctx.ui.form, {
+    payload: buildCrmPayload(ctx),
+    files: ctx.files,
+  });
 }
 
 // On localhost only, ?endpoint=http://localhost:3000 sends the form to a local Fabrik instead of production.
@@ -820,15 +744,8 @@ async function sendForm(ctx) {
   const fabrikWork = endpoint || PREVIEW_HOSTS.has(location.hostname)
     ? sendFabrik(ctx, endpoint)
     : Promise.reject(new RequestError("server", "No Fabrik endpoint."));
-  // With files, wait for Fabrik so CRM can receive openable attachmentLinks. Without files, keep parallel.
-  let fabrik;
-  let crm;
-  if (ctx.files.length) {
-    fabrik = await settle(fabrikWork);
-    crm = await settle(sendCrm(ctx, fabrik.status === "fulfilled" ? fabrik.value : null));
-  } else {
-    [fabrik, crm] = await Promise.allSettled([fabrikWork, sendCrm(ctx)]);
-  }
+  // Fabrik ERP + Twenty CRM stay parallel. Quote files go to Twenty storage independently of Fabrik.
+  const [fabrik, crm] = await Promise.allSettled([fabrikWork, sendCrm(ctx)]);
   setSending(ctx, false);
   if (crm.status === "rejected") console.warn("CRM form submission failed.", crm.reason);
   if (fabrik.status === "fulfilled") {
