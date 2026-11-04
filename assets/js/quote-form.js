@@ -3,7 +3,7 @@
 // The quote form is three steps ([data-step]); the contact form has none and runs as one page.
 
 import { EGYPT_PLACES, WORLD_PLACES } from "./quote-places.js";
-import { getCrmConfig, submitToTwentyCrm } from "./twenty-crm.js";
+import { BOT_CHECK_FIELD, createBotCheck } from "./bot-check.js";
 
 const MAX_FILES = 10;
 const BYTES_PER_KB = 1024;
@@ -16,8 +16,6 @@ const PREVIEW_HOSTS = new Set(["localhost", "127.0.0.1"]);
 const PREVIEW_SERIAL = "00042";
 const MAILTO_TEXT_LIMIT = 1200;
 const STATUS_RATE_LIMITED = 429;
-const CRM_SOURCE_SITE = "GREEN_POINT";
-const CRM_SOURCE_LOGO = "https://gpl.com.eg/assets/img/brand/logo.svg";
 const EMAIL_PATTERN = /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)*\.[^@\s.]{2,}$/;
 const PHONE_PATTERN = /^\+?[\d\s().-]+$/;
 const PHONE_DIGITS = { min: 7, max: 15 };
@@ -660,62 +658,6 @@ function isContactForm(form) {
   return (form.elements.form_type?.value || "") === "contact";
 }
 
-function trimField(value) {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function getModeLabel(form) {
-  const checked = getChecked(form, "mode");
-  if (!checked) return "";
-  return getCleanText(checked.closest("label")) || checked.value;
-}
-
-function buildCrmPayload(ctx) {
-  const form = ctx.ui.form;
-  const contact = isContactForm(form);
-  const payload = {
-    formType: contact ? "GPL_CONTACT" : "GPL_QUOTE",
-    sourceSite: CRM_SOURCE_SITE,
-    name: trimField(form.elements.name?.value),
-    email: trimField(form.elements.email?.value),
-    sourceLogoUrl: CRM_SOURCE_LOGO,
-    sourcePageUrl: location.href.split("#")[0],
-    submittedAt: new Date().toISOString(),
-  };
-  const company = trimField(form.elements.company?.value);
-  const phone = trimField(form.elements.phone?.value);
-  const message = trimField(form.elements.message?.value);
-  if (company) payload.company = company;
-  if (phone) payload.phone = phone;
-  if (message) payload.message = message;
-  if (!contact) {
-    const freightMode = getModeLabel(form) || trimField(getChecked(form, "mode")?.value);
-    const origin = trimField(form.elements.origin_place?.value);
-    const destination = trimField(form.elements.destination?.value);
-    const route = [origin, destination].filter(Boolean).join(" → ");
-    const cargoParts = [
-      trimField(form.elements.container_type?.value) && trimField(form.elements.container_count?.value)
-        ? `${trimField(form.elements.container_count.value)}×${trimField(form.elements.container_type.value)}`
-        : "",
-      trimField(form.elements.weight_kg?.value) ? `${trimField(form.elements.weight_kg.value)} kg` : "",
-      trimField(form.elements.volume_cbm?.value) ? `${trimField(form.elements.volume_cbm.value)} m³` : "",
-    ].filter(Boolean);
-    if (freightMode) payload.freightMode = freightMode;
-    if (route) payload.routeSummary = route;
-    if (cargoParts.length) payload.cargoSummary = cargoParts.join(" / ");
-  }
-  return payload;
-}
-
-function sendCrm(ctx) {
-  const cfg = getCrmConfig(ctx.ui.form);
-  if (!cfg.webhook && !cfg.apiKey) return Promise.resolve(null);
-  return submitToTwentyCrm(ctx.ui.form, {
-    payload: buildCrmPayload(ctx),
-    files: ctx.files,
-  });
-}
-
 // On localhost only, ?endpoint=http://localhost:3000 sends the form to a local Fabrik instead of production.
 function getEndpoint(form) {
   const local = new URLSearchParams(location.search).get("endpoint") || "";
@@ -729,42 +671,31 @@ function getEndpoint(form) {
 async function sendFabrik(ctx, endpoint) {
   if (!endpoint && PREVIEW_HOSTS.has(location.hostname)) return simulateSuccess();
   if (!endpoint) throw new RequestError("server", "Endpoint is not configured.");
-  return postForm(endpoint, buildBody(ctx));
+  const body = buildBody(ctx);
+  const answer = await ctx.botCheck.take();
+  if (answer) body.set(BOT_CHECK_FIELD, answer);
+  return postForm(endpoint, body);
 }
 
 async function sendForm(ctx) {
   const endpoint = getEndpoint(ctx.ui.form);
-  const crmConfigured = Boolean((ctx.ui.form.dataset.crmEndpoint || "").trim());
-  // Live contact/quote with neither Fabrik nor CRM: open mailto. Quote still prefers Fabrik when present.
-  if (!endpoint && !crmConfigured && !PREVIEW_HOSTS.has(location.hostname)) {
+  if (!endpoint && !PREVIEW_HOSTS.has(location.hostname)) {
     openOfflineFallback(ctx);
     return;
   }
   setSending(ctx, true);
-  const fabrikWork = endpoint || PREVIEW_HOSTS.has(location.hostname)
-    ? sendFabrik(ctx, endpoint)
-    : Promise.reject(new RequestError("server", "No Fabrik endpoint."));
-  // Fabrik ERP + Twenty CRM stay parallel. Quote files go to Twenty storage independently of Fabrik.
-  const [fabrik, crm] = await Promise.allSettled([fabrikWork, sendCrm(ctx)]);
+  let outcome = null;
+  try {
+    outcome = await sendFabrik(ctx, endpoint);
+  } catch (error) {
+    console.warn("Quote form submission failed.", error);
+    outcome = { failure: error.kind || "server" };
+  }
   setSending(ctx, false);
-  if (crm.status === "rejected") console.warn("CRM form submission failed.", crm.reason);
-  if (fabrik.status === "fulfilled") {
-    showSuccess(ctx, fabrik.value.reference, fabrik.value.simulated);
-    return;
-  }
-  console.warn("Quote form submission failed.", fabrik.reason);
-  const kind = fabrik.reason?.kind || "server";
-  // Contact: mailto only when both Fabrik and CRM failed (or CRM was not configured).
-  if (isContactForm(ctx.ui.form) && crm.status !== "fulfilled") {
-    openOfflineFallback(ctx);
-    return;
-  }
-  // Contact with CRM-only success: thank the visitor without a Fabrik reference.
-  if (isContactForm(ctx.ui.form) && crm.status === "fulfilled") {
-    showSuccess(ctx, "", false);
-    return;
-  }
-  showFailure(ctx, kind);
+  // Fabrik stores the request and copies it to the Twenty CRM from its server; the page never talks to the CRM.
+  // A failure keeps the answers in the form, offers Try again and names info@gpl.com.eg.
+  if (outcome.failure) showFailure(ctx, outcome.failure);
+  else showSuccess(ctx, outcome.reference, outcome.simulated);
 }
 
 function handleSubmit(event, ctx) {
@@ -850,6 +781,7 @@ function getUi(form) {
 function initForm(form) {
   const strings = JSON.parse(document.getElementById(form.dataset.strings).textContent);
   const ctx = { strings, ui: getUi(form), files: [], isSending: false, checks: [], step: 1 };
+  ctx.botCheck = createBotCheck(form, () => getEndpoint(form));
   ctx.checks = [...form.querySelectorAll("[data-validate], [data-group], [data-size-group]")].map((el) => buildCheck(form, el));
   fillPlaces(ctx);
   setMinDates(form);
