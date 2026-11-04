@@ -693,11 +693,7 @@ async function sendForm(ctx) {
   }
   setSending(ctx, false);
   // Fabrik stores the request and copies it to the Twenty CRM from its server; the page never talks to the CRM.
-  // Contact keeps mailto as a failure fallback so a Fabrik outage still reaches the desk.
-  if (outcome.failure && isContactForm(ctx.ui.form) && endpoint) {
-    openOfflineFallback(ctx);
-    return;
-  }
+  // A failure keeps the answers in the form, offers Try again and names info@gpl.com.eg.
   if (outcome.failure) showFailure(ctx, outcome.failure);
   else showSuccess(ctx, outcome.reference, outcome.simulated);
 }
