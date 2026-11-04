@@ -216,6 +216,8 @@ The script sends a `fetch` POST with `multipart/form-data` and an `Accept: appli
 
 A filled honeypot field (`website`) is treated as a bot: the script shows the normal success panel and sends nothing, so this works the same with every backend.
 
+**Bot check.** `assets/js/bot-check.js` (shared, identical in threestarsfashion.com) fetches a proof-of-work challenge from `GET /api/website/challenge` on the endpoint's host the first time the visitor touches a form, solves it in the background (no click, no third party) and adds the answer as the `altcha` field when the form is sent. Fabrik refuses a post without one only once its `WEBSITE_CHALLENGE_KEY` is set; while it is unset, or if the challenge cannot be fetched, the form posts without it.
+
 Field names the backend receives (from the form markup):
 
 | Form | Fields |

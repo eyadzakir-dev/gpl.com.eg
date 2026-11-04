@@ -3,6 +3,7 @@
 // The quote form is three steps ([data-step]); the contact form has none and runs as one page.
 
 import { EGYPT_PLACES, WORLD_PLACES } from "./quote-places.js";
+import { BOT_CHECK_FIELD, createBotCheck } from "./bot-check.js";
 import { getCrmConfig, submitToTwentyCrm } from "./twenty-crm.js";
 
 const MAX_FILES = 10;
@@ -729,7 +730,10 @@ function getEndpoint(form) {
 async function sendFabrik(ctx, endpoint) {
   if (!endpoint && PREVIEW_HOSTS.has(location.hostname)) return simulateSuccess();
   if (!endpoint) throw new RequestError("server", "Endpoint is not configured.");
-  return postForm(endpoint, buildBody(ctx));
+  const body = buildBody(ctx);
+  const answer = await ctx.botCheck.take();
+  if (answer) body.set(BOT_CHECK_FIELD, answer);
+  return postForm(endpoint, body);
 }
 
 async function sendForm(ctx) {
@@ -850,6 +854,7 @@ function getUi(form) {
 function initForm(form) {
   const strings = JSON.parse(document.getElementById(form.dataset.strings).textContent);
   const ctx = { strings, ui: getUi(form), files: [], isSending: false, checks: [], step: 1 };
+  ctx.botCheck = createBotCheck(form, () => getEndpoint(form));
   ctx.checks = [...form.querySelectorAll("[data-validate], [data-group], [data-size-group]")].map((el) => buildCheck(form, el));
   fillPlaces(ctx);
   setMinDates(form);
