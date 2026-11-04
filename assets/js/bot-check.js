@@ -38,6 +38,8 @@ async function fetchChallenge(endpoint) {
   try {
     const response = await fetch(new URL(CHALLENGE_PATH, endpoint), {
       headers: { Accept: "application/json" },
+      // Each challenge is single-use. Fabrik already answers no-store; this keeps any cache out of it too.
+      cache: "no-store",
       signal: controller.signal,
     });
     return response.ok ? await response.json() : null;
